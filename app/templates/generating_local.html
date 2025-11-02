@@ -12,11 +12,11 @@
                         <i class="fas fa-magic fa-5x text-primary rotating"></i>
                     </div>
 
-                    <h2 class="mb-4">AI is Transforming You into 12 Hunks...</h2>
+                    <h2 class="mb-4">AI is Transforming You into a Calendar Hunk...</h2>
 
                     <p class="lead mb-4">
-                        <strong>LOCAL BEAST MODE:</strong> Generating ALL 12 months at once on your machine!
-                        This takes 2-3 minutes. Your beefy hardware = BLAZING FAST! 🔥
+                        <strong>LOCAL BEAST MODE:</strong> Generating cover + 12 months (13 images total)!
+                        This takes 3-4 minutes. Your beefy hardware = BLAZING FAST! 🔥
                     </p>
 
                     <div class="progress mb-4" style="height: 30px;">
@@ -24,7 +24,7 @@
                              role="progressbar"
                              id="progressBar"
                              style="width: 0%">
-                            <span id="progressText">0/12 months</span>
+                            <span id="progressText">0/13 images</span>
                         </div>
                     </div>
 
@@ -89,9 +89,9 @@ const progressBar = document.getElementById('progressBar');
 const progressText = document.getElementById('progressText');
 
 function updateProgress() {
-    const percentage = (completedCount / 12) * 100;
+    const percentage = (completedCount / 13) * 100;
     progressBar.style.width = percentage + '%';
-    progressText.textContent = `${completedCount}/12 months`;
+    progressText.textContent = `${completedCount}/13 images`;
 }
 
 function updateBadge(monthNum, status, retryNum = null) {
@@ -188,12 +188,12 @@ function checkCompletion() {
     if (activeRequests === 0 && monthQueue.length === 0) {
         const totalDone = completedCount + failedMonths.size;
 
-        if (totalDone >= 12) {
+        if (totalDone >= 13) {
             console.log(`🎉 Complete! ${completedCount} succeeded, ${failedMonths.size} failed`);
 
             if (failedMonths.size > 0) {
                 console.error(`⚠️ Failed: ${Array.from(failedMonths).join(', ')}`);
-                alert(`⚠️ ${failedMonths.size} month(s) failed after ${MAX_RETRIES} attempts. Proceeding with ${completedCount} successful months.`);
+                alert(`⚠️ ${failedMonths.size} image(s) failed after ${MAX_RETRIES} attempts. Proceeding with ${completedCount} successful images.`);
             }
 
             setTimeout(() => {
@@ -203,23 +203,23 @@ function checkCompletion() {
     }
 }
 
-// Initialize: Start generating all pending months
+// Initialize: Start generating all pending images (cover + months)
 function startGeneration() {
     const pendingMonths = [];
 
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 0; i <= 12; i++) {
         const monthData = months.find(m => m.month_number === i);
         if (!monthData || monthData.generation_status !== 'completed') {
             pendingMonths.push(i);
         }
     }
 
-    console.log(`🔥 LOCAL BEAST MODE: Generating ${pendingMonths.length} months`);
-    console.log(`📋 Sequential generation: ${MAX_PARALLEL} month at a time`);
+    console.log(`🔥 LOCAL BEAST MODE: Generating ${pendingMonths.length} images (cover + months)`);
+    console.log(`📋 Sequential generation: ${MAX_PARALLEL} image at a time`);
     console.log(`💪 Your beefy machine can handle this!`);
 
     monthQueue = [...pendingMonths];
-    console.log(`📥 Queued ${monthQueue.length} months`);
+    console.log(`📥 Queued ${monthQueue.length} images`);
 
     processQueue();
 }
@@ -228,7 +228,7 @@ function startGeneration() {
 updateProgress();
 
 // Start generation if needed
-if (completedCount < 12) {
+if (completedCount < 13) {
     console.log('🚀 Starting BEAST MODE generation...');
     setTimeout(startGeneration, 1000);
 } else {

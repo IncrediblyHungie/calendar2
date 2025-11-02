@@ -4,6 +4,12 @@ Each month features a ridiculous, sexy scenario
 """
 
 MONTHLY_THEMES = {
+    0: {
+        "month": "Cover",
+        "title": "Hunk of the Month Magazine Hero",
+        "description": "Epic magazine cover hero shot with dramatic lighting and charismatic presence",
+        "prompt": "Hyper-realistic professional magazine cover photo of an incredibly muscular, shirtless male model with perfect abs and defined biceps, confident charismatic smile, wind-blown hair, dramatic studio lighting with spotlight effect, heroic pose with hands on hips, pin-up calendar style, GQ magazine quality, high fashion photography, gold and red backdrop"
+    },
     1: {
         "month": "January",
         "title": "New Year's Firefighter Hero",

@@ -126,11 +126,11 @@ def get_all_months():
     return storage['months']
 
 def create_months_with_themes(themes):
-    """Create 12 months with themes"""
+    """Create 13 images with themes (cover + 12 months)"""
     storage = _get_storage()
     storage['months'] = []
 
-    for month_num in range(1, 13):
+    for month_num in range(0, 13):
         theme = themes[month_num]
         storage['months'].append({
             'id': month_num,

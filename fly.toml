@@ -26,6 +26,11 @@ primary_region = "sjc"
   cpu_kind = 'shared'
   cpus = 1
 
+# Persistent volume for session storage
+[mounts]
+  source = "session_storage"
+  destination = "/data"
+
 # Static file serving (optional, most will be on Vercel)
 [[statics]]
   guest_path = "/app/app/static"

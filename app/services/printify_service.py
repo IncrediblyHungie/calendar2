@@ -179,15 +179,22 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
         }
     ]
 
-    # Add front cover (use January image)
+    # Add front cover (use dedicated cover image if available, fallback to January)
+    cover_id = month_image_ids.get("cover")
+    if not cover_id:
+        cover_id = month_image_ids.get("january")
+        print("  ℹ️  Using January image for front cover (no dedicated cover image)")
+    else:
+        print("  ✓ Using dedicated cover image for front cover")
+
     print_areas[0]["placeholders"].append({
         "position": "front_cover",
         "images": [
             {
-                "id": month_image_ids.get("january"),
+                "id": cover_id,
                 "x": 0.5,  # Center horizontally
                 "y": 0.5,  # Center vertically
-                "scale": 1.0,  # Fill entire area
+                "scale": 0.85,  # Zoomed out to 85% to prevent face/head cropping on print
                 "angle": 0
             }
         ]
@@ -208,7 +215,7 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
                     "id": month_image_ids[month],
                     "x": 0.5,
                     "y": 0.5,
-                    "scale": 1.0,
+                    "scale": 0.85,  # Zoomed out to 85% to prevent face/head cropping on print
                     "angle": 0
                 }
             ]

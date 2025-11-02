@@ -1,0 +1,311 @@
+"""
+Intelligent image padding service for calendar printing
+Ensures faces are always fully visible with multiple safety layers
+"""
+import io
+from PIL import Image, ImageFilter, ImageDraw
+import numpy as np
+
+# Safety configuration
+CONFIG = {
+    'min_padding_percent': 10,      # Minimum padding for sides (10%)
+    'top_padding_percent': 35,       # Extra padding at TOP to protect heads (35% - increased to prevent face cropping)
+    'bottom_padding_percent': 5,     # Less padding at bottom (can trim feet if needed)
+    'safe_zone_percent': 75,         # Central safe zone (75% of image - increased for more safety margin)
+    'face_margin_percent': 15,       # Extra margin around detected faces (15%)
+    'target_aspect_ratio': (3, 4),   # Portrait 3:4 ratio (matches Gemini)
+    'blur_edge_pixels': 20,          # Blur radius for edge extension
+    'use_asymmetric_padding': True,  # Prioritize head protection (top-weighted)
+}
+
+def add_safe_padding(image_bytes, use_face_detection=False):
+    """
+    Add intelligent padding to image with multiple safety layers
+
+    Args:
+        image_bytes: Input image as bytes
+        use_face_detection: Enable face detection for smart padding (requires cv2)
+
+    Returns:
+        bytes: Padded image as JPEG bytes
+    """
+    try:
+        # Load image
+        img = Image.open(io.BytesIO(image_bytes))
+        original_width, original_height = img.size
+
+        print(f"  🖼️  Original size: {original_width}x{original_height}")
+
+        # Layer 1: Calculate universal safe padding (always applied)
+        if CONFIG['use_asymmetric_padding']:
+            # Asymmetric: More padding at top (protect heads), less at bottom (can trim feet)
+            base_pad_w = int(original_width * (CONFIG['min_padding_percent'] / 100))
+            base_pad_top = int(original_height * (CONFIG['top_padding_percent'] / 100))
+            base_pad_bottom = int(original_height * (CONFIG['bottom_padding_percent'] / 100))
+            print(f"  🎯 Using asymmetric padding: TOP={CONFIG['top_padding_percent']}%, BOTTOM={CONFIG['bottom_padding_percent']}%, SIDES={CONFIG['min_padding_percent']}%")
+        else:
+            # Symmetric: Equal padding all sides
+            min_padding = CONFIG['min_padding_percent'] / 100
+            base_pad_w = int(original_width * min_padding)
+            base_pad_top = int(original_height * min_padding)
+            base_pad_bottom = int(original_height * min_padding)
+
+        # Layer 2: Face-aware padding (if enabled and face detected)
+        extra_pad_w = 0
+        extra_pad_h = 0
+
+        if use_face_detection:
+            try:
+                face_info = detect_face_position(img)
+                if face_info:
+                    extra_pad_w, extra_pad_h = calculate_face_padding(
+                        face_info, original_width, original_height
+                    )
+                    print(f"  👤 Face detected - adding extra padding: {extra_pad_w}x{extra_pad_h}px")
+            except Exception as e:
+                print(f"  ⚠️  Face detection failed (using universal padding): {e}")
+
+        # Total padding
+        total_pad_w = base_pad_w + extra_pad_w
+        total_pad_top = base_pad_top + extra_pad_h
+        total_pad_bottom = base_pad_bottom + extra_pad_h
+
+        # Layer 3: Aspect ratio preservation
+        new_width = original_width + (2 * total_pad_w)
+        new_height = original_height + total_pad_top + total_pad_bottom
+
+        # Ensure we maintain 3:4 aspect ratio
+        target_ratio = CONFIG['target_aspect_ratio'][0] / CONFIG['target_aspect_ratio'][1]
+        current_ratio = new_width / new_height
+
+        if current_ratio < target_ratio:
+            # Image too tall - add more width padding (symmetric)
+            required_width = int(new_height * target_ratio)
+            extra_width_pad = (required_width - new_width) // 2
+            total_pad_w += extra_width_pad
+            new_width = required_width
+        elif current_ratio > target_ratio:
+            # Image too wide - add more height padding
+            required_height = int(new_width / target_ratio)
+            extra_height_needed = required_height - new_height
+            # Add ALL extra height to top (prioritize head protection)
+            total_pad_top += extra_height_needed
+            new_height = required_height
+
+        print(f"  📐 Final padding: TOP={total_pad_top}px, BOTTOM={total_pad_bottom}px, SIDES={total_pad_w}px")
+
+        # Layer 4: Create padded canvas with intelligent background
+        padded_img = create_padded_canvas(img, total_pad_w, total_pad_top, total_pad_bottom, new_width, new_height)
+
+        print(f"  ✅ Padded size: {padded_img.size[0]}x{padded_img.size[1]}")
+
+        # Convert to JPEG bytes
+        output = io.BytesIO()
+        padded_img.convert('RGB').save(output, format='JPEG', quality=95)
+        return output.getvalue()
+
+    except Exception as e:
+        print(f"  ❌ Padding failed: {e}")
+        # Layer 5: Fallback - return original image
+        print(f"  🔄 Returning original image (0.85 scale will be applied at Printify)")
+        return image_bytes
+
+def create_padded_canvas(img, pad_w, pad_top, pad_bottom, new_width, new_height):
+    """
+    Create padded canvas with intelligent background fill
+
+    Supports asymmetric padding (different top/bottom values)
+
+    Strategies:
+    1. Solid color (average edge color)
+    2. Blurred edges
+    3. White background (safest fallback)
+    """
+    try:
+        # Strategy 1: Get average edge color
+        edge_color = get_average_edge_color(img)
+
+        # Create new canvas with edge color
+        padded = Image.new('RGB', (new_width, new_height), edge_color)
+
+        # Strategy 2: Create blurred edge extension for more natural look
+        # Extract edges and blur them
+        edge_blur = create_blurred_edges(img, pad_w, pad_top, pad_bottom, new_width, new_height)
+        if edge_blur:
+            padded.paste(edge_blur, (0, 0))
+
+        # Paste original image on canvas with asymmetric vertical positioning
+        paste_x = pad_w
+        paste_y = pad_top
+        padded.paste(img, (paste_x, paste_y))
+
+        return padded
+
+    except Exception as e:
+        print(f"    ⚠️  Smart padding failed, using white background: {e}")
+        # Fallback: Simple white background
+        padded = Image.new('RGB', (new_width, new_height), (255, 255, 255))
+        padded.paste(img, (pad_w, pad_top))
+        return padded
+
+def get_average_edge_color(img):
+    """Calculate average color of image edges"""
+    try:
+        width, height = img.size
+        edge_pixels = []
+
+        # Sample top/bottom edges
+        for x in range(0, width, max(1, width // 20)):
+            edge_pixels.append(img.getpixel((x, 0)))
+            edge_pixels.append(img.getpixel((x, height - 1)))
+
+        # Sample left/right edges
+        for y in range(0, height, max(1, height // 20)):
+            edge_pixels.append(img.getpixel((0, y)))
+            edge_pixels.append(img.getpixel((width - 1, y)))
+
+        # Calculate average
+        avg_r = sum(p[0] for p in edge_pixels) // len(edge_pixels)
+        avg_g = sum(p[1] for p in edge_pixels) // len(edge_pixels)
+        avg_b = sum(p[2] for p in edge_pixels) // len(edge_pixels)
+
+        return (avg_r, avg_g, avg_b)
+
+    except Exception:
+        # Fallback to white
+        return (255, 255, 255)
+
+def create_blurred_edges(img, pad_w, pad_top, pad_bottom, new_width, new_height):
+    """
+    Create blurred edge extension for natural-looking padding
+    Supports asymmetric vertical padding
+    """
+    try:
+        # Create canvas
+        blurred_canvas = Image.new('RGB', (new_width, new_height), (255, 255, 255))
+
+        # Resize image slightly larger to get edge content
+        scale = 1.15  # Slightly more expansion for better edge coverage
+        scaled_w = int(img.width * scale)
+        scaled_h = int(img.height * scale)
+        scaled_img = img.resize((scaled_w, scaled_h), Image.LANCZOS)
+
+        # Apply heavy blur
+        blurred = scaled_img.filter(ImageFilter.GaussianBlur(CONFIG['blur_edge_pixels']))
+
+        # For asymmetric padding, adjust vertical offset
+        # More top padding means we want more top edge content
+        offset_x = (scaled_w - new_width) // 2
+
+        # Calculate vertical offset based on asymmetric padding ratio
+        total_vertical_pad = pad_top + pad_bottom
+        if total_vertical_pad > 0:
+            top_ratio = pad_top / total_vertical_pad
+            # Shift offset toward top if we have more top padding
+            offset_y = int((scaled_h - new_height) * (1 - top_ratio * 0.5))
+        else:
+            offset_y = (scaled_h - new_height) // 2
+
+        # Crop blurred image to canvas size
+        blurred_cropped = blurred.crop((offset_x, offset_y, offset_x + new_width, offset_y + new_height))
+
+        return blurred_cropped
+
+    except Exception:
+        return None
+
+def detect_face_position(img):
+    """
+    Detect face position in image (requires OpenCV/MediaPipe)
+    Returns None if face detection unavailable or no face found
+    """
+    try:
+        import cv2
+        import numpy as np
+
+        # Convert PIL to OpenCV format
+        img_array = np.array(img)
+        img_cv = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
+
+        # Load OpenCV face detector
+        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+        # Detect faces
+        faces = face_cascade.detectMultiScale(img_cv, scaleFactor=1.1, minNeighbors=5)
+
+        if len(faces) == 0:
+            return None
+
+        # If multiple faces, get bounding box containing all
+        if len(faces) > 1:
+            x_min = min(f[0] for f in faces)
+            y_min = min(f[1] for f in faces)
+            x_max = max(f[0] + f[2] for f in faces)
+            y_max = max(f[1] + f[3] for f in faces)
+            return {
+                'x': x_min,
+                'y': y_min,
+                'width': x_max - x_min,
+                'height': y_max - y_min,
+                'count': len(faces)
+            }
+
+        # Single face
+        x, y, w, h = faces[0]
+        return {
+            'x': x,
+            'y': y,
+            'width': w,
+            'height': h,
+            'count': 1
+        }
+
+    except ImportError:
+        # OpenCV not available - skip face detection
+        return None
+    except Exception:
+        return None
+
+def calculate_face_padding(face_info, img_width, img_height):
+    """
+    Calculate additional padding needed to keep face in safe zone
+    """
+    # Safe zone boundaries (central 70%)
+    safe_zone = CONFIG['safe_zone_percent'] / 100
+    safe_left = img_width * (1 - safe_zone) / 2
+    safe_right = img_width * (1 + safe_zone) / 2
+    safe_top = img_height * (1 - safe_zone) / 2
+    safe_bottom = img_height * (1 + safe_zone) / 2
+
+    face_left = face_info['x']
+    face_right = face_info['x'] + face_info['width']
+    face_top = face_info['y']
+    face_bottom = face_info['y'] + face_info['height']
+
+    # Calculate how much face extends beyond safe zone
+    extra_pad_left = max(0, safe_left - face_left)
+    extra_pad_right = max(0, face_right - safe_right)
+    extra_pad_top = max(0, safe_top - face_top)
+    extra_pad_bottom = max(0, face_bottom - safe_bottom)
+
+    # Add face margin percentage
+    face_margin = CONFIG['face_margin_percent'] / 100
+    face_margin_w = int(img_width * face_margin)
+    face_margin_h = int(img_height * face_margin)
+
+    # Total extra padding needed
+    extra_pad_w = int(max(extra_pad_left, extra_pad_right) + face_margin_w)
+    extra_pad_h = int(max(extra_pad_top, extra_pad_bottom) + face_margin_h)
+
+    return extra_pad_w, extra_pad_h
+
+# Configuration helpers
+def set_config(key, value):
+    """Update configuration value"""
+    if key in CONFIG:
+        CONFIG[key] = value
+        print(f"  ⚙️  Updated {key} = {value}")
+
+def get_config():
+    """Get current configuration"""
+    return CONFIG.copy()

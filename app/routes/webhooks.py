@@ -5,7 +5,7 @@ Currently handles Stripe payment confirmation webhooks
 from flask import Blueprint, request, jsonify
 import stripe
 from datetime import datetime
-from app.services import stripe_service, printify_service
+from app.services import stripe_service, printify_service, image_padding_service
 from app import session_storage
 
 bp = Blueprint('webhooks', __name__, url_prefix='/webhooks')
@@ -115,12 +115,31 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
 
     print(f"   Found {len(months)} months in session storage")
 
-    # Step 2: Upload all 12 month images to Printify
-    print("\n📤 Uploading images to Printify...")
+    # Step 2: Upload all images to Printify (cover + 12 months, with smart padding)
+    print("\n📤 Uploading images to Printify with face-safe padding...")
     month_names = ["january", "february", "march", "april", "may", "june",
                    "july", "august", "september", "october", "november", "december"]
 
     printify_image_ids = {}
+
+    # Step 2a: Check for cover image (month_number = 0)
+    cover_data = next((m for m in months if m['month_number'] == 0), None)
+    if cover_data and cover_data.get('master_image_data'):
+        print(f"  📸 Processing Cover image...")
+        padded_cover = image_padding_service.add_safe_padding(
+            cover_data['master_image_data'],
+            use_face_detection=False
+        )
+        upload_data = printify_service.upload_image(
+            padded_cover,
+            filename="cover.jpg"
+        )
+        printify_image_ids['cover'] = upload_data['id']
+        print(f"  ✓ Cover image uploaded")
+    else:
+        print(f"  ℹ️  No cover image found (month 0), will use January for front cover")
+
+    # Step 2b: Upload all 12 month images
     for i, month_name in enumerate(month_names):
         month_num = i + 1
         month_data = next((m for m in months if m['month_number'] == month_num), None)
@@ -128,15 +147,24 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
         if not month_data or not month_data.get('master_image_data'):
             raise Exception(f"Missing image data for month {month_num}")
 
-        # Upload to Printify
-        upload_data = printify_service.upload_image(
+        print(f"  📸 Processing {month_name.capitalize()}...")
+
+        # Apply smart padding to ensure face is fully visible
+        # Uses multi-layer safety: universal padding + optional face detection
+        padded_image_data = image_padding_service.add_safe_padding(
             month_data['master_image_data'],
+            use_face_detection=False  # Set to True if OpenCV installed
+        )
+
+        # Upload padded image to Printify
+        upload_data = printify_service.upload_image(
+            padded_image_data,
             filename=f"{month_name}.jpg"
         )
 
         printify_image_ids[month_name] = upload_data['id']
 
-    print(f"✅ Uploaded {len(printify_image_ids)} images successfully")
+    print(f"✅ Uploaded {len(printify_image_ids)} padded images successfully (including cover if present)")
 
     # Step 3: Get product configuration
     product_config = printify_service.CALENDAR_PRODUCTS.get(product_type)

@@ -75,13 +75,16 @@ CHARACTER CONSISTENCY (CRITICAL):
 - Keep their eye color, skin tone, facial structure, and unique characteristics
 - Blend their identity naturally into the scene
 
-COMPOSITION & FRAMING (CRITICAL):
-- MEDIUM SHOT framing: Show full person from head to at least waist, preferably head to thighs
-- FULL BODY IN FRAME: Ensure entire head and upper body are completely visible
-- HEADROOM: Leave space above the head - don't crop the top of head or face
-- CENTERED COMPOSITION: Subject prominently centered with proper framing
-- Use 85mm portrait lens perspective for flattering body proportions
-- Professional fitness photography composition
+COMPOSITION & FRAMING (CRITICAL - FOLLOW EXACTLY):
+- CAMERA DISTANCE: Shot from 12-15 feet away for WIDE framing with generous margins
+- HEADROOM: Leave SIGNIFICANT empty space above the head (at least 15-20% of image height above head)
+- MEDIUM-WIDE SHOT: Show full person from head to mid-thigh or knees - NEVER crop the head
+- FULL BODY VISIBLE: Entire head, torso, and upper legs must be completely in frame with room to spare
+- MARGINS: Ensure ample space on all sides - top, bottom, left, right (subject should occupy central 60-70% of frame)
+- CENTERED COMPOSITION: Subject prominently centered with generous breathing room around them
+- WIDER FRAMING: If in doubt, zoom OUT more - we need extra space for printing safety margins
+- Use 50mm lens perspective (NOT 85mm) for wider field of view and more environmental context
+- Professional fitness photography composition with commercial print safety margins
 
 VISUAL QUALITY:
 - Photorealistic, professional photography quality

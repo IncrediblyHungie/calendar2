@@ -72,7 +72,7 @@ def delete_image(image_id):
 
 @bp.route('/generate/month/<int:month_num>', methods=['POST'])
 def generate_month(month_num):
-    """Generate a single month's image with AI face-swapping"""
+    """Generate a single month's image with AI face-swapping (0=Cover, 1-12=Months)"""
     from app.services.gemini_service import generate_calendar_image
     from app.services.monthly_themes import get_enhanced_prompt
     from PIL import Image as PILImage
@@ -80,7 +80,7 @@ def generate_month(month_num):
     import traceback
 
     print(f"\n{'='*70}")
-    print(f"🚀 GENERATE MONTH {month_num} - START")
+    print(f"🚀 GENERATE MONTH {month_num} - START {'(COVER)' if month_num == 0 else ''}")
     print(f"{'='*70}")
 
     project = get_current_project()
@@ -88,8 +88,8 @@ def generate_month(month_num):
         print(f"❌ Month {month_num}: No project found (Unauthorized)")
         return jsonify({'error': 'Unauthorized'}), 401
 
-    if month_num < 1 or month_num > 12:
-        print(f"❌ Month {month_num}: Invalid month number")
+    if month_num < 0 or month_num > 12:
+        print(f"❌ Month {month_num}: Invalid month number (must be 0-12)")
         return jsonify({'error': 'Invalid month number'}), 400
 
     try:
@@ -242,6 +242,75 @@ def debug_session():
 
     return jsonify(debug_info)
 
+@bp.route('/calendar-grid-image')
+def calendar_grid_image():
+    """Generate and serve 3×4 grid preview of all 12 calendar months"""
+    from PIL import Image as PILImage
+
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        # Get all months from session storage
+        months = session_storage.get_all_months()
+
+        # Check if all months are generated
+        if not all(m['generation_status'] == 'completed' for m in months):
+            return jsonify({'error': 'Not all months are generated yet'}), 400
+
+        # Grid configuration
+        COLUMNS = 4
+        ROWS = 3
+        THUMB_WIDTH = 400
+        THUMB_HEIGHT = 533  # 3:4 aspect ratio
+        GRID_WIDTH = THUMB_WIDTH * COLUMNS  # 1600px
+        GRID_HEIGHT = THUMB_HEIGHT * ROWS    # 1599px
+
+        # Create blank canvas
+        grid_image = PILImage.new('RGB', (GRID_WIDTH, GRID_HEIGHT), color='white')
+
+        # Paste each month image into the grid
+        for month in months:
+            month_num = month['month_number']
+            image_data = session_storage.get_month_image_data(month_num)
+
+            if not image_data:
+                print(f"⚠ Warning: Month {month_num} has no image data")
+                continue
+
+            # Load and resize month image
+            month_img = PILImage.open(io.BytesIO(image_data))
+            month_img = month_img.resize((THUMB_WIDTH, THUMB_HEIGHT), PILImage.Resampling.LANCZOS)
+
+            # Calculate position in grid (0-indexed, left to right, top to bottom)
+            index = month_num - 1
+            col = index % COLUMNS
+            row = index // COLUMNS
+            x = col * THUMB_WIDTH
+            y = row * THUMB_HEIGHT
+
+            # Paste into grid
+            grid_image.paste(month_img, (x, y))
+
+        # Save grid to bytes
+        grid_io = io.BytesIO()
+        grid_image.save(grid_io, format='JPEG', quality=85, optimize=True)
+        grid_io.seek(0)
+
+        return send_file(
+            grid_io,
+            mimetype='image/jpeg',
+            as_attachment=False,
+            download_name='calendar_preview.jpg'
+        )
+
+    except Exception as e:
+        print(f"❌ Grid generation error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
 @bp.route('/checkout/create', methods=['POST'])
 def create_checkout():
     """Create Stripe checkout session for calendar purchase"""
@@ -256,15 +325,19 @@ def create_checkout():
         return jsonify({'error': 'Invalid product type'}), 400
 
     try:
-        # Create Stripe checkout session
+        # Get internal session ID for webhook lookup
+        internal_session_id = session_storage._get_session_id()
+
+        # Create Stripe checkout session with metadata
         session_data = stripe_service.create_checkout_session(
             product_type=product_type,
             success_url=url_for('main.order_success', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=url_for('projects.preview', _external=True)
+            cancel_url=url_for('projects.preview', _external=True),
+            metadata={
+                'internal_session_id': internal_session_id,
+                'product_type': product_type
+            }
         )
-
-        # Store checkout session ID in session storage for tracking
-        # session_storage.save_checkout_session(session_data['session_id'], product_type)
 
         return jsonify({
             'success': True,

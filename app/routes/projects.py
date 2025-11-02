@@ -140,7 +140,7 @@ def generate():
 
     # Check if themes are confirmed
     months = session_storage.get_all_months()
-    if len(months) < 12:
+    if len(months) < 13:
         flash('Please review the monthly themes first!', 'warning')
         return redirect(url_for('projects.themes'))
 
@@ -176,7 +176,7 @@ def preview():
     # Check if generation is complete
     if not all(m['generation_status'] == 'completed' for m in months):
         flash('Calendar generation in progress...', 'info')
-        return render_template('generating.html', project=project, months=months)
+        return render_template('generating_local.html', project=project, months=months)
 
     month_names = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -184,6 +184,23 @@ def preview():
     ]
 
     return render_template('preview.html', project=project, months=months, month_names=month_names)
+
+@bp.route('/calendar-preview')
+def calendar_preview():
+    """Show 3×4 grid preview of all 12 calendar months"""
+    project = get_current_project()
+    if not project:
+        return redirect(url_for('main.start'))
+
+    # Get all months from session storage
+    months = session_storage.get_all_months()
+
+    # Check if all months are generated
+    if not all(m['generation_status'] == 'completed' for m in months):
+        flash('Please wait for all months to be generated before viewing the calendar preview.', 'warning')
+        return redirect(url_for('projects.preview'))
+
+    return render_template('calendar_preview.html', project=project)
 
 @bp.route('/checkout', methods=['GET', 'POST'])
 def checkout():
