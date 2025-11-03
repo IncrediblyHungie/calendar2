@@ -351,23 +351,43 @@ def generate_mockup():
 
         print(f"✓ Collected {len(month_image_data)} month images")
 
-        # Create Printify product and get mockup images
+        # Create Printify products for all 3 calendar types
         from app.services import printify_service
 
-        mockup_result = printify_service.create_product_for_preview(
-            month_image_data=month_image_data,
-            product_type='calendar_2026'  # Default to main calendar product
-        )
+        product_types = ['calendar_2026', 'desktop', 'standard_wall']
+        total_mockups = 0
 
-        # Save mockup data to session
-        session_storage.save_preview_mockup_data(mockup_result)
-        print(f"✅ Mockup data saved to session")
+        print(f"\n🎨 Generating mockups for {len(product_types)} product types...")
+
+        for product_type in product_types:
+            try:
+                print(f"\n{'─'*50}")
+                print(f"📸 Creating mockup for: {product_type}")
+
+                mockup_result = printify_service.create_product_for_preview(
+                    month_image_data=month_image_data,
+                    product_type=product_type
+                )
+
+                # Save mockup data to session (one per product type)
+                session_storage.save_preview_mockup_data(mockup_result, product_type)
+                mockup_count = len(mockup_result.get('mockup_images', []))
+                total_mockups += mockup_count
+                print(f"✅ {product_type}: {mockup_count} mockup images created")
+
+            except Exception as product_error:
+                print(f"⚠️ Failed to create mockup for {product_type}: {product_error}")
+                # Continue with other products - don't fail completely if one fails
+
+        print(f"\n{'='*70}")
+        print(f"✅ Mockup generation complete: {total_mockups} total images")
+        print(f"{'='*70}\n")
 
         return jsonify({
             'success': True,
-            'mockup_count': len(mockup_result.get('mockup_images', [])),
-            'product_id': mockup_result.get('product_id'),
-            'message': 'Mockup preview generated successfully'
+            'mockup_count': total_mockups,
+            'product_types': product_types,
+            'message': f'Mockups generated for {len(product_types)} calendar types'
         })
 
     except Exception as e:

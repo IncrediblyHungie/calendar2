@@ -238,25 +238,55 @@ def get_order_info_by_session_id(session_id):
         return _storage[session_id].get('order')
     return None
 
-def save_preview_mockup_data(mockup_data):
+def save_preview_mockup_data(mockup_data, product_type='calendar_2026'):
     """
     Save Printify preview mockup data to session
 
     Args:
         mockup_data: Dict with product_id, variant_id, mockup_images, etc.
+        product_type: 'calendar_2026', 'desktop', or 'standard_wall'
     """
     storage = _get_storage()
-    storage['preview_mockup'] = mockup_data
+
+    # Store mockups as dict by product type
+    if 'preview_mockups' not in storage:
+        storage['preview_mockups'] = {}
+
+    storage['preview_mockups'][product_type] = mockup_data
     _save_session(_get_session_id())
 
-def get_preview_mockup_data():
-    """Get preview mockup data from session"""
+def get_preview_mockup_data(product_type=None):
+    """
+    Get preview mockup data from session
+
+    Args:
+        product_type: Optional specific product type. If None, returns all mockups.
+
+    Returns:
+        dict: Single mockup data if product_type specified, or dict of all mockups
+    """
     storage = _get_storage()
-    return storage.get('preview_mockup')
+    mockups = storage.get('preview_mockups', {})
+
+    if product_type:
+        return mockups.get(product_type)
+
+    # Legacy support: check for old single mockup format
+    if not mockups and 'preview_mockup' in storage:
+        return {'calendar_2026': storage.get('preview_mockup')}
+
+    return mockups
 
 def get_preview_mockup_by_session_id(session_id):
     """Get preview mockup data for a specific session (used by webhooks)"""
     _load_storage()
     if session_id in _storage:
-        return _storage[session_id].get('preview_mockup')
+        # Return all mockups (new format) or single mockup (legacy)
+        mockups = _storage[session_id].get('preview_mockups', {})
+        if not mockups:
+            # Legacy support
+            single_mockup = _storage[session_id].get('preview_mockup')
+            if single_mockup:
+                return {'calendar_2026': single_mockup}
+        return mockups
     return None

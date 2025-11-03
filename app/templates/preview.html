@@ -38,7 +38,7 @@
     </div>
 
     <!-- Printify Product Mockup - THE ACTUAL CALENDAR -->
-    {% if mockup_data and mockup_data.mockup_images %}
+    {% if mockup_data and mockup_data.calendar_2026 and mockup_data.calendar_2026.mockup_images %}
     <div class="card shadow-lg border-success mb-5" style="border-width: 3px;">
         <div class="card-header bg-gradient text-white text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
             <h2 class="mb-2">
@@ -56,7 +56,7 @@
         <div class="card-body p-5 bg-light">
             <!-- Main Product Mockup -->
             <div class="row justify-content-center mb-4">
-                {% for mockup in mockup_data.mockup_images %}
+                {% for mockup in mockup_data.calendar_2026.mockup_images %}
                     {% if mockup.is_default %}
                     <div class="col-lg-10 col-xl-8">
                         <div class="position-relative mockup-container">
@@ -90,7 +90,7 @@
             </div>
 
             <!-- Additional Product Angles -->
-            {% set other_mockups = mockup_data.mockup_images | selectattr('is_default', 'equalto', false) | list %}
+            {% set other_mockups = mockup_data.calendar_2026.mockup_images | selectattr('is_default', 'equalto', false) | list %}
             {% if other_mockups | length > 0 %}
             <div class="mt-5 pt-4 border-top">
                 <h4 class="text-center mb-4">
@@ -159,8 +159,8 @@
                         </div>
                         <div class="card-body p-4">
                             <!-- Actual Printify Mockup -->
-                            {% if mockup_data and mockup_data.mockup_images %}
-                                {% for mockup in mockup_data.mockup_images %}
+                            {% if mockup_data and mockup_data.calendar_2026 and mockup_data.calendar_2026.mockup_images %}
+                                {% for mockup in mockup_data.calendar_2026.mockup_images %}
                                     {% if mockup.is_default %}
                                     <div class="mb-3">
                                         <img src="{{ mockup.src }}"
@@ -215,11 +215,25 @@
                             <small class="opacity-75">Compact & Professional</small>
                         </div>
                         <div class="card-body p-4">
-                            <!-- Placeholder for Desktop Calendar -->
-                            <div class="mb-3 text-center p-5 bg-light rounded">
-                                <i class="fas fa-calendar-day fa-4x text-muted mb-2"></i>
-                                <p class="text-muted small mb-0">Your hunk photos on a professional desktop calendar</p>
-                            </div>
+                            <!-- Actual Printify Mockup -->
+                            {% if mockup_data and mockup_data.desktop and mockup_data.desktop.mockup_images %}
+                                {% for mockup in mockup_data.desktop.mockup_images %}
+                                    {% if mockup.is_default %}
+                                    <div class="mb-3">
+                                        <img src="{{ mockup.src }}"
+                                             alt="Desktop Calendar Preview"
+                                             class="img-fluid rounded shadow"
+                                             style="cursor: pointer;"
+                                             onclick="window.open('{{ mockup.src }}', '_blank')">
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="mb-3 text-center p-5 bg-light rounded">
+                                    <i class="fas fa-calendar-day fa-4x text-muted mb-2"></i>
+                                    <p class="text-muted small mb-0">Your hunk photos on a professional desktop calendar</p>
+                                </div>
+                            {% endif %}
 
                             <!-- Product Specs -->
                             <div class="mb-3">
@@ -258,11 +272,25 @@
                             <small class="opacity-75">Large & Eye-Catching</small>
                         </div>
                         <div class="card-body p-4">
-                            <!-- Placeholder for Wall Calendar -->
-                            <div class="mb-3 text-center p-5 bg-light rounded">
-                                <i class="fas fa-calendar-week fa-4x text-muted mb-2"></i>
-                                <p class="text-muted small mb-0">Your hunk photos on a large wall calendar</p>
-                            </div>
+                            <!-- Actual Printify Mockup -->
+                            {% if mockup_data and mockup_data.standard_wall and mockup_data.standard_wall.mockup_images %}
+                                {% for mockup in mockup_data.standard_wall.mockup_images %}
+                                    {% if mockup.is_default %}
+                                    <div class="mb-3">
+                                        <img src="{{ mockup.src }}"
+                                             alt="Wall Calendar Preview"
+                                             class="img-fluid rounded shadow"
+                                             style="cursor: pointer;"
+                                             onclick="window.open('{{ mockup.src }}', '_blank')">
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="mb-3 text-center p-5 bg-light rounded">
+                                    <i class="fas fa-calendar-week fa-4x text-muted mb-2"></i>
+                                    <p class="text-muted small mb-0">Your hunk photos on a large wall calendar</p>
+                                </div>
+                            {% endif %}
 
                             <!-- Product Specs -->
                             <div class="mb-3">
