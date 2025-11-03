@@ -37,12 +37,62 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
+    <!-- Product Mockup Preview (if available) -->
+    {% if mockup_data and mockup_data.mockup_images %}
+    <div class="card shadow-lg border-primary mb-5">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-eye me-2"></i>
+                Realistic Calendar Preview
+            </h3>
+            <p class="mb-0 mt-2 small">This is EXACTLY how your calendar will look when printed!</p>
+        </div>
+        <div class="card-body p-4">
+            <div class="row">
+                {% for mockup in mockup_data.mockup_images %}
+                    {% if mockup.is_default %}
+                    <div class="col-12 mb-4">
+                        <div class="text-center">
+                            <img src="{{ mockup.src }}"
+                                 alt="Calendar Preview - {{ mockup.position }}"
+                                 class="img-fluid rounded shadow-lg"
+                                 style="max-height: 600px; cursor: pointer;"
+                                 onclick="window.open('{{ mockup.src }}', '_blank')">
+                            <p class="text-muted mt-2">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Click image to view full size
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Additional mockup angles -->
+            <div class="row g-3 mt-3">
+                {% for mockup in mockup_data.mockup_images %}
+                    {% if not mockup.is_default %}
+                    <div class="col-md-4">
+                        <img src="{{ mockup.src }}"
+                             alt="Calendar Preview - {{ mockup.position }}"
+                             class="img-fluid rounded shadow"
+                             style="cursor: pointer;"
+                             onclick="window.open('{{ mockup.src }}', '_blank')">
+                        <p class="text-center text-muted small mt-1">{{ mockup.position }}</p>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Calendar Preview -->
     <div class="card shadow mb-5">
         <div class="card-body p-5">
             <h2 class="card-title text-center mb-4">
                 <i class="fas fa-fire text-danger me-2"></i>
-                Your "Hunk of the Month" Calendar
+                {% if mockup_data %}Individual Month Images{% else %}Your "Hunk of the Month" Calendar{% endif %}
             </h2>
 
             <!-- Calendar Grid -->

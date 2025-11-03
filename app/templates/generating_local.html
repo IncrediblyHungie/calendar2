@@ -28,6 +28,19 @@
                         </div>
                     </div>
 
+                    <!-- Mockup Generation Loading State -->
+                    <div id="mockupLoading" class="alert alert-info d-none" role="alert">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border spinner-border-sm me-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div>
+                                <strong>Creating realistic calendar preview...</strong><br>
+                                <small>Generating product mockup so you can see exactly what you'll receive! (~15 seconds)</small>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Generation Status -->
                     <div class="generation-status">
                         <h5 class="mb-3">Generation Progress:</h5>
@@ -184,7 +197,51 @@ function processQueue() {
     }
 }
 
-function checkCompletion() {
+async function generateMockups() {
+    console.log('🎨 Starting mockup generation...');
+
+    // Show loading indicator
+    const mockupLoading = document.getElementById('mockupLoading');
+    mockupLoading.classList.remove('d-none');
+
+    // Update progress text to show mockup generation
+    progressText.textContent = 'Creating calendar preview...';
+    progressBar.classList.remove('bg-success');
+    progressBar.classList.add('bg-info');
+
+    try {
+        const response = await fetch('/api/generate/mockup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            console.log(`✅ Mockup generation complete! ${data.mockup_count} mockup images created`);
+            mockupLoading.classList.add('d-none');
+            progressBar.classList.remove('bg-info');
+            progressBar.classList.add('bg-success');
+            progressText.textContent = 'Preview ready!';
+            return true;
+        } else {
+            console.error('❌ Mockup generation failed:', data.error);
+            mockupLoading.classList.add('d-none');
+            // Continue anyway - preview page will show individual images
+            return false;
+        }
+
+    } catch (error) {
+        console.error('❌ Mockup generation error:', error);
+        mockupLoading.classList.add('d-none');
+        // Continue anyway - preview page will show individual images
+        return false;
+    }
+}
+
+async function checkCompletion() {
     if (activeRequests === 0 && monthQueue.length === 0) {
         const totalDone = completedCount + failedMonths.size;
 
@@ -194,6 +251,12 @@ function checkCompletion() {
             if (failedMonths.size > 0) {
                 console.error(`⚠️ Failed: ${Array.from(failedMonths).join(', ')}`);
                 alert(`⚠️ ${failedMonths.size} image(s) failed after ${MAX_RETRIES} attempts. Proceeding with ${completedCount} successful images.`);
+            }
+
+            // Generate mockups before redirecting to preview
+            if (completedCount >= 12) {
+                console.log('🎨 Generating calendar mockup preview...');
+                await generateMockups();
             }
 
             setTimeout(() => {

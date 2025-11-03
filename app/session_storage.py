@@ -237,3 +237,26 @@ def get_order_info_by_session_id(session_id):
     if session_id in _storage:
         return _storage[session_id].get('order')
     return None
+
+def save_preview_mockup_data(mockup_data):
+    """
+    Save Printify preview mockup data to session
+
+    Args:
+        mockup_data: Dict with product_id, variant_id, mockup_images, etc.
+    """
+    storage = _get_storage()
+    storage['preview_mockup'] = mockup_data
+    _save_session(_get_session_id())
+
+def get_preview_mockup_data():
+    """Get preview mockup data from session"""
+    storage = _get_storage()
+    return storage.get('preview_mockup')
+
+def get_preview_mockup_by_session_id(session_id):
+    """Get preview mockup data for a specific session (used by webhooks)"""
+    _load_storage()
+    if session_id in _storage:
+        return _storage[session_id].get('preview_mockup')
+    return None

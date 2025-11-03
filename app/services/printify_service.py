@@ -379,6 +379,132 @@ def get_shop_id():
     print(f"  ℹ Using Printify shop: {shop_id}")
     return shop_id
 
+def get_product_details(product_id):
+    """
+    Fetch product details including mockup images
+
+    Args:
+        product_id: Printify product ID
+
+    Returns:
+        dict: Product data including 'images' array with mockup URLs
+    """
+    shop_id = get_shop_id()
+
+    response = requests.get(
+        f"{PRINTIFY_API_BASE}/shops/{shop_id}/products/{product_id}.json",
+        headers=get_headers(),
+        timeout=30
+    )
+
+    response.raise_for_status()
+    return response.json()
+
+def create_product_for_preview(month_image_data, product_type='calendar_2026'):
+    """
+    Create Printify product for preview mockups (BEFORE payment)
+
+    This creates a draft product and returns mockup image URLs
+    so users can see realistic calendar preview before purchasing.
+
+    Args:
+        month_image_data: Dict mapping month numbers (1-12) to binary image data
+                         {1: bytes, 2: bytes, ..., 12: bytes}
+        product_type: 'calendar_2026', 'desktop', or 'standard_wall'
+
+    Returns:
+        dict: {
+            'product_id': str,
+            'variant_id': int,
+            'mockup_images': [
+                {'src': 'https://...', 'position': 'front', 'variant_ids': [...], 'is_default': bool},
+                ...
+            ],
+            'status': 'success'
+        }
+    """
+    print(f"\n{'='*70}")
+    print(f"🎨 CREATING PRODUCT FOR PREVIEW MOCKUPS")
+    print(f"{'='*70}\n")
+
+    try:
+        # Step 1: Upload all 12 month images with padding
+        print("📤 STEP 1: Uploading padded images to Printify...")
+        month_image_ids = {}
+        month_names = ["january", "february", "march", "april", "may", "june",
+                      "july", "august", "september", "october", "november", "december"]
+
+        for month_num in range(1, 13):
+            if month_num not in month_image_data:
+                raise ValueError(f"Missing image data for month {month_num}")
+
+            month_name = month_names[month_num - 1]
+            filename = f"{month_name}_preview.jpg"
+
+            # Apply padding for print safety
+            from app.services.image_padding_service import add_safe_padding
+            padded_image = add_safe_padding(
+                month_image_data[month_num],
+                use_face_detection=False
+            )
+
+            upload_data = upload_image(padded_image, filename)
+            month_image_ids[month_name] = upload_data['id']
+
+            # Small delay to avoid rate limiting
+            time.sleep(0.1)
+
+        print(f"✅ Uploaded {len(month_image_ids)} images\n")
+
+        # Step 2: Create calendar product
+        print("🎨 STEP 2: Creating calendar product...")
+        product_id = create_calendar_product(
+            product_type,
+            month_image_ids,
+            title=f"Preview Calendar - {int(time.time())}"
+        )
+        print(f"✅ Product created: {product_id}\n")
+
+        # Step 3: Fetch product details to get mockup images
+        print("📸 STEP 3: Fetching product mockup images...")
+        product_data = get_product_details(product_id)
+
+        # Extract mockup images
+        mockup_images = product_data.get('images', [])
+        print(f"✅ Retrieved {len(mockup_images)} mockup images\n")
+
+        # Get variant ID
+        config = CALENDAR_PRODUCTS[product_type].copy()
+        if config['variant_id'] == 'auto':
+            auto_config = auto_detect_config(config['blueprint_id'])
+            variant_id = auto_config['variant_id']
+        else:
+            variant_id = config['variant_id']
+
+        print(f"{'='*70}")
+        print(f"✅ PREVIEW PRODUCT CREATION COMPLETE")
+        print(f"{'='*70}")
+        print(f"🎨 Product ID: {product_id}")
+        print(f"🖼️  Mockup Images: {len(mockup_images)}")
+        print(f"📦 Variant ID: {variant_id}")
+        print(f"{'='*70}\n")
+
+        return {
+            'product_id': product_id,
+            'variant_id': variant_id,
+            'mockup_images': mockup_images,
+            'product_type': product_type,
+            'status': 'success'
+        }
+
+    except Exception as e:
+        print(f"\n{'='*70}")
+        print(f"❌ PREVIEW PRODUCT CREATION FAILED")
+        print(f"{'='*70}")
+        print(f"Error: {str(e)}")
+        print(f"{'='*70}\n")
+        raise
+
 def process_full_order(product_type, month_image_data, shipping_address, customer_email):
     """
     Complete workflow: Upload images, create product, create order, submit to production

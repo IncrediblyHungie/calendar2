@@ -183,7 +183,14 @@ def preview():
         'July', 'August', 'September', 'October', 'November', 'December'
     ]
 
-    return render_template('preview.html', project=project, months=months, month_names=month_names)
+    # Get mockup data if available
+    mockup_data = session_storage.get_preview_mockup_data()
+
+    return render_template('preview.html',
+                          project=project,
+                          months=months,
+                          month_names=month_names,
+                          mockup_data=mockup_data)
 
 @bp.route('/calendar-preview')
 def calendar_preview():

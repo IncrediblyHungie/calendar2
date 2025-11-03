@@ -311,6 +311,79 @@ def calendar_grid_image():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
+@bp.route('/generate/mockup', methods=['POST'])
+def generate_mockup():
+    """
+    Generate Printify product mockup preview after all months complete
+    This creates a draft Printify product and returns mockup image URLs
+    """
+    import traceback
+
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    print(f"\n{'='*70}")
+    print(f"🎨 MOCKUP GENERATION REQUEST RECEIVED")
+    print(f"{'='*70}\n")
+
+    try:
+        # Get all completed month images
+        months = session_storage.get_all_months()
+
+        # Verify all 12 months (1-12) are completed
+        completed_months = [m for m in months if m['month_number'] in range(1, 13) and m['generation_status'] == 'completed']
+
+        if len(completed_months) < 12:
+            error_msg = f"Not all months completed: {len(completed_months)}/12"
+            print(f"❌ {error_msg}")
+            return jsonify({'error': error_msg}), 400
+
+        print(f"✓ All 12 months confirmed completed")
+
+        # Collect month image data
+        month_image_data = {}
+        for month_num in range(1, 13):
+            image_data = session_storage.get_month_image_data(month_num)
+            if not image_data:
+                raise Exception(f"Missing image data for month {month_num}")
+            month_image_data[month_num] = image_data
+
+        print(f"✓ Collected {len(month_image_data)} month images")
+
+        # Create Printify product and get mockup images
+        from app.services import printify_service
+
+        mockup_result = printify_service.create_product_for_preview(
+            month_image_data=month_image_data,
+            product_type='calendar_2026'  # Default to main calendar product
+        )
+
+        # Save mockup data to session
+        session_storage.save_preview_mockup_data(mockup_result)
+        print(f"✅ Mockup data saved to session")
+
+        return jsonify({
+            'success': True,
+            'mockup_count': len(mockup_result.get('mockup_images', [])),
+            'product_id': mockup_result.get('product_id'),
+            'message': 'Mockup preview generated successfully'
+        })
+
+    except Exception as e:
+        error_msg = str(e)
+        print(f"\n❌ MOCKUP GENERATION FAILED")
+        print(f"   Error: {error_msg}")
+        print(f"   Traceback:")
+        traceback.print_exc()
+        print(f"{'='*70}\n")
+
+        return jsonify({
+            'success': False,
+            'error': error_msg,
+            'error_type': type(e).__name__
+        }), 500
+
 @bp.route('/checkout/create', methods=['POST'])
 def create_checkout():
     """Create Stripe checkout session for calendar purchase"""

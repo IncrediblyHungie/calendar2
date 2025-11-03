@@ -82,10 +82,9 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
     Create Printify order after successful payment
 
     This function:
-    1. Retrieves user's generated month images from session
-    2. Uploads all 12 images to Printify
-    3. Creates a calendar product with those images
-    4. Submits the order to Printify for fulfillment
+    1. Checks if preview product already exists (reuse if available)
+    2. If not, uploads all 12 images to Printify and creates product
+    3. Submits the order to Printify for fulfillment
 
     Args:
         internal_session_id: Internal session ID to look up user's calendar
@@ -105,95 +104,110 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
     print("📦 Starting Printify Order Creation")
     print("="*60)
 
-    # Step 1: Get user's generated month images from session storage using internal session ID
-    print(f"   Looking up calendar images for session: {internal_session_id}...")
+    # Step 1: Check if preview product already exists
+    print(f"   Checking for existing preview product...")
+    preview_mockup = session_storage.get_preview_mockup_by_session_id(internal_session_id)
 
-    months = session_storage.get_months_by_session_id(internal_session_id)
+    if preview_mockup and preview_mockup.get('product_id'):
+        # Reuse existing product!
+        product_id = preview_mockup['product_id']
+        variant_id = preview_mockup['variant_id']
+        print(f"   ✅ Reusing existing preview product: {product_id}")
+        print(f"   ⚡ This is MUCH faster than creating a new product!")
 
-    if not months or len(months) < 12:
-        raise Exception(f"Insufficient month images: found {len(months)}, need 12")
-
-    print(f"   Found {len(months)} months in session storage")
-
-    # Step 2: Upload all images to Printify (cover + 12 months, with smart padding)
-    print("\n📤 Uploading images to Printify with face-safe padding...")
-    month_names = ["january", "february", "march", "april", "may", "june",
-                   "july", "august", "september", "october", "november", "december"]
-
-    printify_image_ids = {}
-
-    # Step 2a: Check for cover image (month_number = 0)
-    cover_data = next((m for m in months if m['month_number'] == 0), None)
-    if cover_data and cover_data.get('master_image_data'):
-        print(f"  📸 Processing Cover image...")
-        padded_cover = image_padding_service.add_safe_padding(
-            cover_data['master_image_data'],
-            use_face_detection=False
-        )
-        upload_data = printify_service.upload_image(
-            padded_cover,
-            filename="cover.jpg"
-        )
-        printify_image_ids['cover'] = upload_data['id']
-        print(f"  ✓ Cover image uploaded")
     else:
-        print(f"  ℹ️  No cover image found (month 0), will use January for front cover")
+        # No preview product found - create new one
+        print(f"   ℹ️  No preview product found, creating new product...")
 
-    # Step 2b: Upload all 12 month images
-    for i, month_name in enumerate(month_names):
-        month_num = i + 1
-        month_data = next((m for m in months if m['month_number'] == month_num), None)
+        # Get user's generated month images from session storage
+        months = session_storage.get_months_by_session_id(internal_session_id)
 
-        if not month_data or not month_data.get('master_image_data'):
-            raise Exception(f"Missing image data for month {month_num}")
+        if not months or len(months) < 12:
+            raise Exception(f"Insufficient month images: found {len(months)}, need 12")
 
-        print(f"  📸 Processing {month_name.capitalize()}...")
+        print(f"   Found {len(months)} months in session storage")
 
-        # Apply smart padding to ensure face is fully visible
-        # Uses multi-layer safety: universal padding + optional face detection
-        padded_image_data = image_padding_service.add_safe_padding(
-            month_data['master_image_data'],
-            use_face_detection=False  # Set to True if OpenCV installed
+        # Upload all images to Printify (cover + 12 months, with smart padding)
+        print("\n📤 Uploading images to Printify with face-safe padding...")
+        month_names = ["january", "february", "march", "april", "may", "june",
+                       "july", "august", "september", "october", "november", "december"]
+
+        printify_image_ids = {}
+
+        # Check for cover image (month_number = 0)
+        cover_data = next((m for m in months if m['month_number'] == 0), None)
+        if cover_data and cover_data.get('master_image_data'):
+            print(f"  📸 Processing Cover image...")
+            padded_cover = image_padding_service.add_safe_padding(
+                cover_data['master_image_data'],
+                use_face_detection=False
+            )
+            upload_data = printify_service.upload_image(
+                padded_cover,
+                filename="cover.jpg"
+            )
+            printify_image_ids['cover'] = upload_data['id']
+            print(f"  ✓ Cover image uploaded")
+        else:
+            print(f"  ℹ️  No cover image found (month 0), will use January for front cover")
+
+        # Upload all 12 month images
+        for i, month_name in enumerate(month_names):
+            month_num = i + 1
+            month_data = next((m for m in months if m['month_number'] == month_num), None)
+
+            if not month_data or not month_data.get('master_image_data'):
+                raise Exception(f"Missing image data for month {month_num}")
+
+            print(f"  📸 Processing {month_name.capitalize()}...")
+
+            # Apply smart padding to ensure face is fully visible
+            padded_image_data = image_padding_service.add_safe_padding(
+                month_data['master_image_data'],
+                use_face_detection=False  # Set to True if OpenCV installed
+            )
+
+            # Upload padded image to Printify
+            upload_data = printify_service.upload_image(
+                padded_image_data,
+                filename=f"{month_name}.jpg"
+            )
+
+            printify_image_ids[month_name] = upload_data['id']
+
+        print(f"✅ Uploaded {len(printify_image_ids)} padded images successfully")
+
+        # Get product configuration
+        product_config = printify_service.CALENDAR_PRODUCTS.get(product_type)
+        if not product_config:
+            raise Exception(f"Invalid product type: {product_type}")
+
+        # Create Printify product with uploaded images
+        print("\n🎨 Creating Printify product...")
+        product_id = printify_service.create_calendar_product(
+            product_type=product_type,
+            month_image_ids=printify_image_ids,
+            title=f"Custom Hunk Calendar for {customer_email}"
         )
 
-        # Upload padded image to Printify
-        upload_data = printify_service.upload_image(
-            padded_image_data,
-            filename=f"{month_name}.jpg"
-        )
+        # Get variant ID
+        variant_id = product_config['variant_id']
 
-        printify_image_ids[month_name] = upload_data['id']
-
-    print(f"✅ Uploaded {len(printify_image_ids)} padded images successfully (including cover if present)")
-
-    # Step 3: Get product configuration
-    product_config = printify_service.CALENDAR_PRODUCTS.get(product_type)
-    if not product_config:
-        raise Exception(f"Invalid product type: {product_type}")
-
-    # Step 4: Create Printify product with uploaded images
-    print("\n🎨 Creating Printify product...")
-    product_id = printify_service.create_calendar_product(
-        product_type=product_type,
-        month_image_ids=printify_image_ids,
-        title=f"Custom Hunk Calendar for {customer_email}"
-    )
-
-    # Step 5: Publish the product
+    # Publish the product (works for both new and existing products)
     print("\n📢 Publishing product...")
     printify_service.publish_product(product_id)
 
-    # Step 6: Create order
+    # Create order
     print("\n📦 Creating Printify order...")
     order_id = printify_service.create_order(
         product_id=product_id,
-        variant_id=product_config['variant_id'],
+        variant_id=variant_id,
         quantity=1,
         shipping_address=shipping_address,
         customer_email=customer_email
     )
 
-    # Step 7: Submit order to production
+    # Submit order to production
     print("\n🏭 Submitting order to production...")
     printify_service.submit_order(order_id)
 
