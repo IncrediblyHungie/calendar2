@@ -58,7 +58,7 @@ def create_checkout_session(product_type, success_url, cancel_url, metadata=None
                 'product_data': {
                     'name': product_name,
                     'description': description,
-                    'images': ['https://hunkofthemonth.fly.dev/static/calendar_preview.jpg']
+                    'images': ['https://hunkofthemonth.shop/static/calendar_preview.jpg']
                 },
                 'unit_amount': price_cents,
             },
