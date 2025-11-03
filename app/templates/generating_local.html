@@ -15,8 +15,8 @@
                     <h2 class="mb-4">AI is Transforming You into a Calendar Hunk...</h2>
 
                     <p class="lead mb-4">
-                        <strong>LOCAL BEAST MODE:</strong> Generating cover + 12 months (13 images total)!
-                        This takes 3-4 minutes. Your beefy hardware = BLAZING FAST! 🔥
+                        <strong>4X PARALLEL BEAST MODE:</strong> Generating cover + 12 months (13 images total)!
+                        This takes 1.5-2 minutes with 4 parallel generations. BLAZING FAST! 🔥⚡
                     </p>
 
                     <div class="progress mb-4" style="height: 30px;">
@@ -82,7 +82,7 @@ const months = {{ months | tojson }};
 let completedCount = months.filter(m => m.generation_status === 'completed').length;
 let failedCount = 0;
 let activeRequests = 0;
-const MAX_PARALLEL = 1; // Sequential generation - ONE at a time for limited resources
+const MAX_PARALLEL = 4; // Parallel generation - 4 at a time (4 CPU cores available!)
 const MAX_RETRIES = 3;
 const RETRY_DELAYS = [2000, 5000, 10000];
 
@@ -286,9 +286,9 @@ function startGeneration() {
         }
     }
 
-    console.log(`🔥 LOCAL BEAST MODE: Generating ${pendingMonths.length} images (cover + months)`);
-    console.log(`📋 Sequential generation: ${MAX_PARALLEL} image at a time`);
-    console.log(`💪 Your beefy machine can handle this!`);
+    console.log(`🔥 4X PARALLEL BEAST MODE: Generating ${pendingMonths.length} images (cover + months)`);
+    console.log(`📋 Parallel generation: ${MAX_PARALLEL} images at a time!`);
+    console.log(`💪 Upgraded to 4 CPUs + 2GB RAM - BLAZING FAST!`);
 
     monthQueue = [...pendingMonths];
     console.log(`📥 Queued ${monthQueue.length} images`);

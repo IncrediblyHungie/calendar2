@@ -22,9 +22,9 @@ primary_region = "sjc"
     soft_limit = 20
 
 [[vm]]
-  memory = '512mb'
+  memory = '2048mb'  # Upgraded from 512mb to 2GB
   cpu_kind = 'shared'
-  cpus = 1
+  cpus = 4  # Upgraded from 1 to 4 CPUs for parallel processing
 
 # Persistent volume for session storage
 [mounts]
