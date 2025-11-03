@@ -67,12 +67,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-5">
-                        <button class="btn btn-primary" onclick="location.reload()">
-                            <i class="fas fa-sync-alt me-2"></i>
-                            Check Status
-                        </button>
-                    </div>
+                    <!-- Auto-redirects when complete - no manual check needed -->
                 </div>
             </div>
         </div>
@@ -180,7 +175,7 @@ async function generateMonth(monthNum, attemptNum = 1) {
     } finally {
         activeRequests--;
         processQueue();
-        checkCompletion();
+        await checkCompletion();  // Properly await async completion check
     }
 }
 
@@ -241,27 +236,41 @@ async function generateMockups() {
     }
 }
 
+let redirecting = false;  // Prevent multiple redirects
+
 async function checkCompletion() {
-    if (activeRequests === 0 && monthQueue.length === 0) {
+    // Only check if all active work is done
+    if (activeRequests === 0 && monthQueue.length === 0 && !redirecting) {
         const totalDone = completedCount + failedMonths.size;
 
         if (totalDone >= 13) {
+            redirecting = true;  // Prevent multiple completion checks
             console.log(`🎉 Complete! ${completedCount} succeeded, ${failedMonths.size} failed`);
 
+            // Alert user about failures if any
             if (failedMonths.size > 0) {
                 console.error(`⚠️ Failed: ${Array.from(failedMonths).join(', ')}`);
                 alert(`⚠️ ${failedMonths.size} image(s) failed after ${MAX_RETRIES} attempts. Proceeding with ${completedCount} successful images.`);
             }
 
-            // Generate mockups before redirecting to preview
+            // Generate mockups if we have at least 12 months (cover + 11 months minimum)
             if (completedCount >= 12) {
                 console.log('🎨 Generating calendar mockup preview...');
-                await generateMockups();
+                progressText.textContent = 'Creating calendar preview...';
+
+                try {
+                    await generateMockups();
+                    console.log('✅ Mockup generation complete!');
+                } catch (error) {
+                    console.error('⚠️ Mockup generation failed, but continuing:', error);
+                    // Continue anyway - preview page will show individual images
+                }
             }
 
-            setTimeout(() => {
-                window.location.href = '{{ url_for("projects.preview") }}';
-            }, 1500);
+            // Redirect immediately after mockup completes
+            console.log('🚀 Redirecting to preview page...');
+            progressText.textContent = 'Redirecting to preview...';
+            window.location.href = '{{ url_for("projects.preview") }}';
         }
     }
 }
@@ -290,13 +299,30 @@ function startGeneration() {
 // Initialize progress
 updateProgress();
 
-// Start generation if needed
+// Start generation if needed, or redirect if already complete
 if (completedCount < 13) {
     console.log('🚀 Starting BEAST MODE generation...');
     setTimeout(startGeneration, 1000);
 } else {
-    console.log('✅ All complete!');
-    window.location.href = '{{ url_for("projects.preview") }}';
+    // All images already complete - generate mockup and redirect
+    console.log('✅ All images already complete! Preparing preview...');
+    progressText.textContent = 'Preparing preview...';
+
+    (async () => {
+        try {
+            // Generate mockup if needed
+            if (completedCount >= 12) {
+                console.log('🎨 Generating calendar mockup...');
+                await generateMockups();
+            }
+            console.log('🚀 Redirecting to preview...');
+            window.location.href = '{{ url_for("projects.preview") }}';
+        } catch (error) {
+            console.error('⚠️ Error during redirect:', error);
+            // Redirect anyway even if mockup fails
+            window.location.href = '{{ url_for("projects.preview") }}';
+        }
+    })();
 }
 </script>
 {% endblock %}
