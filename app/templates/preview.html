@@ -502,7 +502,7 @@
 {% block extra_scripts %}
 <script>
 // Lightbox JavaScript
-const months = {{ months | tojson }};
+const months = {{ months_json | tojson }};  // Use JSON-serializable version (no binary data)
 let currentMonthIndex = 0;
 
 function openLightbox(monthNumber) {

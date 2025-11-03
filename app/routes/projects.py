@@ -186,9 +186,20 @@ def preview():
     # Get mockup data if available
     mockup_data = session_storage.get_preview_mockup_data()
 
+    # Create JSON-serializable version of months (without binary image_data)
+    months_json = [
+        {
+            'id': m['id'],
+            'month_number': m['month_number'],
+            'generation_status': m.get('generation_status', 'pending')
+        }
+        for m in months
+    ]
+
     return render_template('preview.html',
                           project=project,
                           months=months,
+                          months_json=months_json,
                           month_names=month_names,
                           mockup_data=mockup_data)
 
