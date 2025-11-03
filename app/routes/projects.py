@@ -178,7 +178,9 @@ def preview():
         flash('Calendar generation in progress...', 'info')
         return render_template('generating_local.html', project=project, months=months)
 
+    # Month names: Index 0 = Cover, Index 1-12 = January-December
     month_names = [
+        'Cover',  # Month 0 = Cover photo
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
     ]
