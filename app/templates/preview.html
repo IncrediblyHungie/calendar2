@@ -169,8 +169,28 @@
                                             <div class="calendar-page-preview">
                                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                                      alt="{{ month_names[month.month_number] }}"
-                                                     class="img-fluid">
-                                                <div class="calendar-page-label">{{ month_names[month.month_number] }}</div>
+                                                     class="calendar-page-image">
+                                                <div class="calendar-dates-section">
+                                                    <div class="calendar-month-header">{{ month_names[month.month_number] }} 2026</div>
+                                                    <div class="calendar-grid-compact">
+                                                        <div class="calendar-weekdays-compact">
+                                                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                                                        </div>
+                                                        {% if calendar_data[month_num] %}
+                                                        <div class="calendar-dates-compact">
+                                                            {% for week in calendar_data[month_num].weeks %}
+                                                                {% for day in week %}
+                                                                    {% if day == 0 %}
+                                                                    <span class="empty-day"></span>
+                                                                    {% else %}
+                                                                    <span class="calendar-day-compact">{{ day }}</span>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         {% endif %}
@@ -235,8 +255,28 @@
                                             <div class="calendar-page-preview">
                                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                                      alt="{{ month_names[month.month_number] }}"
-                                                     class="img-fluid">
-                                                <div class="calendar-page-label">{{ month_names[month.month_number] }}</div>
+                                                     class="calendar-page-image">
+                                                <div class="calendar-dates-section">
+                                                    <div class="calendar-month-header">{{ month_names[month.month_number] }} 2026</div>
+                                                    <div class="calendar-grid-compact">
+                                                        <div class="calendar-weekdays-compact">
+                                                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                                                        </div>
+                                                        {% if calendar_data[month_num] %}
+                                                        <div class="calendar-dates-compact">
+                                                            {% for week in calendar_data[month_num].weeks %}
+                                                                {% for day in week %}
+                                                                    {% if day == 0 %}
+                                                                    <span class="empty-day"></span>
+                                                                    {% else %}
+                                                                    <span class="calendar-day-compact">{{ day }}</span>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         {% endif %}
@@ -301,8 +341,28 @@
                                             <div class="calendar-page-preview">
                                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                                      alt="{{ month_names[month.month_number] }}"
-                                                     class="img-fluid">
-                                                <div class="calendar-page-label">{{ month_names[month.month_number] }}</div>
+                                                     class="calendar-page-image">
+                                                <div class="calendar-dates-section">
+                                                    <div class="calendar-month-header">{{ month_names[month.month_number] }} 2026</div>
+                                                    <div class="calendar-grid-compact">
+                                                        <div class="calendar-weekdays-compact">
+                                                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                                                        </div>
+                                                        {% if calendar_data[month_num] %}
+                                                        <div class="calendar-dates-compact">
+                                                            {% for week in calendar_data[month_num].weeks %}
+                                                                {% for day in week %}
+                                                                    {% if day == 0 %}
+                                                                    <span class="empty-day"></span>
+                                                                    {% else %}
+                                                                    <span class="calendar-day-compact">{{ day }}</span>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         {% endif %}
@@ -393,11 +453,29 @@
                                 <div class="calendar-page-modal">
                                     <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                          alt="{{ month_names[month.month_number] }}"
-                                         class="img-fluid"
+                                         class="calendar-modal-image"
                                          onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')"
                                          style="cursor: zoom-in;">
-                                    <div class="calendar-page-label-modal">
-                                        <strong>{{ month_names[month.month_number] }}</strong>
+                                    <div class="calendar-dates-section-modal">
+                                        <div class="calendar-month-header-modal">{{ month_names[month.month_number] }} 2026</div>
+                                        <div class="calendar-grid-modal">
+                                            <div class="calendar-weekdays-modal">
+                                                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                                            </div>
+                                            {% if calendar_data[month.month_number] %}
+                                            <div class="calendar-dates-modal">
+                                                {% for week in calendar_data[month.month_number].weeks %}
+                                                    {% for day in week %}
+                                                        {% if day == 0 %}
+                                                        <span class="empty-day"></span>
+                                                        {% else %}
+                                                        <span class="calendar-day-modal">{{ day }}</span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -418,7 +496,6 @@
 <style>
 /* Calendar Page Preview Styling - Product Cards */
 .calendar-page-preview {
-    position: relative;
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -432,7 +509,7 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
 
-.calendar-page-preview img {
+.calendar-page-image {
     width: 100%;
     height: auto;
     display: block;
@@ -440,24 +517,59 @@
     object-fit: cover;
 }
 
-.calendar-page-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.4));
-    color: white;
-    padding: 12px 8px;
+.calendar-dates-section {
+    background: white;
+    padding: 8px;
+    border-top: 2px solid #e9ecef;
+}
+
+.calendar-month-header {
     text-align: center;
-    font-weight: 600;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #495057;
+    margin-bottom: 6px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.calendar-grid-compact {
+    font-size: 0.55rem;
+}
+
+.calendar-weekdays-compact {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    margin-bottom: 2px;
+    font-weight: 600;
+    color: #6c757d;
+    text-align: center;
+}
+
+.calendar-weekdays-compact span {
+    padding: 2px 0;
+}
+
+.calendar-dates-compact {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+}
+
+.calendar-day-compact {
+    text-align: center;
+    padding: 2px 0;
+    color: #212529;
+    font-weight: 500;
+}
+
+.empty-day {
+    padding: 2px 0;
 }
 
 /* Calendar Page Modal Styling */
 .calendar-page-modal {
-    position: relative;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -472,7 +584,7 @@
     border-color: #667eea;
 }
 
-.calendar-page-modal img {
+.calendar-modal-image {
     width: 100%;
     height: auto;
     display: block;
@@ -480,12 +592,55 @@
     object-fit: cover;
 }
 
-.calendar-page-label-modal {
+.calendar-dates-section-modal {
+    background: white;
+    padding: 12px;
+    border-top: 2px solid #e9ecef;
+}
+
+.calendar-month-header-modal {
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #495057;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 10px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.calendar-grid-modal {
+    font-size: 0.65rem;
+}
+
+.calendar-weekdays-modal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    color: #6c757d;
     text-align: center;
-    font-size: 0.95rem;
+}
+
+.calendar-weekdays-modal span {
+    padding: 3px 0;
+}
+
+.calendar-dates-modal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.calendar-day-modal {
+    text-align: center;
+    padding: 3px 0;
+    color: #212529;
+    font-weight: 500;
 }
 
 /* Calendar Wall Mockup - Realistic Physical Calendar Layout */
