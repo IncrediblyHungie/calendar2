@@ -158,25 +158,34 @@
                             <small class="opacity-75">Most Popular</small>
                         </div>
                         <div class="card-body p-4">
-                            <!-- Actual Printify Mockup -->
-                            {% if mockup_data and mockup_data.calendar_2026 and mockup_data.calendar_2026.mockup_images %}
-                                {% for mockup in mockup_data.calendar_2026.mockup_images %}
-                                    {% if mockup.is_default %}
-                                    <div class="mb-3">
-                                        <img src="{{ mockup.src }}"
-                                             alt="Calendar 2026 Preview"
-                                             class="img-fluid rounded shadow"
-                                             style="cursor: pointer;"
-                                             onclick="window.open('{{ mockup.src }}', '_blank')">
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                <div class="mb-3 text-center p-5 bg-light rounded">
-                                    <i class="fas fa-calendar-alt fa-4x text-muted mb-2"></i>
-                                    <p class="text-muted small">Product Preview</p>
+                            <!-- Sample Month Previews -->
+                            <div class="mb-3">
+                                <div class="row g-2">
+                                    {% set sample_months = [1, 6] %}
+                                    {% for month_num in sample_months %}
+                                        {% set month = months | selectattr('month_number', 'equalto', month_num) | first %}
+                                        {% if month %}
+                                        <div class="col-6">
+                                            <div class="calendar-page-preview">
+                                                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                                                     alt="{{ month_names[month.month_number] }}"
+                                                     class="img-fluid">
+                                                <div class="calendar-page-label">{{ month_names[month.month_number] }}</div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                            {% endif %}
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="viewAllMonths()">
+                                        <i class="fas fa-images me-2"></i>
+                                        View All 12 Months
+                                    </button>
+                                    <p class="text-muted small mb-0 mt-2">
+                                        Preview showing 2 of your 12 unique hunk months
+                                    </p>
+                                </div>
+                            </div>
 
                             <!-- Product Specs -->
                             <div class="mb-3">
@@ -215,25 +224,34 @@
                             <small class="opacity-75">Compact & Professional</small>
                         </div>
                         <div class="card-body p-4">
-                            <!-- Actual Printify Mockup -->
-                            {% if mockup_data and mockup_data.desktop and mockup_data.desktop.mockup_images %}
-                                {% for mockup in mockup_data.desktop.mockup_images %}
-                                    {% if mockup.is_default %}
-                                    <div class="mb-3">
-                                        <img src="{{ mockup.src }}"
-                                             alt="Desktop Calendar Preview"
-                                             class="img-fluid rounded shadow"
-                                             style="cursor: pointer;"
-                                             onclick="window.open('{{ mockup.src }}', '_blank')">
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                <div class="mb-3 text-center p-5 bg-light rounded">
-                                    <i class="fas fa-calendar-day fa-4x text-muted mb-2"></i>
-                                    <p class="text-muted small mb-0">Your hunk photos on a professional desktop calendar</p>
+                            <!-- Sample Month Previews -->
+                            <div class="mb-3">
+                                <div class="row g-2">
+                                    {% set sample_months = [2, 8] %}
+                                    {% for month_num in sample_months %}
+                                        {% set month = months | selectattr('month_number', 'equalto', month_num) | first %}
+                                        {% if month %}
+                                        <div class="col-6">
+                                            <div class="calendar-page-preview">
+                                                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                                                     alt="{{ month_names[month.month_number] }}"
+                                                     class="img-fluid">
+                                                <div class="calendar-page-label">{{ month_names[month.month_number] }}</div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                            {% endif %}
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="viewAllMonths()">
+                                        <i class="fas fa-images me-2"></i>
+                                        View All 12 Months
+                                    </button>
+                                    <p class="text-muted small mb-0 mt-2">
+                                        Preview showing 2 of your 12 unique hunk months
+                                    </p>
+                                </div>
+                            </div>
 
                             <!-- Product Specs -->
                             <div class="mb-3">
@@ -272,25 +290,34 @@
                             <small class="opacity-75">Large & Eye-Catching</small>
                         </div>
                         <div class="card-body p-4">
-                            <!-- Actual Printify Mockup -->
-                            {% if mockup_data and mockup_data.standard_wall and mockup_data.standard_wall.mockup_images %}
-                                {% for mockup in mockup_data.standard_wall.mockup_images %}
-                                    {% if mockup.is_default %}
-                                    <div class="mb-3">
-                                        <img src="{{ mockup.src }}"
-                                             alt="Wall Calendar Preview"
-                                             class="img-fluid rounded shadow"
-                                             style="cursor: pointer;"
-                                             onclick="window.open('{{ mockup.src }}', '_blank')">
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                <div class="mb-3 text-center p-5 bg-light rounded">
-                                    <i class="fas fa-calendar-week fa-4x text-muted mb-2"></i>
-                                    <p class="text-muted small mb-0">Your hunk photos on a large wall calendar</p>
+                            <!-- Sample Month Previews -->
+                            <div class="mb-3">
+                                <div class="row g-2">
+                                    {% set sample_months = [4, 10] %}
+                                    {% for month_num in sample_months %}
+                                        {% set month = months | selectattr('month_number', 'equalto', month_num) | first %}
+                                        {% if month %}
+                                        <div class="col-6">
+                                            <div class="calendar-page-preview">
+                                                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                                                     alt="{{ month_names[month.month_number] }}"
+                                                     class="img-fluid">
+                                                <div class="calendar-page-label">{{ month_names[month.month_number] }}</div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                            {% endif %}
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-outline-info btn-sm" onclick="viewAllMonths()">
+                                        <i class="fas fa-images me-2"></i>
+                                        View All 12 Months
+                                    </button>
+                                    <p class="text-muted small mb-0 mt-2">
+                                        Preview showing 2 of your 12 unique hunk months
+                                    </p>
+                                </div>
+                            </div>
 
                             <!-- Product Specs -->
                             <div class="mb-3">
@@ -336,14 +363,51 @@
 
             <!-- Navigation Links -->
             <div class="text-center mt-4">
-                <a href="{{ url_for('projects.calendar_preview') }}" class="btn btn-outline-primary me-2">
-                    <i class="fas fa-calendar-alt me-2"></i>
-                    View All 12 Months
-                </a>
                 <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
                     <i class="fas fa-home me-2"></i>
                     Back to Home
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Months Modal -->
+    <div class="modal fade" id="allMonthsModal" tabindex="-1" aria-labelledby="allMonthsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h4 class="modal-title" id="allMonthsModalLabel">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        Your 12 Hunk Months
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-center text-muted mb-4">
+                        These are the 12 unique AI-generated images that will be included in your calendar
+                    </p>
+                    <div class="row g-3">
+                        {% for month in months %}
+                            {% if month.month_number >= 1 and month.month_number <= 12 %}
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="calendar-page-modal">
+                                    <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                                         alt="{{ month_names[month.month_number] }}"
+                                         class="img-fluid"
+                                         onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')"
+                                         style="cursor: zoom-in;">
+                                    <div class="calendar-page-label-modal">
+                                        <strong>{{ month_names[month.month_number] }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -352,6 +416,78 @@
 
 {% block extra_css %}
 <style>
+/* Calendar Page Preview Styling - Product Cards */
+.calendar-page-preview {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid #f8f9fa;
+}
+
+.calendar-page-preview:hover {
+    transform: translateY(-4px) rotate(1deg);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.calendar-page-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+}
+
+.calendar-page-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.4));
+    color: white;
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Calendar Page Modal Styling */
+.calendar-page-modal {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid #e9ecef;
+}
+
+.calendar-page-modal:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    border-color: #667eea;
+}
+
+.calendar-page-modal img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+}
+
+.calendar-page-label-modal {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
 /* Calendar Wall Mockup - Realistic Physical Calendar Layout */
 .calendar-wall-mockup {
     display: grid;
@@ -498,6 +634,12 @@ async function orderProduct(productType) {
         button.disabled = false;
         button.innerHTML = originalHTML;
     }
+}
+
+// View All Months Modal
+function viewAllMonths() {
+    const modal = new bootstrap.Modal(document.getElementById('allMonthsModal'));
+    modal.show();
 }
 
 // Smooth scroll on page load
