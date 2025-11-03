@@ -176,12 +176,12 @@
 {% block extra_scripts %}
 <script>
 // Mobile-Optimized Upload with Client-Side Compression
-// Targets: 8MB per image, 40MB total, iPhone/mobile optimization
+// Targets: 8MB per image, 40MB total, maximum quality for AI generation
 
 const MAX_FILE_SIZE = 8 * 1024 * 1024; // 8MB per image
 const MAX_TOTAL_SIZE = 40 * 1024 * 1024; // 40MB total
-const MAX_DIMENSION = 2048; // Max width/height for client-side compression
-const COMPRESSION_QUALITY = 0.85; // 85% quality (sweet spot for mobile)
+const MAX_DIMENSION = 3072; // Max width/height - higher for better AI quality
+const COMPRESSION_QUALITY = 0.92; // 92% quality - near-lossless for AI reference
 
 // File size validation before upload
 document.getElementById('photos').addEventListener('change', function(e) {

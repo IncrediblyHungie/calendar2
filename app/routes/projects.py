@@ -47,18 +47,20 @@ def upload():
                         if img.mode != 'RGB':
                             img = img.convert('RGB')
 
-                        # Optimize: Resize if too large (face detection doesn't need 4000px)
-                        # Target max dimension: 1920px (plenty for AI face analysis)
-                        max_dimension = 1920
+                        # Optimize: Resize if too large while preserving quality for AI
+                        # Target max dimension: 2560px (high quality for AI face analysis)
+                        # Gemini limit: 20MB total, ~6MB per image with 3 references
+                        max_dimension = 2560
                         if max(img.size) > max_dimension:
                             # Resize maintaining aspect ratio
                             ratio = max_dimension / max(img.size)
                             new_size = tuple(int(dim * ratio) for dim in img.size)
                             img = img.resize(new_size, Image.Resampling.LANCZOS)
 
-                        # Save optimized version (strips EXIF for privacy + size reduction)
+                        # Save with maximum quality (strips EXIF for privacy)
+                        # Quality 95: Near-lossless, optimal for AI reference images
                         optimized_io = io.BytesIO()
-                        img.save(optimized_io, format='JPEG', quality=90, optimize=True)
+                        img.save(optimized_io, format='JPEG', quality=95, optimize=True)
                         img_data = optimized_io.getvalue()
 
                         # Create thumbnail for preview
