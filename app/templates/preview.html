@@ -37,112 +37,151 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
-    <!-- Product Mockup Preview (if available) -->
+    <!-- Printify Product Mockup - THE ACTUAL CALENDAR -->
     {% if mockup_data and mockup_data.mockup_images %}
-    <div class="card shadow-lg border-primary mb-5">
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">
-                <i class="fas fa-eye me-2"></i>
-                Realistic Calendar Preview
-            </h3>
-            <p class="mb-0 mt-2 small">This is EXACTLY how your calendar will look when printed!</p>
+    <div class="card shadow-lg border-success mb-5" style="border-width: 3px;">
+        <div class="card-header bg-gradient text-white text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <h2 class="mb-2">
+                <i class="fas fa-calendar-check me-2"></i>
+                Your Actual Calendar Product
+            </h2>
+            <p class="mb-0 lead">
+                <i class="fas fa-check-circle me-1"></i>
+                This is EXACTLY how your calendar will look when printed and shipped!
+            </p>
+            <p class="mb-0 mt-2 small opacity-75">
+                Professional 10.8" × 8.4" wall calendar with wire binding
+            </p>
         </div>
-        <div class="card-body p-4">
-            <div class="row">
+        <div class="card-body p-5 bg-light">
+            <!-- Main Product Mockup -->
+            <div class="row justify-content-center mb-4">
                 {% for mockup in mockup_data.mockup_images %}
                     {% if mockup.is_default %}
-                    <div class="col-12 mb-4">
-                        <div class="text-center">
+                    <div class="col-lg-10 col-xl-8">
+                        <div class="position-relative mockup-container">
+                            <img src="{{ mockup.src }}"
+                                 alt="Your Hunk Calendar - Professional Product Preview"
+                                 class="img-fluid rounded-3 shadow-lg w-100"
+                                 style="cursor: zoom-in; transition: transform 0.3s ease;"
+                                 onclick="window.open('{{ mockup.src }}', '_blank')"
+                                 onmouseover="this.style.transform='scale(1.02)'"
+                                 onmouseout="this.style.transform='scale(1)'">
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="badge bg-success fs-6 shadow">
+                                    <i class="fas fa-certificate me-1"></i>
+                                    Official Product Preview
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-mouse-pointer me-1"></i>
+                                <strong>Click image to view full resolution</strong>
+                            </p>
+                            <div class="alert alert-info d-inline-block mb-0 py-2 px-4">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <small>This mockup shows your actual AI-generated images printed on premium 270gsm semi-glossy paper</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Additional Product Angles -->
+            {% set other_mockups = mockup_data.mockup_images | selectattr('is_default', 'equalto', false) | list %}
+            {% if other_mockups | length > 0 %}
+            <div class="mt-5 pt-4 border-top">
+                <h4 class="text-center mb-4">
+                    <i class="fas fa-images me-2"></i>
+                    Additional Product Views
+                </h4>
+                <div class="row g-4 justify-content-center">
+                    {% for mockup in other_mockups %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card shadow-sm h-100">
                             <img src="{{ mockup.src }}"
                                  alt="Calendar Preview - {{ mockup.position }}"
-                                 class="img-fluid rounded shadow-lg"
-                                 style="max-height: 600px; cursor: pointer;"
-                                 onclick="window.open('{{ mockup.src }}', '_blank')">
-                            <p class="text-muted mt-2">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Click image to view full size
-                            </p>
-                        </div>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <!-- Additional mockup angles -->
-            <div class="row g-3 mt-3">
-                {% for mockup in mockup_data.mockup_images %}
-                    {% if not mockup.is_default %}
-                    <div class="col-md-4">
-                        <img src="{{ mockup.src }}"
-                             alt="Calendar Preview - {{ mockup.position }}"
-                             class="img-fluid rounded shadow"
-                             style="cursor: pointer;"
-                             onclick="window.open('{{ mockup.src }}', '_blank')">
-                        <p class="text-center text-muted small mt-1">{{ mockup.position }}</p>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Interactive Calendar Preview -->
-    <div class="card shadow mb-5">
-        <div class="card-body p-4">
-            <h2 class="card-title text-center mb-4">
-                <i class="fas fa-calendar-alt text-danger me-2"></i>
-                Interactive Calendar Preview
-            </h2>
-            <p class="text-center text-muted mb-4">
-                <i class="fas fa-hand-pointer me-1"></i>
-                Click any month to view full size
-            </p>
-
-            <!-- Calendar Wall Mockup Layout -->
-            <div class="calendar-wall-mockup">
-                {% for month in months %}
-                <div class="calendar-page" data-month="{{ month.month_number }}" onclick="openLightbox({{ month.month_number }})">
-                    <!-- Month Header Bar -->
-                    <div class="calendar-month-header">
-                        <span class="month-name">{{ month_names[month.month_number - 1] }} 2026</span>
-                    </div>
-
-                    <!-- Month Image -->
-                    <div class="calendar-month-image">
-                        <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                             alt="{{ month_names[month.month_number - 1] }}"
-                             loading="lazy">
-                    </div>
-
-                    <!-- Mini Calendar Grid -->
-                    <div class="calendar-mini-grid">
-                        <div class="grid-week">
-                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Individual Month Cards (below calendar mockup) -->
-            <div class="mt-5">
-                <h3 class="text-center mb-4">
-                    <i class="fas fa-images me-2"></i>
-                    All Month Images
-                </h3>
-                <div class="row g-3">
-                    {% for month in months %}
-                    <div class="col-md-3 col-sm-4 col-6">
-                        <div class="month-thumbnail-card" onclick="openLightbox({{ month.month_number }})">
-                            <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                                 alt="{{ month_names[month.month_number - 1] }}"
-                                 class="img-fluid rounded shadow-sm">
-                            <div class="month-thumb-label">{{ month_names[month.month_number - 1] }}</div>
+                                 class="card-img-top"
+                                 style="cursor: zoom-in; transition: transform 0.3s ease;"
+                                 onclick="window.open('{{ mockup.src }}', '_blank')"
+                                 onmouseover="this.style.transform='scale(1.05)'"
+                                 onmouseout="this.style.transform='scale(1)'">
+                            <div class="card-body text-center py-2">
+                                <p class="mb-0 text-muted small text-capitalize">
+                                    <i class="fas fa-camera me-1"></i>
+                                    {{ mockup.position }} View
+                                </p>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <!-- Fallback if mockup not generated yet -->
+    <div class="alert alert-warning mb-5">
+        <h5 class="alert-heading">
+            <i class="fas fa-hourglass-half me-2"></i>
+            Product Mockup Generating...
+        </h5>
+        <p class="mb-0">
+            The realistic calendar preview is being created. Refresh the page in a moment to see your actual product!
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- Your AI-Generated Month Images -->
+    <div class="card shadow mb-5">
+        <div class="card-header bg-dark text-white text-center py-3">
+            <h3 class="mb-1">
+                <i class="fas fa-images me-2"></i>
+                Your 12 AI-Generated Designs
+            </h3>
+            <p class="mb-0 small opacity-75">
+                These are the individual images used in your calendar above
+            </p>
+        </div>
+        <div class="card-body p-4">
+            <p class="text-center text-muted mb-4">
+                <i class="fas fa-hand-pointer me-1"></i>
+                Click any month to view full resolution and see all details
+            </p>
+
+            <!-- Month Image Gallery -->
+            <div class="row g-4">
+                {% for month in months %}
+                <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                    <div class="month-preview-card" onclick="openLightbox({{ month.month_number }})" style="cursor: pointer;">
+                        <div class="position-relative overflow-hidden rounded-3 shadow-sm" style="transition: all 0.3s ease;">
+                            <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                                 alt="{{ month_names[month.month_number - 1] }} - AI Generated Hunk"
+                                 class="img-fluid w-100"
+                                 style="aspect-ratio: 3/4; object-fit: cover;">
+                            <div class="position-absolute bottom-0 start-0 w-100 text-center py-2 text-white"
+                                 style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+                                <strong>{{ month_names[month.month_number - 1] }}</strong>
+                            </div>
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span class="badge bg-primary shadow-sm">
+                                    {{ month.month_number }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="text-muted small mb-0">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Each month features YOU as a ridiculously hunky calendar model!
+                </p>
             </div>
         </div>
     </div>
