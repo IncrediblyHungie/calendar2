@@ -87,45 +87,92 @@
     </div>
     {% endif %}
 
-    <!-- Calendar Preview -->
+    <!-- Interactive Calendar Preview -->
     <div class="card shadow mb-5">
-        <div class="card-body p-5">
+        <div class="card-body p-4">
             <h2 class="card-title text-center mb-4">
-                <i class="fas fa-fire text-danger me-2"></i>
-                {% if mockup_data %}Individual Month Images{% else %}Your "Hunk of the Month" Calendar{% endif %}
+                <i class="fas fa-calendar-alt text-danger me-2"></i>
+                Interactive Calendar Preview
             </h2>
+            <p class="text-center text-muted mb-4">
+                <i class="fas fa-hand-pointer me-1"></i>
+                Click any month to view full size
+            </p>
 
-            <!-- Calendar Grid -->
-            <div class="row g-4">
+            <!-- Calendar Wall Mockup Layout -->
+            <div class="calendar-wall-mockup">
                 {% for month in months %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="calendar-month-card">
-                        <div class="month-header">
-                            <h5 class="mb-0">{{ month_names[month.month_number - 1] }}</h5>
-                        </div>
-                        <div class="month-image-container">
-                            <!-- Lightbox with thumbnail (bs5-lightbox handles smooth transitions) -->
-                            <a href="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                               data-toggle="lightbox"
-                               data-gallery="calendar-gallery"
-                               data-size="fullscreen"
-                               data-caption="{{ month_names[month.month_number - 1] }}: {{ month.prompt }}">
-                                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                                     alt="{{ month_names[month.month_number - 1] }}"
-                                     class="img-fluid rounded"
-                                     style="cursor: pointer;">
-                            </a>
-                        </div>
-                        <div class="month-prompt">
-                            <small class="text-muted">
-                                <i class="fas fa-quote-left me-1"></i>
-                                {{ month.prompt }}
-                            </small>
+                <div class="calendar-page" data-month="{{ month.month_number }}" onclick="openLightbox({{ month.month_number }})">
+                    <!-- Month Header Bar -->
+                    <div class="calendar-month-header">
+                        <span class="month-name">{{ month_names[month.month_number - 1] }} 2026</span>
+                    </div>
+
+                    <!-- Month Image -->
+                    <div class="calendar-month-image">
+                        <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                             alt="{{ month_names[month.month_number - 1] }}"
+                             loading="lazy">
+                    </div>
+
+                    <!-- Mini Calendar Grid -->
+                    <div class="calendar-mini-grid">
+                        <div class="grid-week">
+                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
+
+            <!-- Individual Month Cards (below calendar mockup) -->
+            <div class="mt-5">
+                <h3 class="text-center mb-4">
+                    <i class="fas fa-images me-2"></i>
+                    All Month Images
+                </h3>
+                <div class="row g-3">
+                    {% for month in months %}
+                    <div class="col-md-3 col-sm-4 col-6">
+                        <div class="month-thumbnail-card" onclick="openLightbox({{ month.month_number }})">
+                            <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                                 alt="{{ month_names[month.month_number - 1] }}"
+                                 class="img-fluid rounded shadow-sm">
+                            <div class="month-thumb-label">{{ month_names[month.month_number - 1] }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="imageLightbox" class="image-lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div class="lightbox-image-container">
+                <img id="lightboxImage" src="" alt="">
+                <div class="lightbox-caption" id="lightboxCaption"></div>
+            </div>
+
+            <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Thumbnail Strip -->
+        <div class="lightbox-thumbnails">
+            {% for month in months %}
+            <div class="lightbox-thumb" data-month="{{ month.month_number }}" onclick="event.stopPropagation(); openLightbox({{ month.month_number }})">
+                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}" alt="{{ month_names[month.month_number - 1] }}">
+                <span class="thumb-month-name">{{ month_names[month.month_number - 1] }}</span>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -164,82 +211,358 @@
 </div>
 {% endblock %}
 
-{% block extra_scripts %}
-<!-- bs5-lightbox: Proven Bootstrap 5 lightbox library for smooth image viewing -->
-<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"></script>
+{% endblock %}
 
-<script>
-// Smooth scroll to calendar on page load
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash === '') {
-        window.scrollTo({
-            top: 300,
-            behavior: 'smooth'
-        });
+{% block extra_css %}
+<style>
+/* Calendar Wall Mockup - Realistic Physical Calendar Layout */
+.calendar-wall-mockup {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.calendar-page {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.calendar-page:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.calendar-month-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 12px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.calendar-month-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: #f8f9fa;
+}
+
+.calendar-month-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.calendar-page:hover .calendar-month-image img {
+    transform: scale(1.05);
+}
+
+.calendar-mini-grid {
+    padding: 10px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.grid-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    font-size: 0.7rem;
+    color: #6c757d;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Month Thumbnail Cards */
+.month-thumbnail-card {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.month-thumbnail-card:hover {
+    transform: scale(1.05);
+}
+
+.month-thumb-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Custom Lightbox Modal */
+.image-lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    animation: fadeIn 0.3s ease;
+}
+
+.image-lightbox.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10001;
+    transition: color 0.3s ease;
+}
+
+.lightbox-close:hover {
+    color: #ff6b6b;
+}
+
+.lightbox-content {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-image-container {
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-image-container img {
+    max-width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.lightbox-caption {
+    color: white;
+    background: rgba(0,0,0,0.7);
+    padding: 15px 30px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 24px;
+    padding: 15px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    z-index: 10000;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.6);
+}
+
+.lightbox-prev {
+    left: 20px;
+}
+
+.lightbox-next {
+    right: 20px;
+}
+
+/* Lightbox Thumbnail Strip */
+.lightbox-thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 20px;
+    max-width: 90%;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
+
+.lightbox-thumbnails::-webkit-scrollbar {
+    height: 8px;
+}
+
+.lightbox-thumbnails::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+}
+
+.lightbox-thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.lightbox-thumb:hover,
+.lightbox-thumb.active {
+    border-color: #667eea;
+    transform: scale(1.1);
+}
+
+.lightbox-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumb-month-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .calendar-wall-mockup {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
     }
 
-    // Configure bs5-lightbox to disable constrain (allow images to scale larger)
-    Lightbox.initialize({
-        constrain: false  // Allow images to scale up to fill available space
+    .lightbox-nav {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+
+    .lightbox-close {
+        font-size: 36px;
+        right: 20px;
+    }
+
+    .lightbox-thumbnails {
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .lightbox-thumb {
+        width: 60px;
+        height: 75px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Lightbox JavaScript
+const months = {{ months | tojson }};
+let currentMonthIndex = 0;
+
+function openLightbox(monthNumber) {
+    currentMonthIndex = monthNumber - 1;
+    showLightboxImage();
+    document.getElementById('imageLightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('imageLightbox').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function navigateLightbox(direction) {
+    currentMonthIndex += direction;
+    if (currentMonthIndex < 0) currentMonthIndex = months.length - 1;
+    if (currentMonthIndex >= months.length) currentMonthIndex = 0;
+    showLightboxImage();
+}
+
+function showLightboxImage() {
+    const month = months[currentMonthIndex];
+    const monthNames = {{ month_names | tojson }};
+
+    const imgUrl = `/api/image/month/${month.id}`;
+    const caption = `${monthNames[month.month_number - 1]}: ${month.prompt}`;
+
+    document.getElementById('lightboxImage').src = imgUrl;
+    document.getElementById('lightboxCaption').textContent = caption;
+
+    // Update active thumbnail
+    document.querySelectorAll('.lightbox-thumb').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    const activeThumb = document.querySelector(`.lightbox-thumb[data-month="${month.month_number}"]`);
+    if (activeThumb) {
+        activeThumb.classList.add('active');
+        activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    const lightbox = document.getElementById('imageLightbox');
+    if (!lightbox.classList.contains('active')) return;
+
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigateLightbox(-1);
+    if (e.key === 'ArrowRight') navigateLightbox(1);
+});
+
+// Smooth scroll on page load
+document.addEventListener('DOMContentLoaded', () => {
+    window.scrollTo({
+        top: 300,
+        behavior: 'smooth'
     });
 });
 </script>
-
-<style>
-/* Optimize lightbox for portrait images (3:4 aspect ratio) */
-.lightbox .modal-dialog {
-    max-width: none !important;
-    width: auto !important;
-    height: 100%;
-    margin: 0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Make modal content fit portrait images better */
-.lightbox .modal-content {
-    background-color: rgba(0, 0, 0, 0.95) !important;
-    border: none !important;
-    width: auto !important;
-    max-width: 90vw;
-    max-height: 95vh;
-}
-
-/* Optimize image sizing for portrait orientation */
-.lightbox .modal-body {
-    padding: 0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent !important;
-}
-
-.lightbox .modal-body img {
-    max-width: 90vw !important;
-    max-height: 90vh !important;
-    width: auto !important;
-    height: auto !important;
-    object-fit: contain;
-    margin: auto;
-}
-
-/* Make close button and navigation more visible */
-.lightbox .btn-close {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1060;
-    background-color: rgba(255, 255, 255, 0.9) !important;
-    opacity: 1 !important;
-}
-
-/* Style caption for better visibility */
-.lightbox .carousel-caption {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 8px;
-    bottom: 30px;
-}
-</style>
 {% endblock %}
