@@ -226,11 +226,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Configure bs5-lightbox to disable constrain (allow images to scale larger)
-    if (typeof Lightbox !== 'undefined') {
-        Lightbox.initialize({
-            constrain: false  // Allow images to scale up to fill available space
-        });
+    // Configure bs5-lightbox - wrapped in try-catch to prevent breaking cart functionality
+    try {
+        if (typeof Lightbox !== 'undefined') {
+            Lightbox.initialize({
+                constrain: false  // Allow images to scale up to fill available space
+            });
+            console.log('✓ Lightbox initialized successfully');
+        }
+    } catch (error) {
+        console.warn('⚠️ Lightbox initialization failed (non-critical):', error);
+        // Continue with rest of page functionality - cart is more important than lightbox
     }
 
     // Product selection
@@ -321,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Add to cart button not found!');
     }
 
-    // Order Now button (direct checkout)
+    // Order Now button (add to cart + immediate checkout)
     const orderNowBtn = document.getElementById('order-now-btn');
     console.log('Order now button:', orderNowBtn);
 
@@ -331,24 +337,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalHTML = this.innerHTML;
 
         // Show loading
-        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Adding to cart...';
         this.disabled = true;
 
         try {
-            const response = await fetch('/api/checkout/create', {
+            // Step 1: Add current calendar to cart
+            const addResponse = await fetch('/api/cart/add', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({product_type: selectedProduct})
             });
 
-            const data = await response.json();
+            const addData = await addResponse.json();
 
-            if (data.success) {
-                // Redirect to Stripe checkout
-                console.log('✓ Checkout session created:', data.session_id);
-                window.location.href = data.checkout_url;
+            if (!addData.success) {
+                alert('Error: ' + (addData.error || 'Failed to add to cart'));
+                this.innerHTML = originalHTML;
+                this.disabled = false;
+                return;
+            }
+
+            console.log('✓ Added to cart, now creating checkout...');
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating checkout...';
+
+            // Step 2: Checkout with ALL cart items (including what was already there)
+            const checkoutResponse = await fetch('/api/cart/checkout', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            const checkoutData = await checkoutResponse.json();
+
+            if (checkoutData.success) {
+                // Redirect to Stripe checkout with all cart items
+                console.log('✓ Checkout session created:', checkoutData.session_id);
+                window.location.href = checkoutData.checkout_url;
             } else {
-                alert('Error: ' + (data.error || 'Failed to create checkout session'));
+                alert('Error: ' + (checkoutData.error || 'Failed to create checkout session'));
                 this.innerHTML = originalHTML;
                 this.disabled = false;
             }

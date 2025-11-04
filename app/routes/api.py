@@ -560,9 +560,8 @@ def checkout_cart():
                 'quantity': 1
             })
 
-        # Create Stripe checkout session
+        # Create Stripe checkout session (API key already configured globally in app/__init__.py)
         import stripe
-        stripe.api_key = stripe_service.STRIPE_SECRET_KEY
 
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],

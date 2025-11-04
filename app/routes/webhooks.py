@@ -16,17 +16,32 @@ def stripe_webhook():
     Handle Stripe webhook events
     Primarily processes checkout.session.completed for order fulfillment
     """
+    print("\n" + "="*80)
+    print("🔔 WEBHOOK RECEIVED - Stripe event incoming")
+    print("="*80)
+
     payload = request.data
     sig_header = request.headers.get('Stripe-Signature')
+
+    print(f"   Payload size: {len(payload)} bytes")
+    print(f"   Has signature: {bool(sig_header)}")
 
     try:
         # Verify webhook signature for security
         event = stripe_service.verify_webhook_signature(payload, sig_header)
+        print(f"✅ Webhook signature verified successfully")
     except ValueError as e:
         print(f"❌ Webhook verification failed: {e}")
+        print(f"   Check STRIPE_WEBHOOK_SECRET environment variable")
         return jsonify({'error': 'Invalid signature'}), 400
+    except Exception as e:
+        print(f"❌ Webhook error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 400
 
     print(f"📨 Received Stripe webhook: {event['type']}")
+    print(f"   Event ID: {event.get('id', 'unknown')}")
 
     # Handle checkout.session.completed event
     if event['type'] == 'checkout.session.completed':

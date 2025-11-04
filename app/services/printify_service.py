@@ -352,6 +352,16 @@ def submit_order(order_id):
         headers=get_headers()
     )
 
+    if response.status_code != 200:
+        # Log the full error response from Printify
+        print(f"  ❌ Printify submit_order failed with status {response.status_code}")
+        print(f"  📄 Error response: {response.text}")
+        try:
+            error_data = response.json()
+            print(f"  📋 Error details: {error_data}")
+        except:
+            pass
+
     response.raise_for_status()
     print(f"  ✓ Submitted order to production: {order_id}")
     return True
