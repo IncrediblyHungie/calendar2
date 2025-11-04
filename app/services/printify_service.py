@@ -23,7 +23,7 @@ CALENDAR_PRODUCTS = {
         'price': 2999  # cents
     },
     'desktop': {
-        'blueprint_id': 1054,
+        'blueprint_id': 1353,  # Desktop Calendar (2026 grid) - FIXED
         'print_provider_id': 'auto',  # Auto-detect on first use
         'variant_id': 'auto',
         'name': 'Desktop Calendar (2026)',
