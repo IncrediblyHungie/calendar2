@@ -244,6 +244,31 @@ def checkout():
 
     return render_template('checkout.html', project=project)
 
+@bp.route('/cart')
+def cart_page():
+    """Shopping cart page"""
+    project = get_current_project()
+    if not project:
+        return redirect(url_for('main.start'))
+
+    # Get cart items
+    cart_items = session_storage.get_cart_items()
+    cart_total = session_storage.get_cart_total()
+
+    return render_template('cart.html',
+                          project=project,
+                          cart_items=cart_items,
+                          cart_total=cart_total)
+
+@bp.route('/create-another')
+def create_another():
+    """Create a new calendar project"""
+    # Create new project and make it active
+    new_project_id = session_storage.create_new_project()
+
+    flash('New calendar started! Upload photos to begin.', 'success')
+    return redirect(url_for('projects.upload'))
+
 @bp.route('/success')
 def success():
     """Success page"""

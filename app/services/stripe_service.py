@@ -24,6 +24,25 @@ PRODUCT_DESCRIPTIONS = {
     'standard_wall': 'Personalized wall calendar with your AI-generated images. 250gsm premium paper, spiral binding.'
 }
 
+# Combined product info (for cart checkout)
+PRODUCT_INFO = {
+    'calendar_2026': {
+        'name': PRODUCT_NAMES['calendar_2026'],
+        'description': PRODUCT_DESCRIPTIONS['calendar_2026'],
+        'price': CALENDAR_PRICES['calendar_2026']
+    },
+    'desktop': {
+        'name': PRODUCT_NAMES['desktop'],
+        'description': PRODUCT_DESCRIPTIONS['desktop'],
+        'price': CALENDAR_PRICES['desktop']
+    },
+    'standard_wall': {
+        'name': PRODUCT_NAMES['standard_wall'],
+        'description': PRODUCT_DESCRIPTIONS['standard_wall'],
+        'price': CALENDAR_PRICES['standard_wall']
+    }
+}
+
 def create_checkout_session(product_type, success_url, cancel_url, metadata=None):
     """
     Create Stripe Checkout session for calendar purchase

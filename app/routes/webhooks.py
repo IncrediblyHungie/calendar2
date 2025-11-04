@@ -43,41 +43,88 @@ def stripe_webhook():
         customer_email = checkout_session.customer_details.email
         product_type = checkout_session.metadata.get('product_type')
         internal_session_id = checkout_session.metadata.get('internal_session_id')
+        is_cart_checkout = checkout_session.metadata.get('is_cart_checkout') == 'true'
 
         print(f"✅ Payment successful!")
         print(f"   Customer: {customer_email}")
         print(f"   Product: {product_type}")
         print(f"   Payment Intent: {payment_intent_id}")
         print(f"   Internal Session ID: {internal_session_id}")
+        print(f"   Cart Checkout: {is_cart_checkout}")
 
         # Extract shipping address
         shipping_address = stripe_service.extract_shipping_address(checkout_session)
 
-        # Create Printify order asynchronously
+        # Create Printify order(s)
         # Note: In production, this should be a background task (Celery/RQ)
-        # For now, we'll do it synchronously
         try:
-            order_id = create_printify_order(
-                internal_session_id=internal_session_id,
-                stripe_session_id=checkout_session.id,
-                payment_intent_id=payment_intent_id,
-                product_type=product_type,
-                customer_email=customer_email,
-                shipping_address=shipping_address
-            )
+            if is_cart_checkout:
+                # MULTI-ORDER FULFILLMENT: Process all cart items
+                print("\n🛒 Processing cart checkout with multiple calendars...")
+                cart_items = session_storage.get_cart_by_session_id(internal_session_id)
 
-            print(f"🎉 Order fulfilled successfully: {order_id}")
+                if not cart_items:
+                    print("❌ No cart items found!")
+                    return jsonify({'error': 'Cart is empty'}), 400
+
+                print(f"   Found {len(cart_items)} items in cart")
+
+                order_ids = []
+                for i, cart_item in enumerate(cart_items, 1):
+                    print(f"\n{'='*60}")
+                    print(f"📦 Processing cart item {i}/{len(cart_items)}")
+                    print(f"   Project ID: {cart_item['project_id']}")
+                    print(f"   Product Type: {cart_item['product_type']}")
+                    print(f"{'='*60}")
+
+                    try:
+                        order_id = create_printify_order(
+                            internal_session_id=internal_session_id,
+                            stripe_session_id=checkout_session.id,
+                            payment_intent_id=payment_intent_id,
+                            product_type=cart_item['product_type'],
+                            customer_email=customer_email,
+                            shipping_address=shipping_address,
+                            project_id=cart_item['project_id']  # Specify which project to use
+                        )
+
+                        order_ids.append(order_id)
+                        print(f"✅ Cart item {i} fulfilled: {order_id}")
+
+                    except Exception as item_error:
+                        print(f"❌ Cart item {i} failed: {item_error}")
+                        import traceback
+                        traceback.print_exc()
+                        # Continue with other items even if one fails
+
+                print(f"\n🎉 Cart fulfillment complete: {len(order_ids)}/{len(cart_items)} orders created")
+
+                # Clear cart after successful fulfillment
+                session_storage.clear_cart_by_session_id(internal_session_id)
+                print("🗑️  Cart cleared")
+
+            else:
+                # SINGLE ORDER: Original flow
+                order_id = create_printify_order(
+                    internal_session_id=internal_session_id,
+                    stripe_session_id=checkout_session.id,
+                    payment_intent_id=payment_intent_id,
+                    product_type=product_type,
+                    customer_email=customer_email,
+                    shipping_address=shipping_address
+                )
+
+                print(f"🎉 Order fulfilled successfully: {order_id}")
 
         except Exception as e:
             print(f"❌ Printify order creation failed: {e}")
             # In production: save to failed_orders table for manual retry
-            # For now, log the error
             import traceback
             traceback.print_exc()
 
     return jsonify({'success': True})
 
-def create_printify_order(internal_session_id, stripe_session_id, payment_intent_id, product_type, customer_email, shipping_address):
+def create_printify_order(internal_session_id, stripe_session_id, payment_intent_id, product_type, customer_email, shipping_address, project_id=None):
     """
     Create Printify order after successful payment
 
@@ -93,6 +140,7 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
         product_type: 'calendar_2026', 'desktop', or 'standard_wall'
         customer_email: Customer email address
         shipping_address: Dict with shipping address fields
+        project_id: Optional project ID (for cart checkouts with multiple projects)
 
     Returns:
         str: Printify order ID
@@ -102,6 +150,8 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
     """
     print("\n" + "="*60)
     print("📦 Starting Printify Order Creation")
+    if project_id:
+        print(f"   Project ID: {project_id}")
     print("="*60)
 
     # Step 1: Check if preview product already exists
@@ -120,7 +170,8 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
         print(f"   ℹ️  No preview product found, creating new product...")
 
         # Get user's generated month images from session storage
-        months = session_storage.get_months_by_session_id(internal_session_id)
+        # Use project_id if provided (cart checkout), otherwise use active project
+        months = session_storage.get_months_by_session_id(internal_session_id, project_id=project_id)
 
         if not months or len(months) < 12:
             raise Exception(f"Insufficient month images: found {len(months)}, need 12")

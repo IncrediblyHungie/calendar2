@@ -441,3 +441,175 @@ def create_checkout():
     except Exception as e:
         print(f"❌ Checkout creation error: {e}")
         return jsonify({'error': str(e)}), 500
+
+# ============================================================================
+# CART API ENDPOINTS
+# ============================================================================
+
+@bp.route('/cart/add', methods=['POST'])
+def add_to_cart():
+    """Add current project to cart with specified product type"""
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'No active project'}), 401
+
+    data = request.json
+    product_type = data.get('product_type')
+
+    if product_type not in ['calendar_2026', 'desktop', 'standard_wall']:
+        return jsonify({'error': 'Invalid product type'}), 400
+
+    try:
+        # Verify all months are completed
+        months = session_storage.get_all_months()
+        if not all(m['generation_status'] == 'completed' for m in months):
+            return jsonify({'error': 'Calendar not fully generated yet'}), 400
+
+        # Add to cart
+        cart_item_id = session_storage.add_to_cart(project['id'], product_type)
+
+        return jsonify({
+            'success': True,
+            'cart_item_id': cart_item_id,
+            'cart_count': session_storage.get_cart_count(),
+            'message': f'Added to cart! You now have {session_storage.get_cart_count()} item(s).'
+        })
+
+    except Exception as e:
+        print(f"❌ Add to cart error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/cart', methods=['GET'])
+def get_cart():
+    """Get all cart items"""
+    try:
+        cart_items = session_storage.get_cart_items()
+        cart_total = session_storage.get_cart_total()
+
+        return jsonify({
+            'success': True,
+            'items': cart_items,
+            'count': len(cart_items),
+            'total': cart_total
+        })
+
+    except Exception as e:
+        print(f"❌ Get cart error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/cart/remove/<cart_item_id>', methods=['DELETE'])
+def remove_from_cart(cart_item_id):
+    """Remove item from cart"""
+    try:
+        session_storage.remove_from_cart(cart_item_id)
+
+        return jsonify({
+            'success': True,
+            'cart_count': session_storage.get_cart_count(),
+            'message': 'Item removed from cart'
+        })
+
+    except Exception as e:
+        print(f"❌ Remove from cart error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/cart/clear', methods=['POST'])
+def clear_cart():
+    """Clear all items from cart"""
+    try:
+        session_storage.clear_cart()
+
+        return jsonify({
+            'success': True,
+            'message': 'Cart cleared'
+        })
+
+    except Exception as e:
+        print(f"❌ Clear cart error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/cart/checkout', methods=['POST'])
+def checkout_cart():
+    """Create Stripe checkout session for all items in cart"""
+    try:
+        cart_items = session_storage.get_cart_items()
+
+        if not cart_items:
+            return jsonify({'error': 'Cart is empty'}), 400
+
+        # Get internal session ID for webhook lookup
+        internal_session_id = session_storage._get_session_id()
+
+        # Build line items for Stripe
+        line_items = []
+        for item in cart_items:
+            # Get product info
+            product_info = stripe_service.PRODUCT_INFO.get(item['product_type'])
+            if not product_info:
+                return jsonify({'error': f'Invalid product type: {item["product_type"]}'}), 400
+
+            line_items.append({
+                'price_data': {
+                    'currency': 'usd',
+                    'unit_amount': int(item['price'] * 100),  # Convert to cents
+                    'product_data': {
+                        'name': product_info['name'],
+                        'description': product_info['description']
+                    }
+                },
+                'quantity': 1
+            })
+
+        # Create Stripe checkout session
+        import stripe
+        stripe.api_key = stripe_service.STRIPE_SECRET_KEY
+
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=line_items,
+            mode='payment',
+            success_url=url_for('main.order_success', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=url_for('projects.cart_page', _external=True),
+            metadata={
+                'internal_session_id': internal_session_id,
+                'is_cart_checkout': 'true',
+                'cart_item_count': str(len(cart_items))
+            },
+            shipping_address_collection={
+                'allowed_countries': ['US', 'CA']
+            }
+        )
+
+        return jsonify({
+            'success': True,
+            'checkout_url': checkout_session.url,
+            'session_id': checkout_session.id
+        })
+
+    except Exception as e:
+        print(f"❌ Cart checkout error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/cart/project-image/<project_id>')
+def get_cart_project_cover(project_id):
+    """Get cover image for a project in cart"""
+    try:
+        project = session_storage.get_project_by_id(project_id)
+        if not project:
+            return jsonify({'error': 'Project not found'}), 404
+
+        # Get cover image (month 0)
+        for month in project.get('months', []):
+            if month['month_number'] == 0 and month.get('master_image_data'):
+                return send_file(
+                    io.BytesIO(month['master_image_data']),
+                    mimetype='image/jpeg'
+                )
+
+        return jsonify({'error': 'Cover image not found'}), 404
+
+    except Exception as e:
+        print(f"❌ Get project cover error: {e}")
+        return jsonify({'error': str(e)}), 500

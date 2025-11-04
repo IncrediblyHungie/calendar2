@@ -90,18 +90,58 @@
                 Order a high-quality printed calendar! Perfect for gifts, gags, or just admiring your hunky transformations all year!
             </p>
 
-            <div class="d-grid gap-2 col-md-6 mx-auto">
-                <a href="{{ url_for('projects.calendar_preview') }}" class="btn btn-primary btn-lg">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5>Desktop Calendar</h5>
+                            <p class="text-muted">10" × 5"</p>
+                            <h4 class="text-primary">$19.99</h4>
+                            <button class="btn btn-outline-primary w-100 add-to-cart-btn" data-product="desktop">
+                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-success">
+                        <div class="card-body">
+                            <div class="badge bg-success mb-2">MOST POPULAR</div>
+                            <h5>Calendar 2026</h5>
+                            <p class="text-muted">10.8" × 8.4"</p>
+                            <h4 class="text-success">$24.99</h4>
+                            <button class="btn btn-success w-100 add-to-cart-btn" data-product="calendar_2026">
+                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5>Wall Calendar</h5>
+                            <p class="text-muted">Multiple sizes</p>
+                            <h4 class="text-primary">$29.99</h4>
+                            <button class="btn btn-outline-primary w-100 add-to-cart-btn" data-product="standard_wall">
+                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 col-md-8 mx-auto">
+                <a href="{{ url_for('projects.calendar_preview') }}" class="btn btn-outline-primary btn-lg">
                     <i class="fas fa-calendar-alt me-2"></i>
                     View All 12 Months at Once
                 </a>
-                <a href="{{ url_for('projects.checkout') }}" class="btn btn-success btn-lg">
+                <a href="{{ url_for('projects.checkout') }}" class="btn btn-primary btn-lg">
                     <i class="fas fa-shopping-cart me-2"></i>
-                    Order Your Calendar
+                    Order Now (Single Item)
                 </a>
-                <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-home me-2"></i>
-                    Back to Home
+                <a href="{{ url_for('projects.create_another') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Create Another Calendar
                 </a>
             </div>
 
@@ -131,6 +171,60 @@ document.addEventListener('DOMContentLoaded', () => {
     // Configure bs5-lightbox to disable constrain (allow images to scale larger)
     Lightbox.initialize({
         constrain: false  // Allow images to scale up to fill available space
+    });
+
+    // Add to Cart functionality
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const productType = this.dataset.product;
+            const originalHTML = this.innerHTML;
+
+            // Show loading
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Adding...';
+            this.disabled = true;
+
+            try {
+                const response = await fetch('/api/cart/add', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({product_type: productType})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success feedback
+                    this.innerHTML = '<i class="fas fa-check me-2"></i>Added!';
+                    this.classList.remove('btn-outline-primary', 'btn-success', 'btn-outline-success');
+                    this.classList.add('btn-success');
+
+                    // Update cart count in navigation (if cart badge exists)
+                    const cartBadge = document.querySelector('.cart-count-badge');
+                    if (cartBadge) {
+                        cartBadge.textContent = data.cart_count;
+                        cartBadge.style.display = 'inline';
+                    }
+
+                    // Show success message
+                    alert(data.message + '\\n\\nClick "Create Another Calendar" to add more calendars to your cart!');
+
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.disabled = false;
+                    }, 2000);
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to add to cart'));
+                    this.innerHTML = originalHTML;
+                    this.disabled = false;
+                }
+            } catch (error) {
+                console.error('Add to cart error:', error);
+                alert('Failed to add to cart. Please try again.');
+                this.innerHTML = originalHTML;
+                this.disabled = false;
+            }
+        });
     });
 });
 </script>
