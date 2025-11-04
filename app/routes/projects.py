@@ -121,7 +121,7 @@ def themes():
 
             session_storage.update_project_status('prompts')
 
-            flash('Themes confirmed! Ready to make you a hunk!', 'success')
+            # No flash message - redirect directly to generation
             return redirect(url_for('projects.generate'))
 
         except Exception as e:
@@ -140,10 +140,10 @@ def generate():
     if not project:
         return redirect(url_for('main.start'))
 
-    # Check if themes are confirmed
+    # Check if themes are confirmed (now only creates 4 months for preview)
     months = session_storage.get_all_months()
-    if len(months) < 13:
-        flash('Please review the monthly themes first!', 'warning')
+    if len(months) < 4:  # Changed from 13 to 4 (cover + 3 months preview)
+        # No flash message - just redirect
         return redirect(url_for('projects.themes'))
 
     # Check if we have reference images
@@ -155,8 +155,6 @@ def generate():
     try:
         # Mark project as processing
         session_storage.update_project_status('processing')
-
-        flash('Starting AI generation with face-swapping... This will take 5-10 minutes.', 'info')
 
         # Redirect immediately to preview page (AJAX will handle actual generation)
         return redirect(url_for('projects.preview'))
