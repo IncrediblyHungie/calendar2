@@ -74,6 +74,7 @@
 <script>
 // LOCAL BEAST MODE: ALL 12 MONTHS AT ONCE! 🔥
 const months = {{ months | tojson }};
+const generationStage = '{{ generation_stage }}';
 let completedCount = months.filter(m => m.generation_status === 'completed').length;
 let failedCount = 0;
 let activeRequests = 0;
@@ -91,10 +92,20 @@ let monthQueue = [];
 const progressBar = document.getElementById('progressBar');
 const progressText = document.getElementById('progressText');
 
+// Calculate total expected images based on generation stage
+function getTotalExpected() {
+    if (generationStage === 'preview_only') {
+        return 3;  // Only generating Jan, Feb, Mar
+    } else {
+        return months.length;  // Generating all remaining months (should be 13 total)
+    }
+}
+
 function updateProgress() {
-    const percentage = (completedCount / 13) * 100;
+    const totalExpected = getTotalExpected();
+    const percentage = (completedCount / totalExpected) * 100;
     progressBar.style.width = percentage + '%';
-    progressText.textContent = `${completedCount}/13 images`;
+    progressText.textContent = `${completedCount}/${totalExpected} images`;
 }
 
 function updateBadge(monthNum, status, retryNum = null) {
@@ -236,9 +247,10 @@ let redirecting = false;  // Prevent multiple redirects
 async function checkCompletion() {
     // Only check if all active work is done
     if (activeRequests === 0 && monthQueue.length === 0 && !redirecting) {
+        const totalExpected = getTotalExpected();
         const totalDone = completedCount + failedMonths.size;
 
-        if (totalDone >= 13) {
+        if (totalDone >= totalExpected) {
             redirecting = true;  // Prevent multiple completion checks
             console.log(`🎉 Complete! ${completedCount} succeeded, ${failedMonths.size} failed`);
 
@@ -248,8 +260,8 @@ async function checkCompletion() {
                 // No alert - expected when generating only 3 preview months
             }
 
-            // Generate mockups if we have at least 12 months (cover + 11 months minimum)
-            if (completedCount >= 12) {
+            // Generate mockups only if we have all 13 months (full calendar)
+            if (generationStage === 'generating_full' && completedCount >= 12) {
                 console.log('🎨 Generating calendar mockup preview...');
                 progressText.textContent = 'Creating calendar preview...';
 
@@ -295,7 +307,8 @@ function startGeneration() {
 updateProgress();
 
 // Start generation if needed, or redirect if already complete
-if (completedCount < 13) {
+const totalExpected = getTotalExpected();
+if (completedCount < totalExpected) {
     console.log('🚀 Starting BEAST MODE generation...');
     setTimeout(startGeneration, 1000);
 } else {
@@ -305,8 +318,8 @@ if (completedCount < 13) {
 
     (async () => {
         try {
-            // Generate mockup if needed
-            if (completedCount >= 12) {
+            // Generate mockup only if we have full calendar (13 months)
+            if (generationStage === 'generating_full' && completedCount >= 12) {
                 console.log('🎨 Generating calendar mockup...');
                 await generateMockups();
             }

@@ -176,7 +176,8 @@ def preview():
     # Check if generation is complete
     if not all(m['generation_status'] == 'completed' for m in months):
         flash('Calendar generation in progress...', 'info')
-        return render_template('generating_local.html', project=project, months=months)
+        generation_stage = session_storage.get_generation_status().get('stage', 'preview_only')
+        return render_template('generating_local.html', project=project, months=months, generation_stage=generation_stage)
 
     # Month names: Index 0 = Cover, Index 1-12 = January-December
     month_names = [

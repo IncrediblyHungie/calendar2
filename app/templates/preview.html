@@ -175,15 +175,31 @@
         </div>
     </div>
     {% elif generation_status.stage == 'generating_full' %}
-    <!-- GENERATING - Minimal UI -->
+    <!-- GENERATING REMAINING MONTHS - Progress Bar -->
     <div class="card shadow-lg border-info">
-        <div class="card-body p-5 text-center">
-            <h3 class="mb-3">
-                <i class="fas fa-cog fa-spin text-info me-2"></i>
-                Creating Your Full Calendar...
-            </h3>
-            <p class="lead mb-0">
-                This page will automatically refresh when all 12 months are ready!
+        <div class="card-body p-5">
+            <div class="text-center mb-4">
+                <h3 class="mb-3">
+                    <i class="fas fa-magic fa-spin text-info me-2"></i>
+                    Creating Your Full Calendar...
+                </h3>
+                <p class="lead mb-4">
+                    Generating cover + remaining 9 months (10 total)
+                </p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress mb-3" style="height: 30px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                     role="progressbar"
+                     id="remainingProgressBar"
+                     style="width: 0%">
+                    <span id="remainingProgressText">0/10 images</span>
+                </div>
+            </div>
+
+            <p class="text-center text-muted mb-0">
+                <small>This page will automatically refresh when all months are ready (~5 minutes)</small>
             </p>
         </div>
     </div>
@@ -511,28 +527,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Progress polling for generating_full stage
 {% if generation_status.stage == 'generating_full' %}
-function updateProgress() {
+function updateRemainingProgress() {
     fetch('/api/generation-progress')
         .then(res => res.json())
         .then(data => {
             console.log('Progress update:', data);
 
+            // Calculate remaining months progress (total completed - 3 preview months)
+            const remainingCompleted = Math.max(0, data.completed_months - 3);
+            const remainingTotal = 10; // Cover + Apr-Dec
+            const percentage = Math.floor((remainingCompleted / remainingTotal) * 100);
+
             // Update progress bar
-            const progressBar = document.getElementById('generation-progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const statusText = document.getElementById('progress-status');
+            const progressBar = document.getElementById('remainingProgressBar');
+            const progressText = document.getElementById('remainingProgressText');
 
-            if (progressBar) {
-                progressBar.style.width = data.progress + '%';
-                progressText.textContent = data.progress + '%';
+            if (progressBar && progressText) {
+                progressBar.style.width = percentage + '%';
+                progressText.textContent = `${remainingCompleted}/${remainingTotal} images`;
+                console.log(`📊 Progress: ${remainingCompleted}/${remainingTotal} (${percentage}%)`);
             }
 
-            if (statusText) {
-                statusText.textContent = `Generating month ${data.completed_months} of ${data.total_months}...`;
-            }
-
-            // Check if complete
-            if (data.is_complete || data.stage === 'fully_generated') {
+            // Check if complete (all 13 months done)
+            if (data.is_complete || data.stage === 'fully_generated' || data.completed_months >= 13) {
                 console.log('✓ Generation complete! Reloading page...');
                 setTimeout(() => {
                     window.location.reload();
@@ -546,8 +563,8 @@ function updateProgress() {
 
 // Start polling every 2 seconds
 document.addEventListener('DOMContentLoaded', () => {
-    updateProgress(); // Initial call
-    setInterval(updateProgress, 2000);
+    updateRemainingProgress(); // Initial call
+    setInterval(updateRemainingProgress, 2000);
 });
 {% endif %}
 </script>
