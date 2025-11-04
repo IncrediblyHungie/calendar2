@@ -24,6 +24,45 @@
         </div>
     </div>
 
+    <!-- STAGE 1: PREVIEW ONLY (3 Months + Cover) -->
+    {% if generation_status.stage == 'preview_only' %}
+    <!-- Preview Alert -->
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">
+            <i class="fas fa-eye me-2"></i>
+            Here's Your FREE 3-Month Preview!
+        </h4>
+        <p class="mb-2">
+            Check out the first 3 months (January, February, March). If you love what you see, unlock ALL 12 months!
+        </p>
+        <p class="mb-0">
+            <i class="fas fa-clock me-1"></i>
+            <strong>Preview expires in: <span id="countdown-timer" class="text-danger">Loading...</span></strong>
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% elif generation_status.stage == 'generating_full' %}
+    <!-- Generating Alert -->
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">
+            <i class="fas fa-magic me-2"></i>
+            Generating Your Full Calendar...
+        </h4>
+        <p class="mb-3">
+            Hold tight! We're creating the remaining 9 months of hunk transformations. This takes about 5-10 minutes.
+        </p>
+        <div class="progress mb-2" style="height: 30px;">
+            <div id="generation-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                 role="progressbar"
+                 style="width: {{ generation_status.progress }}%">
+                <span id="progress-text">{{ generation_status.progress }}%</span>
+            </div>
+        </div>
+        <p class="mb-0 text-center">
+            <small id="progress-status">Generating month {{ generation_status.completed_months }} of {{ generation_status.total_months }}...</small>
+        </p>
+    </div>
+    {% elif generation_status.stage == 'fully_generated' %}
     <!-- Success Message -->
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <h4 class="alert-heading">
@@ -36,14 +75,22 @@
         </p>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
+    {% endif %}
 
     <!-- Calendar Preview -->
     <div class="card shadow mb-5">
         <div class="card-body p-5">
+            {% if generation_status.stage == 'preview_only' %}
+            <h2 class="card-title text-center mb-4">
+                <i class="fas fa-eye text-info me-2"></i>
+                Your 3-Month Preview
+            </h2>
+            {% else %}
             <h2 class="card-title text-center mb-4">
                 <i class="fas fa-fire text-danger me-2"></i>
                 Your "Hunk of the Month" Calendar
             </h2>
+            {% endif %}
 
             <!-- Calendar Grid -->
             <div class="row g-4">
@@ -80,6 +127,68 @@
     </div>
 
     <!-- Call to Action -->
+    {% if generation_status.stage == 'preview_only' %}
+    <!-- UNLOCK GATE -->
+    <div class="card shadow-lg border-warning">
+        <div class="card-body p-5">
+            <h3 class="text-center mb-4">
+                <i class="fas fa-lock text-warning me-2"></i>
+                Unlock All 12 Months
+            </h3>
+            <p class="lead text-center mb-4">
+                Love what you see? Enter your payment info to unlock the remaining 9 months (April-December).
+                <strong>We'll only charge you when you're ready to order!</strong>
+            </p>
+
+            <!-- Stripe Card Element Container -->
+            <div id="unlock-form-container" class="mb-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    <i class="fas fa-credit-card me-2"></i>
+                                    Authorize Payment Method
+                                </h5>
+                                <p class="text-muted small mb-3">
+                                    We'll securely save your payment info but won't charge you until you place an order.
+                                </p>
+
+                                <!-- Stripe Card Element -->
+                                <div id="card-element" class="form-control mb-3" style="height: 40px; padding: 10px;"></div>
+                                <div id="card-errors" class="text-danger mb-3" role="alert"></div>
+
+                                <button id="unlock-button" class="btn btn-warning btn-lg w-100">
+                                    <i class="fas fa-unlock-alt me-2"></i>
+                                    Authorize & Unlock Full Calendar
+                                </button>
+
+                                <p class="text-muted text-center mt-3 mb-0 small">
+                                    <i class="fas fa-shield-alt me-1"></i>
+                                    Secured by Stripe. No charge until you order.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif generation_status.stage == 'generating_full' %}
+    <!-- GENERATING - Minimal UI -->
+    <div class="card shadow-lg border-info">
+        <div class="card-body p-5 text-center">
+            <h3 class="mb-3">
+                <i class="fas fa-cog fa-spin text-info me-2"></i>
+                Creating Your Full Calendar...
+            </h3>
+            <p class="lead mb-0">
+                This page will automatically refresh when all 12 months are ready!
+            </p>
+        </div>
+    </div>
+    {% elif generation_status.stage == 'fully_generated' %}
+    <!-- PRODUCT SELECTION & CHECKOUT -->
     <div class="card shadow-lg border-success">
         <div class="card-body p-5">
             <h3 class="text-center mb-4">
@@ -159,6 +268,7 @@
             </p>
         </div>
     </div>
+    {% endif %}
 
     <!-- Success Modal -->
     <div class="modal fade" id="addedToCartModal" tabindex="-1" aria-hidden="true">
@@ -202,6 +312,244 @@
 {% block extra_scripts %}
 <!-- bs5-lightbox: Proven Bootstrap 5 lightbox library for smooth image viewing -->
 <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"></script>
+
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+// Initialize Stripe (if in preview_only stage)
+{% if generation_status.stage == 'preview_only' %}
+const stripe = Stripe('{{ config.STRIPE_PUBLISHABLE_KEY }}');
+const elements = stripe.elements();
+const cardElement = elements.create('card', {
+    style: {
+        base: {
+            fontSize: '16px',
+            color: '#32325d',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    }
+});
+
+// Mount card element after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+    const cardContainer = document.getElementById('card-element');
+    if (cardContainer) {
+        cardElement.mount('#card-element');
+
+        // Handle real-time validation errors
+        cardElement.on('change', (event) => {
+            const displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+    }
+});
+
+// Countdown timer (48 hours)
+function startCountdown() {
+    const expiryTime = new Date('{{ generation_status.preview_expiry }}');
+    const timerElement = document.getElementById('countdown-timer');
+
+    if (!timerElement) return;
+
+    function updateTimer() {
+        const now = new Date();
+        const diff = expiryTime - now;
+
+        if (diff <= 0) {
+            timerElement.textContent = 'EXPIRED';
+            timerElement.classList.add('text-danger', 'fw-bold');
+            return;
+        }
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        timerElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
+// Unlock button handler
+async function handleUnlock() {
+    const unlockButton = document.getElementById('unlock-button');
+    const originalHTML = unlockButton.innerHTML;
+
+    // Disable button and show loading
+    unlockButton.disabled = true;
+    unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+
+    try {
+        // Step 1: Create Setup Intent
+        console.log('Creating Setup Intent...');
+        const response = await fetch('/api/authorize-payment', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error || 'Failed to create payment authorization');
+        }
+
+        console.log('Setup Intent created:', data.setup_intent_id);
+
+        // Step 2: Confirm card with Stripe
+        unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirming card...';
+
+        const {setupIntent, error} = await stripe.confirmCardSetup(
+            data.client_secret,
+            {
+                payment_method: {
+                    card: cardElement
+                }
+            }
+        );
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        console.log('✓ Card confirmed! Payment method:', setupIntent.payment_method);
+
+        // Step 3: Show success and start polling
+        unlockButton.innerHTML = '<i class="fas fa-check me-2"></i>Payment Authorized!';
+        unlockButton.classList.remove('btn-warning');
+        unlockButton.classList.add('btn-success');
+
+        // Hide unlock form and show progress
+        setTimeout(() => {
+            document.getElementById('unlock-form-container').style.display = 'none';
+            alert('Payment method saved! Starting generation of remaining 9 months...');
+
+            // Start polling for payment method confirmation and generation trigger
+            startPollingForGeneration();
+        }, 1500);
+
+    } catch (error) {
+        console.error('Unlock error:', error);
+        document.getElementById('card-errors').textContent = error.message;
+        unlockButton.innerHTML = originalHTML;
+        unlockButton.disabled = false;
+    }
+}
+
+// Poll for payment method saved and trigger generation
+function startPollingForGeneration() {
+    let pollCount = 0;
+    const maxPolls = 30; // 30 seconds max wait
+
+    const pollInterval = setInterval(async () => {
+        pollCount++;
+        console.log(`Polling for generation status... (${pollCount}/${maxPolls})`);
+
+        try {
+            const response = await fetch('/api/generation-progress');
+            const data = await response.json();
+
+            if (data.has_payment_method && data.stage === 'preview_only') {
+                // Payment method saved, trigger generation
+                console.log('✓ Payment method detected! Triggering generation...');
+                clearInterval(pollInterval);
+
+                // Call backend to start generating remaining months
+                const genResponse = await fetch('/api/generate-remaining-months', {
+                    method: 'POST'
+                });
+
+                if (genResponse.ok) {
+                    console.log('✓ Generation started! Reloading page...');
+                    window.location.reload();
+                } else {
+                    console.error('Failed to start generation');
+                    alert('Error starting generation. Please refresh the page.');
+                }
+            } else if (data.stage === 'generating_full') {
+                // Already generating, reload to show progress
+                console.log('✓ Generation in progress! Reloading...');
+                clearInterval(pollInterval);
+                window.location.reload();
+            }
+
+            if (pollCount >= maxPolls) {
+                clearInterval(pollInterval);
+                alert('Generation startup is taking longer than expected. Please refresh the page.');
+            }
+        } catch (error) {
+            console.error('Polling error:', error);
+        }
+    }, 1000);
+}
+
+// Start countdown on page load
+document.addEventListener('DOMContentLoaded', () => {
+    startCountdown();
+
+    // Attach unlock button handler
+    const unlockButton = document.getElementById('unlock-button');
+    if (unlockButton) {
+        unlockButton.addEventListener('click', handleUnlock);
+    }
+});
+{% endif %}
+
+// Progress polling for generating_full stage
+{% if generation_status.stage == 'generating_full' %}
+function updateProgress() {
+    fetch('/api/generation-progress')
+        .then(res => res.json())
+        .then(data => {
+            console.log('Progress update:', data);
+
+            // Update progress bar
+            const progressBar = document.getElementById('generation-progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const statusText = document.getElementById('progress-status');
+
+            if (progressBar) {
+                progressBar.style.width = data.progress + '%';
+                progressText.textContent = data.progress + '%';
+            }
+
+            if (statusText) {
+                statusText.textContent = `Generating month ${data.completed_months} of ${data.total_months}...`;
+            }
+
+            // Check if complete
+            if (data.is_complete || data.stage === 'fully_generated') {
+                console.log('✓ Generation complete! Reloading page...');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch(err => {
+            console.error('Progress polling error:', err);
+        });
+}
+
+// Start polling every 2 seconds
+document.addEventListener('DOMContentLoaded', () => {
+    updateProgress(); // Initial call
+    setInterval(updateProgress, 2000);
+});
+{% endif %}
+</script>
 
 <script>
 // Product selection - Initialize immediately
