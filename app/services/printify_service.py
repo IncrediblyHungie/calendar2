@@ -12,15 +12,15 @@ PRINTIFY_API_BASE = "https://api.printify.com/v1"
 # Calendar product configurations
 # All calendars use 3454x2725px images and 13 placeholders (front_cover + 12 months)
 CALENDAR_PRODUCTS = {
-    'calendar_2026': {
-        'blueprint_id': 1253,
+    'wall_calendar': {
+        'blueprint_id': 965,
         'print_provider_id': 'auto',  # Auto-detect on first use
         'variant_id': 'auto',
-        'name': 'Calendar (2026)',
-        'title': 'Custom Hunk Calendar 2026',
-        'size': '10.8" × 8.4"',
-        'description': 'Premium 270gsm semi-glossy paper, wire binding',
-        'price': 2499  # cents
+        'name': 'Wall Calendar (2026)',
+        'title': 'Custom Hunk Wall Calendar 2026',
+        'size': '11" × 8.5" or 14" × 11.5"',
+        'description': 'High-quality paper, spiral binding, QR codes on back',
+        'price': 2999  # cents
     },
     'desktop': {
         'blueprint_id': 1054,
