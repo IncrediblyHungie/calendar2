@@ -178,7 +178,21 @@ def preview():
         if not all(m['generation_status'] == 'completed' for m in months):
             flash('Calendar generation in progress...', 'info')
             generation_stage = session_storage.get_generation_status().get('stage', 'preview_only')
-            return render_template('generating_local.html', project=project, months=months, generation_stage=generation_stage)
+
+            # Create JSON-serializable version of months (without binary image_data)
+            months_json = [
+                {
+                    'id': m['id'],
+                    'month_number': m['month_number'],
+                    'generation_status': m.get('generation_status', 'pending')
+                }
+                for m in months
+            ]
+
+            return render_template('generating_local.html',
+                                 project=project,
+                                 months=months_json,  # Pass JSON-safe version
+                                 generation_stage=generation_stage)
 
         # Month names: Index 0 = Cover, Index 1-12 = January-December
         month_names = [
