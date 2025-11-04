@@ -293,58 +293,7 @@ def create_order(product_id, variant_id, quantity, shipping_address, customer_em
     """
     shop_id = get_shop_id()
 
-    # STEP 1: Calculate shipping to get valid shipping method
-    print(f"  📦 Calculating shipping for product {product_id}...")
-    shipping_calc_payload = {
-        "line_items": [
-            {
-                "product_id": product_id,
-                "variant_id": variant_id,
-                "quantity": quantity
-            }
-        ],
-        "address_to": {
-            "first_name": shipping_address['first_name'],
-            "last_name": shipping_address['last_name'],
-            "email": customer_email,
-            "phone": shipping_address.get('phone', ''),
-            "country": shipping_address['country'],
-            "region": shipping_address.get('state', ''),
-            "address1": shipping_address['address1'],
-            "address2": shipping_address.get('address2', ''),
-            "city": shipping_address['city'],
-            "zip": shipping_address['zip']
-        }
-    }
-
-    calc_response = requests.post(
-        f"{PRINTIFY_API_BASE}/shops/{shop_id}/orders/shipping.json",
-        headers=get_headers(),
-        json=shipping_calc_payload
-    )
-
-    if calc_response.status_code != 200:
-        print(f"  ❌ Shipping calculation failed: {calc_response.status_code}")
-        print(f"  📄 Response: {calc_response.text}")
-        calc_response.raise_for_status()
-
-    shipping_options = calc_response.json()
-
-    # DEBUG: Log full shipping response to understand API format
-    print(f"  📋 Full shipping calc response: {shipping_options}")
-
-    # Select the first (usually cheapest/standard) shipping method
-    if not shipping_options.get('standard') and not shipping_options.get('express'):
-        print(f"  ❌ No shipping methods available!")
-        print(f"  📋 Shipping response: {shipping_options}")
-        raise Exception("No shipping methods available for this destination")
-
-    # Prefer standard, fallback to express
-    shipping_method_id = shipping_options.get('standard', shipping_options.get('express'))
-    print(f"  ✓ Selected shipping method: {shipping_method_id}")
-    print(f"  ℹ️  Shipping method type: {type(shipping_method_id)}")
-
-    # STEP 2: Create order with valid shipping method
+    # Create order payload
     payload = {
         "external_id": f"hotm_{int(time.time())}",  # Unique order reference
         "label": customer_email,
@@ -355,7 +304,7 @@ def create_order(product_id, variant_id, quantity, shipping_address, customer_em
                 "quantity": quantity
             }
         ],
-        "shipping_method": shipping_method_id,  # Use calculated shipping method
+        "shipping_method": 1,  # Standard shipping (Printify default)
         "send_shipping_notification": True,
         "address_to": {
             "first_name": shipping_address['first_name'],
