@@ -242,10 +242,10 @@ async function checkCompletion() {
             redirecting = true;  // Prevent multiple completion checks
             console.log(`🎉 Complete! ${completedCount} succeeded, ${failedMonths.size} failed`);
 
-            // Alert user about failures if any
+            // Log failures but don't alert user (expected behavior for 3-month preview)
             if (failedMonths.size > 0) {
                 console.error(`⚠️ Failed: ${Array.from(failedMonths).join(', ')}`);
-                alert(`⚠️ ${failedMonths.size} image(s) failed after ${MAX_RETRIES} attempts. Proceeding with ${completedCount} successful images.`);
+                // No alert - expected when generating only 3 preview months
             }
 
             // Generate mockups if we have at least 12 months (cover + 11 months minimum)

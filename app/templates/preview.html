@@ -432,10 +432,10 @@ async function handleUnlock() {
         unlockButton.classList.remove('btn-warning');
         unlockButton.classList.add('btn-success');
 
-        // Hide unlock form and show progress
+        // Hide unlock form and start generation
         setTimeout(() => {
             document.getElementById('unlock-form-container').style.display = 'none';
-            alert('Payment method saved! Starting generation of cover + 9 months (10 total)...');
+            // No alert - just start polling for generation
 
             // Start polling for payment method confirmation and generation trigger
             startPollingForGeneration();
