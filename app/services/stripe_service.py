@@ -7,39 +7,31 @@ from flask import current_app
 
 # Product pricing in cents
 CALENDAR_PRICES = {
-    'calendar_2026': 2499,  # $24.99
-    'desktop': 1999,         # $19.99
-    'standard_wall': 2999    # $29.99
+    'wall_calendar': 2999,  # $29.99
+    'desktop': 1999         # $19.99
 }
 
 PRODUCT_NAMES = {
-    'calendar_2026': 'Custom Hunk Calendar 2026',
-    'desktop': 'Custom Desktop Calendar',
-    'standard_wall': 'Custom Wall Calendar 2026'
+    'wall_calendar': 'Wall Calendar 2026',
+    'desktop': 'Custom Desktop Calendar'
 }
 
 PRODUCT_DESCRIPTIONS = {
-    'calendar_2026': 'Personalized 10.8"×8.4" calendar with your AI-generated hunk images. Premium 270gsm semi-glossy paper, wire binding.',
-    'desktop': 'Personalized 10"×5" desktop calendar with your AI-generated images. 250gsm paper, spiral bound.',
-    'standard_wall': 'Personalized wall calendar with your AI-generated images. 250gsm premium paper, spiral binding.'
+    'wall_calendar': 'Personalized wall calendar (11"×8.5" or 14"×11.5") with your AI-generated hunk images. High-quality paper, spiral binding, QR codes on back.',
+    'desktop': 'Personalized 10"×5" desktop calendar with your AI-generated images. 250gsm matte paper, spiral bound.'
 }
 
 # Combined product info (for cart checkout)
 PRODUCT_INFO = {
-    'calendar_2026': {
-        'name': PRODUCT_NAMES['calendar_2026'],
-        'description': PRODUCT_DESCRIPTIONS['calendar_2026'],
-        'price': CALENDAR_PRICES['calendar_2026']
+    'wall_calendar': {
+        'name': PRODUCT_NAMES['wall_calendar'],
+        'description': PRODUCT_DESCRIPTIONS['wall_calendar'],
+        'price': CALENDAR_PRICES['wall_calendar']
     },
     'desktop': {
         'name': PRODUCT_NAMES['desktop'],
         'description': PRODUCT_DESCRIPTIONS['desktop'],
         'price': CALENDAR_PRICES['desktop']
-    },
-    'standard_wall': {
-        'name': PRODUCT_NAMES['standard_wall'],
-        'description': PRODUCT_DESCRIPTIONS['standard_wall'],
-        'price': CALENDAR_PRICES['standard_wall']
     }
 }
 
@@ -48,7 +40,7 @@ def create_checkout_session(product_type, success_url, cancel_url, metadata=None
     Create Stripe Checkout session for calendar purchase
 
     Args:
-        product_type: 'calendar_2026', 'desktop', or 'standard_wall'
+        product_type: 'wall_calendar' or 'desktop'
         success_url: URL to redirect after successful payment
         cancel_url: URL to redirect if user cancels
         metadata: Optional dict of metadata to attach to session

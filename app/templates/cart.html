@@ -38,22 +38,22 @@
                             <!-- Product Details -->
                             <div class="col-md-6">
                                 <h5 class="mb-2">
-                                    {% if item.product_type == 'calendar_2026' %}
-                                    Custom Hunk Calendar 2026
+                                    {% if item.product_type == 'wall_calendar' %}
+                                    Wall Calendar 2026
                                     {% elif item.product_type == 'desktop' %}
                                     Custom Desktop Calendar
                                     {% else %}
-                                    Custom Wall Calendar 2026
+                                    Unknown Product
                                     {% endif %}
                                 </h5>
                                 <p class="text-muted mb-1">
                                     <small>
-                                        {% if item.product_type == 'calendar_2026' %}
-                                        10.8" × 8.4" • Premium 270gsm semi-glossy paper
+                                        {% if item.product_type == 'wall_calendar' %}
+                                        11" × 8.5" or 14" × 11.5" • High-quality paper, spiral binding
                                         {% elif item.product_type == 'desktop' %}
-                                        10" × 5" • 250gsm premium paper
+                                        10" × 5" • 250gsm matte paper, spiral binding
                                         {% else %}
-                                        Multiple sizes • 250gsm high-quality paper
+                                        Contact support
                                         {% endif %}
                                     </small>
                                 </p>

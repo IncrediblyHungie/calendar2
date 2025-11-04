@@ -351,10 +351,10 @@ def generate_mockup():
 
         print(f"✓ Collected {len(month_image_data)} month images")
 
-        # Create Printify products for all 3 calendar types
+        # Create Printify products for all calendar types
         from app.services import printify_service
 
-        product_types = ['calendar_2026', 'desktop', 'standard_wall']
+        product_types = ['wall_calendar', 'desktop']
         total_mockups = 0
 
         print(f"\n🎨 Generating mockups for {len(product_types)} product types...")
@@ -414,7 +414,7 @@ def create_checkout():
     data = request.json
     product_type = data.get('product_type')
 
-    if product_type not in ['calendar_2026', 'desktop', 'standard_wall']:
+    if product_type not in ['wall_calendar', 'desktop']:
         return jsonify({'error': 'Invalid product type'}), 400
 
     try:
@@ -456,7 +456,7 @@ def add_to_cart():
     data = request.json
     product_type = data.get('product_type')
 
-    if product_type not in ['calendar_2026', 'desktop', 'standard_wall']:
+    if product_type not in ['wall_calendar', 'desktop']:
         return jsonify({'error': 'Invalid product type'}), 400
 
     try:
