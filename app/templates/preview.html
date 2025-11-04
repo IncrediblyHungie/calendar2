@@ -212,8 +212,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"></script>
 
 <script>
-// Smooth scroll to calendar on page load
+// Product selection - Initialize immediately
+let selectedProduct = 'calendar_2026'; // Default to most popular
+
+// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Preview page loaded, initializing...');
+
     if (window.location.hash === '') {
         window.scrollTo({
             top: 300,
@@ -222,34 +227,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Configure bs5-lightbox to disable constrain (allow images to scale larger)
-    Lightbox.initialize({
-        constrain: false  // Allow images to scale up to fill available space
-    });
+    if (typeof Lightbox !== 'undefined') {
+        Lightbox.initialize({
+            constrain: false  // Allow images to scale up to fill available space
+        });
+    }
 
     // Product selection
-    let selectedProduct = 'calendar_2026'; // Default to most popular
+    const productOptions = document.querySelectorAll('.product-option');
+    console.log('Found product options:', productOptions.length);
 
-    document.querySelectorAll('.product-option').forEach(option => {
+    productOptions.forEach(option => {
         option.addEventListener('click', function() {
+            console.log('Product clicked:', this.dataset.product);
+
             // Remove selected class from all options
             document.querySelectorAll('.product-option').forEach(opt => {
                 opt.classList.remove('selected', 'border-success', 'border-3');
-                opt.classList.add('border');
             });
 
             // Add selected class to clicked option
             this.classList.add('selected', 'border-success', 'border-3');
-            this.classList.remove('border');
 
             // Update selected product and price
             selectedProduct = this.dataset.product;
             const price = this.dataset.price;
-            document.getElementById('selected-price').textContent = '$' + price;
+            const priceSpan = document.getElementById('selected-price');
+            if (priceSpan) {
+                priceSpan.textContent = '$' + price;
+            }
+            console.log('Selected product:', selectedProduct, 'Price:', price);
         });
     });
 
     // Add to Cart button
-    document.getElementById('add-to-cart-btn').addEventListener('click', async function() {
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    console.log('Add to cart button:', addToCartBtn);
+
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', async function() {
+            console.log('Add to cart clicked, product:', selectedProduct);
         const originalHTML = this.innerHTML;
 
         // Show loading
@@ -299,10 +316,18 @@ document.addEventListener('DOMContentLoaded', () => {
             this.innerHTML = originalHTML;
             this.disabled = false;
         }
-    });
+        });
+    } else {
+        console.error('Add to cart button not found!');
+    }
 
     // Order Now button (direct checkout)
-    document.getElementById('order-now-btn').addEventListener('click', async function() {
+    const orderNowBtn = document.getElementById('order-now-btn');
+    console.log('Order now button:', orderNowBtn);
+
+    if (orderNowBtn) {
+        orderNowBtn.addEventListener('click', async function() {
+            console.log('Order now clicked, product:', selectedProduct);
         const originalHTML = this.innerHTML;
 
         // Show loading
@@ -333,7 +358,12 @@ document.addEventListener('DOMContentLoaded', () => {
             this.innerHTML = originalHTML;
             this.disabled = false;
         }
-    });
+        });
+    } else {
+        console.error('Order now button not found!');
+    }
+
+    console.log('Preview page initialization complete!');
 });
 </script>
 
