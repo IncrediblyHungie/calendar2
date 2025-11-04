@@ -14,27 +14,23 @@ PRINTIFY_API_BASE = "https://api.printify.com/v1"
 CALENDAR_PRODUCTS = {
     'calendar_2026': {
         'blueprint_id': 1253,
-        'print_provider_id': 234,
-        'variant_id': 94860,
+        'print_provider_id': 'auto',  # Auto-detect on first use
+        'variant_id': 'auto',
         'name': 'Calendar (2026)',
+        'title': 'Custom Hunk Calendar 2026',
         'size': '10.8" × 8.4"',
-        'description': 'Premium 270gsm semi-glossy paper, wire binding'
+        'description': 'Premium 270gsm semi-glossy paper, wire binding',
+        'price': 2499  # cents
     },
     'desktop': {
-        'blueprint_id': 1170,
+        'blueprint_id': 1054,
         'print_provider_id': 'auto',  # Auto-detect on first use
         'variant_id': 'auto',
-        'name': 'Desktop Calendar',
+        'name': 'Desktop Calendar (2026)',
+        'title': 'Custom Desktop Hunk Calendar',
         'size': '10" × 5"',
-        'description': '250gsm premium paper, spiral bound at top'
-    },
-    'standard_wall': {
-        'blueprint_id': 965,
-        'print_provider_id': 'auto',  # Auto-detect on first use
-        'variant_id': 'auto',
-        'name': 'Standard Wall Calendar (2026)',
-        'size': 'Multiple sizes',
-        'description': '250gsm high-quality paper, spiral binding'
+        'description': '250gsm matte paper, spiral binding',
+        'price': 1999  # cents
     }
 }
 
