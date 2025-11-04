@@ -43,9 +43,12 @@ def _save_session(session_id):
         return
 
     try:
+        import os
         session_file = STORAGE_DIR / f'{session_id}.pkl'
         with open(session_file, 'wb') as f:
             pickle.dump(_storage[session_id], f)
+            f.flush()  # Flush Python buffers to OS
+            os.fsync(f.fileno())  # Force OS to write to disk immediately
         # Force garbage collection after saving large image data
         gc.collect()
     except Exception as e:
