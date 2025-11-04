@@ -110,6 +110,23 @@ def stripe_webhook():
             if is_cart_checkout:
                 # MULTI-ORDER FULFILLMENT: Process all cart items
                 print("\n🛒 Processing cart checkout with multiple calendars...")
+                print(f"   Looking up session ID: {internal_session_id}")
+
+                # DEBUG: Check if session exists
+                session_storage._load_storage()
+                if internal_session_id in session_storage._storage:
+                    session_data = session_storage._storage[internal_session_id]
+                    print(f"   ✓ Session found in storage")
+                    print(f"   Cart item count in session: {len(session_data.get('cart', []))}")
+                    if session_data.get('cart'):
+                        print(f"   Cart items: {session_data['cart']}")
+                    else:
+                        print(f"   ⚠️  Cart is empty in session data!")
+                        print(f"   Session keys: {list(session_data.keys())}")
+                else:
+                    print(f"   ❌ Session ID not found in storage!")
+                    print(f"   Available session IDs: {list(session_storage._storage.keys())[:5]}...")
+
                 cart_items = session_storage.get_cart_by_session_id(internal_session_id)
 
                 if not cart_items:
