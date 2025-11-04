@@ -612,3 +612,209 @@ def get_cart_project_cover(project_id):
     except Exception as e:
         print(f"❌ Get project cover error: {e}")
         return jsonify({'error': str(e)}), 500
+
+# ============================================================================
+# 3-MONTH PREVIEW SYSTEM ENDPOINTS
+# ============================================================================
+
+@bp.route('/authorize-payment', methods=['POST'])
+def authorize_payment():
+    """
+    Create Stripe Setup Intent for card authorization (NO CHARGE)
+    Called when user clicks "Unlock All 12 Months" button
+    """
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'No active project'}), 401
+
+    print(f"\n{'='*70}")
+    print(f"🔓 PAYMENT AUTHORIZATION REQUEST")
+    print(f"{'='*70}")
+
+    try:
+        # Check if preview expired
+        if session_storage.is_preview_expired():
+            print(f"❌ Preview expired")
+            return jsonify({'error': 'Preview expired. Please start over.'}), 400
+
+        # Check if already authorized
+        if session_storage.get_payment_method_id():
+            print(f"✓ Payment method already authorized")
+            return jsonify({'error': 'Payment method already authorized'}), 400
+
+        # Get internal session ID for webhook metadata
+        internal_session_id = session_storage._get_session_id()
+
+        print(f"✓ Creating Setup Intent for session: {internal_session_id}")
+
+        # Create Setup Intent
+        setup_intent = stripe_service.create_setup_intent(
+            metadata={
+                'internal_session_id': internal_session_id,
+                'project_id': project['id'],
+                'purpose': '3_month_preview_unlock'
+            }
+        )
+
+        # Save setup intent ID
+        session_storage.save_setup_intent(setup_intent['setup_intent_id'])
+
+        print(f"✅ Setup Intent created: {setup_intent['setup_intent_id']}")
+        print(f"{'='*70}\n")
+
+        return jsonify({
+            'success': True,
+            'client_secret': setup_intent['client_secret'],
+            'setup_intent_id': setup_intent['setup_intent_id']
+        })
+
+    except Exception as e:
+        print(f"❌ Payment authorization error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/generation-progress', methods=['GET'])
+def generation_progress():
+    """
+    Get real-time generation progress for months 4-12
+    Polled by frontend every 2 seconds during generation
+    """
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        status = session_storage.get_generation_status()
+
+        return jsonify({
+            'success': True,
+            'stage': status['stage'],
+            'progress': status['progress'],
+            'completed_months': status['completed_months'],
+            'total_months': status['total_months'],
+            'is_complete': status['stage'] == 'fully_generated',
+            'has_payment_method': status['has_payment_method']
+        })
+
+    except Exception as e:
+        print(f"❌ Generation progress error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/generate-remaining-months', methods=['POST'])
+def generate_remaining_months():
+    """
+    Generate months 4-12 after payment method authorized
+    Called internally by webhook handler after setup_intent.succeeded
+    """
+    from app.services.gemini_service import generate_calendar_image
+    from app.services.monthly_themes import get_enhanced_prompt, get_all_themes
+    from PIL import Image as PILImage
+    import gc
+
+    print(f"\n{'='*70}")
+    print(f"🎨 GENERATING REMAINING MONTHS (4-12)")
+    print(f"{'='*70}\n")
+
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        # Verify payment method is saved
+        if not session_storage.get_payment_method_id():
+            return jsonify({'error': 'Payment method not authorized'}), 400
+
+        # Set status to generating
+        session_storage.set_generation_stage('generating_full')
+        session_storage.update_generation_progress(0)
+
+        # Get all themes
+        all_themes = get_all_themes()
+
+        # Create remaining month records
+        session_storage.create_remaining_months(all_themes)
+
+        # Get reference images
+        uploaded_images = session_storage.get_uploaded_images()
+        reference_image_data = [img['file_data'] for img in uploaded_images]
+
+        if not reference_image_data:
+            raise Exception('No reference images found')
+
+        # Generate months 4-12 (April through December)
+        remaining_months = [4, 5, 6, 7, 8, 9, 10, 11, 12]
+        month_names = ['', '', '', '', 'April', 'May', 'June', 'July', 'August',
+                       'September', 'October', 'November', 'December']
+
+        for i, month_num in enumerate(remaining_months):
+            try:
+                print(f"\n{'─'*50}")
+                print(f"📸 Generating {month_names[month_num]} (Month {month_num})...")
+
+                # Check if already completed (race condition protection)
+                month = session_storage.get_month_by_number(month_num)
+                if month and month.get('generation_status') == 'completed':
+                    print(f"✓ {month_names[month_num]} already completed, skipping")
+                    continue
+
+                # Mark as processing
+                session_storage.update_month_status(month_num, 'processing')
+
+                # Get enhanced prompt
+                enhanced_prompt = get_enhanced_prompt(month_num)
+
+                # Generate image
+                image_data = generate_calendar_image(enhanced_prompt, reference_image_data)
+
+                # Convert PNG to JPEG (quality 80)
+                img = PILImage.open(io.BytesIO(image_data))
+                img_io = io.BytesIO()
+                img.convert('RGB').save(img_io, format='JPEG', quality=80, optimize=True)
+                jpeg_data = img_io.getvalue()
+
+                # Clear memory
+                del image_data
+                del img
+                del img_io
+                gc.collect()
+
+                # Save to session storage
+                session_storage.update_month_status(month_num, 'completed', image_data=jpeg_data)
+
+                # Update progress: 0% to 100%
+                progress = int((i + 1) / len(remaining_months) * 100)
+                session_storage.update_generation_progress(progress)
+
+                print(f"✅ {month_names[month_num]} completed ({progress}%)")
+
+            except Exception as month_error:
+                print(f"❌ Failed to generate {month_names[month_num]}: {month_error}")
+                session_storage.update_month_status(month_num, 'failed', error=str(month_error))
+                # Continue with other months
+
+        # Mark as fully generated
+        session_storage.set_generation_stage('fully_generated')
+        session_storage.update_generation_progress(100)
+
+        print(f"\n{'='*70}")
+        print(f"✅ REMAINING MONTHS GENERATION COMPLETE!")
+        print(f"{'='*70}\n")
+
+        return jsonify({
+            'success': True,
+            'completed_months': session_storage.get_completion_count(),
+            'message': 'All remaining months generated successfully'
+        })
+
+    except Exception as e:
+        print(f"\n❌ REMAINING MONTHS GENERATION FAILED")
+        print(f"   Error: {e}")
+        import traceback
+        traceback.print_exc()
+        print(f"{'='*70}\n")
+
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500

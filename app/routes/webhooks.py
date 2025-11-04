@@ -43,6 +43,40 @@ def stripe_webhook():
     print(f"📨 Received Stripe webhook: {event['type']}")
     print(f"   Event ID: {event.get('id', 'unknown')}")
 
+    # NEW: Handle setup_intent.succeeded event (3-month preview system)
+    if event['type'] == 'setup_intent.succeeded':
+        print(f"\n{'='*70}")
+        print(f"🔓 SETUP INTENT SUCCEEDED - Payment Method Authorized!")
+        print(f"{'='*70}")
+
+        setup_intent = event['data']['object']
+        internal_session_id = setup_intent.metadata.get('internal_session_id')
+        project_id = setup_intent.metadata.get('project_id')
+        payment_method_id = setup_intent.payment_method
+
+        print(f"   Session ID: {internal_session_id}")
+        print(f"   Project ID: {project_id}")
+        print(f"   Payment Method: {payment_method_id}")
+
+        if not internal_session_id:
+            print(f"❌ No internal_session_id in metadata!")
+            return jsonify({'error': 'Missing session ID'}), 400
+
+        # Save payment method to session
+        success = session_storage.save_payment_method_by_session_id(
+            internal_session_id,
+            payment_method_id
+        )
+
+        if success:
+            print(f"✅ Payment method saved to session")
+            print(f"📱 Frontend will poll and trigger generation")
+            print(f"{'='*70}\n")
+        else:
+            print(f"❌ Failed to save payment method!")
+
+        return jsonify({'success': True})
+
     # Handle checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         session_obj = event['data']['object']
