@@ -159,6 +159,15 @@ def generate_month(month_num):
 
         print(f"💾 Month {month_num}: Saved {len(jpeg_data)} bytes")
 
+        # Check if all months are now complete
+        all_months = session_storage.get_all_months()
+        if all(m['generation_status'] == 'completed' for m in all_months):
+            print(f"🎉 All {len(all_months)} months complete! Updating stage to fully_generated")
+            session_storage.set_generation_stage('fully_generated')
+        else:
+            completed_count = sum(1 for m in all_months if m['generation_status'] == 'completed')
+            print(f"📊 Progress: {completed_count}/{len(all_months)} months complete")
+
         return jsonify({
             'success': True,
             'status': 'completed',
