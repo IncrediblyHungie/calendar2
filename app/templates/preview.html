@@ -81,74 +81,127 @@
 
     <!-- Call to Action -->
     <div class="card shadow-lg border-success">
-        <div class="card-body p-5 text-center">
-            <h3 class="mb-4">
+        <div class="card-body p-5">
+            <h3 class="text-center mb-4">
                 <i class="fas fa-laugh-beam text-danger me-2"></i>
-                Love Seeing Yourself as a Hunk?
+                Love This Calendar?
             </h3>
-            <p class="lead mb-4">
-                Order a high-quality printed calendar! Perfect for gifts, gags, or just admiring your hunky transformations all year!
+            <p class="lead text-center mb-4">
+                Choose your calendar style and add to cart. Perfect for gifts, gags, or just admiring this hunky transformation!
             </p>
 
+            <!-- Product Selection -->
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5>Desktop Calendar</h5>
-                            <p class="text-muted">10" × 5"</p>
-                            <h4 class="text-primary">$19.99</h4>
-                            <button class="btn btn-outline-primary w-100 add-to-cart-btn" data-product="desktop">
-                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
-                            </button>
+                    <div class="card h-100 product-option" data-product="desktop" data-price="19.99">
+                        <div class="card-body text-center">
+                            <h5>Desktop</h5>
+                            <p class="text-muted mb-1">10" × 5"</p>
+                            <small class="text-muted d-block mb-2">250gsm premium paper</small>
+                            <h4 class="text-primary mb-0">$19.99</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100 border-success">
-                        <div class="card-body">
+                    <div class="card h-100 border-success border-3 product-option selected" data-product="calendar_2026" data-price="24.99">
+                        <div class="card-body text-center">
                             <div class="badge bg-success mb-2">MOST POPULAR</div>
                             <h5>Calendar 2026</h5>
-                            <p class="text-muted">10.8" × 8.4"</p>
-                            <h4 class="text-success">$24.99</h4>
-                            <button class="btn btn-success w-100 add-to-cart-btn" data-product="calendar_2026">
-                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
-                            </button>
+                            <p class="text-muted mb-1">10.8" × 8.4"</p>
+                            <small class="text-muted d-block mb-2">270gsm semi-glossy</small>
+                            <h4 class="text-success mb-0">$24.99</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
+                    <div class="card h-100 product-option" data-product="standard_wall" data-price="29.99">
+                        <div class="card-body text-center">
                             <h5>Wall Calendar</h5>
-                            <p class="text-muted">Multiple sizes</p>
-                            <h4 class="text-primary">$29.99</h4>
-                            <button class="btn btn-outline-primary w-100 add-to-cart-btn" data-product="standard_wall">
-                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
-                            </button>
+                            <p class="text-muted mb-1">Multiple sizes</p>
+                            <small class="text-muted d-block mb-2">250gsm high-quality</small>
+                            <h4 class="text-primary mb-0">$29.99</h4>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Action Buttons -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <button id="add-to-cart-btn" class="btn btn-success btn-lg w-100">
+                        <i class="fas fa-cart-plus me-2"></i>
+                        Add to Cart (<span id="selected-price">$24.99</span>)
+                    </button>
+                    <small class="text-muted d-block mt-2 text-center">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Create calendars for different people!
+                    </small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button id="order-now-btn" class="btn btn-primary btn-lg w-100">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Order This Calendar Now
+                    </button>
+                    <small class="text-muted d-block mt-2 text-center">
+                        <i class="fas fa-truck me-1"></i>
+                        Skip cart, checkout immediately
+                    </small>
+                </div>
+            </div>
+
+            <!-- Secondary Actions -->
             <div class="d-grid gap-2 col-md-8 mx-auto">
-                <a href="{{ url_for('projects.calendar_preview') }}" class="btn btn-outline-primary btn-lg">
+                <a href="{{ url_for('projects.calendar_preview') }}" class="btn btn-outline-primary">
                     <i class="fas fa-calendar-alt me-2"></i>
                     View All 12 Months at Once
                 </a>
-                <a href="{{ url_for('projects.checkout') }}" class="btn btn-primary btn-lg">
-                    <i class="fas fa-shopping-cart me-2"></i>
-                    Order Now (Single Item)
-                </a>
                 <a href="{{ url_for('projects.create_another') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-plus-circle me-2"></i>
-                    Create Another Calendar
+                    <i class="fas fa-user-plus me-2"></i>
+                    Create Calendar for Another Person
                 </a>
             </div>
 
-            <p class="text-muted mt-4 mb-0">
-                <i class="fas fa-info-circle me-1"></i>
+            <p class="text-muted mt-4 mb-0 text-center">
+                <i class="fas fa-clock me-1"></i>
                 Your calendar preview is saved for 24 hours
             </p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="addedToCartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Added to Cart!
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-calendar-check fa-4x text-success mb-3"></i>
+                    <h4>Calendar Added Successfully!</h4>
+                    <p class="lead mb-3">You now have <strong><span id="modalCartCount">1</span> calendar(s)</strong> in your cart.</p>
+                    <p class="text-muted">
+                        Want to create calendars for other people?<br>
+                        Upload different photos for each person!
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="{{ url_for('projects.create_another') }}" class="btn btn-success btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Create Another Calendar
+                    </a>
+                    <a href="{{ url_for('projects.cart_page') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        View Cart & Checkout
+                    </a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Continue Browsing
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -173,63 +226,140 @@ document.addEventListener('DOMContentLoaded', () => {
         constrain: false  // Allow images to scale up to fill available space
     });
 
-    // Add to Cart functionality
-    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', async function() {
-            const productType = this.dataset.product;
-            const originalHTML = this.innerHTML;
+    // Product selection
+    let selectedProduct = 'calendar_2026'; // Default to most popular
 
-            // Show loading
-            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Adding...';
-            this.disabled = true;
+    document.querySelectorAll('.product-option').forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove selected class from all options
+            document.querySelectorAll('.product-option').forEach(opt => {
+                opt.classList.remove('selected', 'border-success', 'border-3');
+                opt.classList.add('border');
+            });
 
-            try {
-                const response = await fetch('/api/cart/add', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({product_type: productType})
-                });
+            // Add selected class to clicked option
+            this.classList.add('selected', 'border-success', 'border-3');
+            this.classList.remove('border');
 
-                const data = await response.json();
+            // Update selected product and price
+            selectedProduct = this.dataset.product;
+            const price = this.dataset.price;
+            document.getElementById('selected-price').textContent = '$' + price;
+        });
+    });
 
-                if (data.success) {
-                    // Show success feedback
-                    this.innerHTML = '<i class="fas fa-check me-2"></i>Added!';
-                    this.classList.remove('btn-outline-primary', 'btn-success', 'btn-outline-success');
-                    this.classList.add('btn-success');
+    // Add to Cart button
+    document.getElementById('add-to-cart-btn').addEventListener('click', async function() {
+        const originalHTML = this.innerHTML;
 
-                    // Update cart count in navigation (if cart badge exists)
-                    const cartBadge = document.querySelector('.cart-count-badge');
-                    if (cartBadge) {
-                        cartBadge.textContent = data.cart_count;
-                        cartBadge.style.display = 'inline';
-                    }
+        // Show loading
+        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Adding...';
+        this.disabled = true;
 
-                    // Show success message
-                    alert(data.message + '\\n\\nClick "Create Another Calendar" to add more calendars to your cart!');
+        try {
+            const response = await fetch('/api/cart/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({product_type: selectedProduct})
+            });
 
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        this.innerHTML = originalHTML;
-                        this.disabled = false;
-                    }, 2000);
-                } else {
-                    alert('Error: ' + (data.error || 'Failed to add to cart'));
+            const data = await response.json();
+
+            if (data.success) {
+                // Show success feedback
+                this.innerHTML = '<i class="fas fa-check me-2"></i>Added to Cart!';
+
+                // Update cart count in navigation
+                const cartBadge = document.querySelector('.cart-count-badge');
+                if (cartBadge) {
+                    cartBadge.textContent = data.cart_count;
+                    cartBadge.style.display = 'inline';
+                }
+
+                // Update modal cart count
+                document.getElementById('modalCartCount').textContent = data.cart_count;
+
+                // Show success modal
+                const modal = new bootstrap.Modal(document.getElementById('addedToCartModal'));
+                modal.show();
+
+                // Reset button
+                setTimeout(() => {
                     this.innerHTML = originalHTML;
                     this.disabled = false;
-                }
-            } catch (error) {
-                console.error('Add to cart error:', error);
-                alert('Failed to add to cart. Please try again.');
+                }, 1000);
+            } else {
+                alert('Error: ' + (data.error || 'Failed to add to cart'));
                 this.innerHTML = originalHTML;
                 this.disabled = false;
             }
-        });
+        } catch (error) {
+            console.error('Add to cart error:', error);
+            alert('Failed to add to cart. Please try again.');
+            this.innerHTML = originalHTML;
+            this.disabled = false;
+        }
+    });
+
+    // Order Now button (direct checkout)
+    document.getElementById('order-now-btn').addEventListener('click', async function() {
+        const originalHTML = this.innerHTML;
+
+        // Show loading
+        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+        this.disabled = true;
+
+        try {
+            const response = await fetch('/api/checkout/create', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({product_type: selectedProduct})
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Redirect to Stripe checkout
+                console.log('✓ Checkout session created:', data.session_id);
+                window.location.href = data.checkout_url;
+            } else {
+                alert('Error: ' + (data.error || 'Failed to create checkout session'));
+                this.innerHTML = originalHTML;
+                this.disabled = false;
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            alert('Failed to start checkout. Please try again.');
+            this.innerHTML = originalHTML;
+            this.disabled = false;
+        }
     });
 });
 </script>
 
 <style>
+/* Product selection cards */
+.product-option {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #dee2e6;
+}
+
+.product-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-option.selected {
+    border: 3px solid #198754 !important;
+    box-shadow: 0 5px 20px rgba(25, 135, 84, 0.3);
+    transform: translateY(-3px);
+}
+
+.product-option .card-body {
+    padding: 1.5rem 1rem;
+}
+
 /* Optimize lightbox for portrait images (3:4 aspect ratio) */
 .lightbox .modal-dialog {
     max-width: none !important;
