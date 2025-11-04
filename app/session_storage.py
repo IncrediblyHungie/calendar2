@@ -215,14 +215,14 @@ def get_all_months():
 def create_months_with_themes(themes):
     """
     Create months for active project
-    NEW: Only creates 4 months initially (cover + Jan, Feb, Mar) for preview
-    Remaining 9 months created after payment method authorization
+    NEW: Only creates 3 months initially (Jan, Feb, Mar) for preview - NO COVER
+    Cover + remaining 9 months created after payment method authorization
     """
     project = _get_active_project()
     project['months'] = []
 
-    # Phase 1: Only create first 4 months for FREE preview (cover + Jan, Feb, Mar)
-    preview_months = [0, 1, 2, 3]  # Cover, January, February, March
+    # Phase 1: Only create first 3 months for FREE preview (Jan, Feb, Mar) - NO COVER
+    preview_months = [1, 2, 3]  # January, February, March (cover comes later)
 
     for month_num in preview_months:
         theme = themes[month_num]
@@ -244,13 +244,13 @@ def create_months_with_themes(themes):
 
 def create_remaining_months(themes):
     """
-    Create remaining 9 months (April-December) after payment authorization
+    Create remaining 10 months (Cover + April-December) after payment authorization
     Called after setup_intent.succeeded webhook
     """
     project = _get_active_project()
 
-    # Phase 2: Create months 4-12 (April through December)
-    remaining_months = [4, 5, 6, 7, 8, 9, 10, 11, 12]
+    # Phase 2: Create cover + months 4-12 (Cover + April through December) = 10 months
+    remaining_months = [0, 4, 5, 6, 7, 8, 9, 10, 11, 12]  # Cover comes AFTER payment
 
     for month_num in remaining_months:
         theme = themes[month_num]

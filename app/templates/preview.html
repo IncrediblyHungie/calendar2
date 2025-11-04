@@ -49,7 +49,7 @@
             Generating Your Full Calendar...
         </h4>
         <p class="mb-3">
-            Hold tight! We're creating the remaining 9 months of hunk transformations. This takes about 5-10 minutes.
+            Hold tight! We're creating the cover + remaining 9 months (10 total). This takes about 5-10 minutes.
         </p>
         <div class="progress mb-2" style="height: 30px;">
             <div id="generation-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
@@ -136,7 +136,7 @@
                 Unlock All 12 Months
             </h3>
             <p class="lead text-center mb-4">
-                Love what you see? Enter your payment info to unlock the remaining 9 months (April-December).
+                Love what you see? Enter your payment info to unlock the cover + remaining 9 months (10 total).
                 <strong>We'll only charge you when you're ready to order!</strong>
             </p>
 
@@ -435,7 +435,7 @@ async function handleUnlock() {
         // Hide unlock form and show progress
         setTimeout(() => {
             document.getElementById('unlock-form-container').style.display = 'none';
-            alert('Payment method saved! Starting generation of remaining 9 months...');
+            alert('Payment method saved! Starting generation of cover + 9 months (10 total)...');
 
             // Start polling for payment method confirmation and generation trigger
             startPollingForGeneration();

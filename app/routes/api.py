@@ -704,7 +704,7 @@ def generation_progress():
 @bp.route('/generate-remaining-months', methods=['POST'])
 def generate_remaining_months():
     """
-    Generate months 4-12 after payment method authorized
+    Generate Cover + months 4-12 after payment method authorized (10 total)
     Called internally by webhook handler after setup_intent.succeeded
     """
     from app.services.gemini_service import generate_calendar_image
@@ -713,7 +713,7 @@ def generate_remaining_months():
     import gc
 
     print(f"\n{'='*70}")
-    print(f"🎨 GENERATING REMAINING MONTHS (4-12)")
+    print(f"🎨 GENERATING REMAINING 10 MONTHS (Cover + Apr-Dec)")
     print(f"{'='*70}\n")
 
     project = get_current_project()
@@ -732,7 +732,7 @@ def generate_remaining_months():
         # Get all themes
         all_themes = get_all_themes()
 
-        # Create remaining month records
+        # Create remaining month records (Cover + Apr-Dec)
         session_storage.create_remaining_months(all_themes)
 
         # Get reference images
@@ -742,10 +742,10 @@ def generate_remaining_months():
         if not reference_image_data:
             raise Exception('No reference images found')
 
-        # Generate months 4-12 (April through December)
-        remaining_months = [4, 5, 6, 7, 8, 9, 10, 11, 12]
-        month_names = ['', '', '', '', 'April', 'May', 'June', 'July', 'August',
-                       'September', 'October', 'November', 'December']
+        # Generate Cover + months 4-12 (Cover + April through December) = 10 months
+        remaining_months = [0, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        month_names = ['Cover', 'January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December']
 
         for i, month_num in enumerate(remaining_months):
             try:

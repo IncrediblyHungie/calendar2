@@ -140,9 +140,9 @@ def generate():
     if not project:
         return redirect(url_for('main.start'))
 
-    # Check if themes are confirmed (now only creates 4 months for preview)
+    # Check if themes are confirmed (now only creates 3 months for preview)
     months = session_storage.get_all_months()
-    if len(months) < 4:  # Changed from 13 to 4 (cover + 3 months preview)
+    if len(months) < 3:  # Only 3 months preview (Jan, Feb, Mar - no cover)
         # No flash message - just redirect
         return redirect(url_for('projects.themes'))
 
