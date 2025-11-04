@@ -180,6 +180,14 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
         print(f"   ✅ Reusing existing preview product: {product_id}")
         print(f"   ⚡ This is MUCH faster than creating a new product!")
 
+        # If variant_id is "auto", auto-detect the real variant ID
+        if variant_id == 'auto':
+            print("  ℹ️  Variant ID is 'auto', auto-detecting...")
+            product_config = printify_service.CALENDAR_PRODUCTS.get(product_type)
+            auto_config = printify_service.auto_detect_config(product_config['blueprint_id'])
+            variant_id = auto_config['variant_id']
+            print(f"  ✓ Auto-detected variant ID: {variant_id}")
+
     else:
         # No preview product found - create new one
         print(f"   ℹ️  No preview product found, creating new product...")
@@ -256,8 +264,15 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
             title=f"Custom Hunk Calendar for {customer_email}"
         )
 
-        # Get variant ID
+        # Get variant ID and resolve if "auto"
         variant_id = product_config['variant_id']
+
+        # If variant_id is "auto", auto-detect the real variant ID
+        if variant_id == 'auto':
+            print("  ℹ️  Variant ID is 'auto', auto-detecting...")
+            auto_config = printify_service.auto_detect_config(product_config['blueprint_id'])
+            variant_id = auto_config['variant_id']
+            print(f"  ✓ Auto-detected variant ID: {variant_id}")
 
     # Publish the product (works for both new and existing products)
     print("\n📢 Publishing product...")
@@ -267,7 +282,7 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
     print("\n📦 Creating Printify order...")
     order_id = printify_service.create_order(
         product_id=product_id,
-        variant_id=variant_id,
+        variant_id=variant_id,  # Now using real numeric variant ID
         quantity=1,
         shipping_address=shipping_address,
         customer_email=customer_email
