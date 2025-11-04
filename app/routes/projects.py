@@ -166,49 +166,62 @@ def generate():
 @bp.route('/preview')
 def preview():
     """Preview generated calendar"""
-    project = get_current_project()
-    if not project:
+    try:
+        project = get_current_project()
+        if not project:
+            return redirect(url_for('main.start'))
+
+        # Get all months from session storage
+        months = session_storage.get_all_months()
+
+        # Check if generation is complete
+        if not all(m['generation_status'] == 'completed' for m in months):
+            flash('Calendar generation in progress...', 'info')
+            generation_stage = session_storage.get_generation_status().get('stage', 'preview_only')
+            return render_template('generating_local.html', project=project, months=months, generation_stage=generation_stage)
+
+        # Month names: Index 0 = Cover, Index 1-12 = January-December
+        month_names = [
+            'Cover',  # Month 0 = Cover photo
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ]
+
+        # Get mockup data if available
+        mockup_data = session_storage.get_preview_mockup_data()
+
+        # Get generation status for 3-month preview system
+        gen_status = session_storage.get_generation_status()
+
+        # Create JSON-serializable version of months (without binary image_data)
+        months_json = [
+            {
+                'id': m['id'],
+                'month_number': m['month_number'],
+                'generation_status': m.get('generation_status', 'pending')
+            }
+            for m in months
+        ]
+
+        return render_template('preview.html',
+                              project=project,
+                              months=months,
+                              months_json=months_json,
+                              month_names=month_names,
+                              mockup_data=mockup_data,
+                              generation_status=gen_status)
+
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"\n{'='*70}")
+        print(f"❌ PREVIEW PAGE ERROR")
+        print(f"{'='*70}")
+        print(f"Error: {str(e)}")
+        print(f"Traceback:\n{error_details}")
+        print(f"{'='*70}\n")
+        flash(f'An error occurred loading the preview. Please try again or start over.', 'danger')
         return redirect(url_for('main.start'))
-
-    # Get all months from session storage
-    months = session_storage.get_all_months()
-
-    # Check if generation is complete
-    if not all(m['generation_status'] == 'completed' for m in months):
-        flash('Calendar generation in progress...', 'info')
-        generation_stage = session_storage.get_generation_status().get('stage', 'preview_only')
-        return render_template('generating_local.html', project=project, months=months, generation_stage=generation_stage)
-
-    # Month names: Index 0 = Cover, Index 1-12 = January-December
-    month_names = [
-        'Cover',  # Month 0 = Cover photo
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-    ]
-
-    # Get mockup data if available
-    mockup_data = session_storage.get_preview_mockup_data()
-
-    # Get generation status for 3-month preview system
-    gen_status = session_storage.get_generation_status()
-
-    # Create JSON-serializable version of months (without binary image_data)
-    months_json = [
-        {
-            'id': m['id'],
-            'month_number': m['month_number'],
-            'generation_status': m.get('generation_status', 'pending')
-        }
-        for m in months
-    ]
-
-    return render_template('preview.html',
-                          project=project,
-                          months=months,
-                          months_json=months_json,
-                          month_names=month_names,
-                          mockup_data=mockup_data,
-                          generation_status=gen_status)
 
 @bp.route('/calendar-preview')
 def calendar_preview():
