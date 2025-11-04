@@ -329,6 +329,19 @@ def create_order(product_id, variant_id, quantity, shipping_address, customer_em
         json=payload
     )
 
+    if response.status_code != 200:
+        # Log the full error response from Printify
+        print(f"  ❌ Printify create_order failed with status {response.status_code}")
+        print(f"  📄 Error response: {response.text}")
+        print(f"  🏪 Shop ID: {shop_id}")
+        print(f"  📦 Product ID: {product_id}")
+        print(f"  🔢 Variant ID: {variant_id}")
+        try:
+            error_data = response.json()
+            print(f"  📋 Error details: {error_data}")
+        except:
+            pass
+
     response.raise_for_status()
     order_data = response.json()
 
