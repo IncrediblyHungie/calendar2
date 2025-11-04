@@ -38,39 +38,11 @@
                 Your 12 hunk months are ready! Choose your calendar style and we'll print and ship it to you.
             </p>
 
-            <div class="row g-4">
-                <!-- Calendar 2026 -->
+            <div class="row g-4 align-items-center">
+                <!-- Desktop Calendar - SMALL -->
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm hover-lift">
-                        <img src="https://images.printify.com/68d29f8ffd6cd3545304b932"
-                             class="card-img-top"
-                             alt="Calendar 2026"
-                             style="height: 250px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">Calendar 2026</h5>
-                            <p class="card-text flex-grow-1">
-                                <small class="text-muted">10.8" × 8.4"</small><br>
-                                Premium 270gsm semi-glossy paper<br>
-                                Wire binding, centered holes for hanging
-                            </p>
-                            <div class="mb-3">
-                                <h4 class="text-primary mb-0">$24.99</h4>
-                                <small class="text-muted">Free shipping to US</small>
-                            </div>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                            <button class="btn btn-primary w-100 order-btn"
-                                    data-product="calendar_2026">
-                                <i class="fas fa-shopping-cart me-2"></i>
-                                Order Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Desktop Calendar -->
-                <div class="col-md-4">
-                    <div class="card h-100 shadow-sm hover-lift">
+                        <div class="size-badge size-badge-small">SMALL</div>
                         <img src="https://images.printify.com/68d29f8ffd6cd3545304b932"
                              class="card-img-top"
                              alt="Desktop Calendar"
@@ -97,9 +69,44 @@
                     </div>
                 </div>
 
-                <!-- Standard Wall Calendar -->
+                <!-- Calendar 2026 - MEDIUM (MOST POPULAR) -->
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-lg hover-lift most-popular-card">
+                        <div class="popular-badge">
+                            <i class="fas fa-star me-1"></i>
+                            MOST POPULAR
+                        </div>
+                        <div class="size-badge size-badge-medium">MEDIUM</div>
+                        <img src="https://images.printify.com/68d29f8ffd6cd3545304b932"
+                             class="card-img-top"
+                             alt="Calendar 2026"
+                             style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Calendar 2026</h5>
+                            <p class="card-text flex-grow-1">
+                                <small class="text-muted">10.8" × 8.4"</small><br>
+                                Premium 270gsm semi-glossy paper<br>
+                                Wire binding, centered holes for hanging
+                            </p>
+                            <div class="mb-3">
+                                <h4 class="text-success mb-0">$24.99</h4>
+                                <small class="text-muted">Free shipping to US</small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-success w-100 order-btn"
+                                    data-product="calendar_2026">
+                                <i class="fas fa-shopping-cart me-2"></i>
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wall Calendar - LARGE -->
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm hover-lift">
+                        <div class="size-badge size-badge-large">LARGE</div>
                         <img src="https://images.printify.com/68d29f8ffd6cd3545304b932"
                              class="card-img-top"
                              alt="Wall Calendar"
@@ -233,12 +240,88 @@
     font-weight: 600;
 }
 
+/* Product Cards */
 .hover-lift {
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    position: relative;
 }
 
 .hover-lift:hover {
     transform: translateY(-5px);
+}
+
+/* Size Badges */
+.size-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.size-badge-small {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.size-badge-medium {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.size-badge-large {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+/* Most Popular Card Styling */
+.most-popular-card {
+    border: 3px solid #198754 !important;
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(25, 135, 84, 0.3) !important;
+}
+
+.most-popular-card:hover {
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 12px 32px rgba(25, 135, 84, 0.4) !important;
+}
+
+/* Most Popular Badge */
+.popular-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #333;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+    border: 2px solid #fff;
+}
+
+.popular-badge i {
+    color: #ff6b6b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .most-popular-card {
+        transform: scale(1);
+    }
+
+    .most-popular-card:hover {
+        transform: scale(1.02) translateY(-5px);
+    }
 }
 </style>
 
