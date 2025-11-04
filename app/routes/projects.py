@@ -8,7 +8,6 @@ from app.routes.main import get_current_project
 from app.services.monthly_themes import get_all_themes, get_theme, get_enhanced_prompt
 from PIL import Image, ImageOps
 import io
-import calendar
 
 # Register HEIC support for iPhone photos
 try:
@@ -188,16 +187,6 @@ def preview():
         'July', 'August', 'September', 'October', 'November', 'December'
     ]
 
-    # Generate 2026 calendar data for each month
-    calendar_data = {}
-    for month_num in range(1, 13):
-        # Get calendar matrix for this month (2026)
-        month_calendar = calendar.monthcalendar(2026, month_num)
-        calendar_data[month_num] = {
-            'weeks': month_calendar,  # List of weeks, each week is list of days (0 = empty)
-            'name': month_names[month_num]
-        }
-
     # Get mockup data if available
     mockup_data = session_storage.get_preview_mockup_data()
 
@@ -216,8 +205,7 @@ def preview():
                           months=months,
                           months_json=months_json,
                           month_names=month_names,
-                          mockup_data=mockup_data,
-                          calendar_data=calendar_data)
+                          mockup_data=mockup_data)
 
 @bp.route('/calendar-preview')
 def calendar_preview():

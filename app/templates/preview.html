@@ -169,27 +169,11 @@
                                             <div class="calendar-page-preview">
                                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                                      alt="{{ month_names[month.month_number] }}"
-                                                     class="calendar-page-image">
-                                                <div class="calendar-dates-section">
-                                                    <div class="calendar-month-header">{{ month_names[month.month_number] }} 2026</div>
-                                                    <div class="calendar-grid-compact">
-                                                        <div class="calendar-weekdays-compact">
-                                                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                                                        </div>
-                                                        {% if calendar_data[month_num] %}
-                                                        <div class="calendar-dates-compact">
-                                                            {% for week in calendar_data[month_num].weeks %}
-                                                                {% for day in week %}
-                                                                    {% if day == 0 %}
-                                                                    <span class="empty-day"></span>
-                                                                    {% else %}
-                                                                    <span class="calendar-day-compact">{{ day }}</span>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            {% endfor %}
-                                                        </div>
-                                                        {% endif %}
-                                                    </div>
+                                                     class="calendar-page-image"
+                                                     style="cursor: zoom-in;"
+                                                     onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')">
+                                                <div class="text-center py-2 bg-light">
+                                                    <small class="text-muted fw-bold">{{ month_names[month.month_number] }}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,27 +239,11 @@
                                             <div class="calendar-page-preview">
                                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                                      alt="{{ month_names[month.month_number] }}"
-                                                     class="calendar-page-image">
-                                                <div class="calendar-dates-section">
-                                                    <div class="calendar-month-header">{{ month_names[month.month_number] }} 2026</div>
-                                                    <div class="calendar-grid-compact">
-                                                        <div class="calendar-weekdays-compact">
-                                                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                                                        </div>
-                                                        {% if calendar_data[month_num] %}
-                                                        <div class="calendar-dates-compact">
-                                                            {% for week in calendar_data[month_num].weeks %}
-                                                                {% for day in week %}
-                                                                    {% if day == 0 %}
-                                                                    <span class="empty-day"></span>
-                                                                    {% else %}
-                                                                    <span class="calendar-day-compact">{{ day }}</span>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            {% endfor %}
-                                                        </div>
-                                                        {% endif %}
-                                                    </div>
+                                                     class="calendar-page-image"
+                                                     style="cursor: zoom-in;"
+                                                     onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')">
+                                                <div class="text-center py-2 bg-light">
+                                                    <small class="text-muted fw-bold">{{ month_names[month.month_number] }}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -341,27 +309,11 @@
                                             <div class="calendar-page-preview">
                                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                                      alt="{{ month_names[month.month_number] }}"
-                                                     class="calendar-page-image">
-                                                <div class="calendar-dates-section">
-                                                    <div class="calendar-month-header">{{ month_names[month.month_number] }} 2026</div>
-                                                    <div class="calendar-grid-compact">
-                                                        <div class="calendar-weekdays-compact">
-                                                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                                                        </div>
-                                                        {% if calendar_data[month_num] %}
-                                                        <div class="calendar-dates-compact">
-                                                            {% for week in calendar_data[month_num].weeks %}
-                                                                {% for day in week %}
-                                                                    {% if day == 0 %}
-                                                                    <span class="empty-day"></span>
-                                                                    {% else %}
-                                                                    <span class="calendar-day-compact">{{ day }}</span>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            {% endfor %}
-                                                        </div>
-                                                        {% endif %}
-                                                    </div>
+                                                     class="calendar-page-image"
+                                                     style="cursor: zoom-in;"
+                                                     onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')">
+                                                <div class="text-center py-2 bg-light">
+                                                    <small class="text-muted fw-bold">{{ month_names[month.month_number] }}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -456,26 +408,8 @@
                                          class="calendar-modal-image"
                                          onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')"
                                          style="cursor: zoom-in;">
-                                    <div class="calendar-dates-section-modal">
-                                        <div class="calendar-month-header-modal">{{ month_names[month.month_number] }} 2026</div>
-                                        <div class="calendar-grid-modal">
-                                            <div class="calendar-weekdays-modal">
-                                                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-                                            </div>
-                                            {% if calendar_data[month.month_number] %}
-                                            <div class="calendar-dates-modal">
-                                                {% for week in calendar_data[month.month_number].weeks %}
-                                                    {% for day in week %}
-                                                        {% if day == 0 %}
-                                                        <span class="empty-day"></span>
-                                                        {% else %}
-                                                        <span class="calendar-day-modal">{{ day }}</span>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                {% endfor %}
-                                            </div>
-                                            {% endif %}
-                                        </div>
+                                    <div class="text-center py-2 bg-light border-top">
+                                        <strong class="text-dark">{{ month_names[month.month_number] }}</strong>
                                     </div>
                                 </div>
                             </div>
