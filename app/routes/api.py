@@ -674,6 +674,42 @@ def authorize_payment():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
+@bp.route('/save-payment-method', methods=['POST'])
+def save_payment_method():
+    """
+    Save payment method ID immediately after Stripe card confirmation
+    Called by frontend after stripe.confirmCardSetup() succeeds
+    """
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        data = request.get_json()
+        payment_method_id = data.get('payment_method_id')
+
+        if not payment_method_id:
+            return jsonify({'error': 'Missing payment_method_id'}), 400
+
+        print(f"\n{'='*70}")
+        print(f"💳 SAVING PAYMENT METHOD (Direct from frontend)")
+        print(f"   Payment Method ID: {payment_method_id}")
+        print(f"{'='*70}\n")
+
+        # Save payment method to session
+        session_storage.save_payment_method(payment_method_id)
+
+        print(f"✅ Payment method saved successfully!")
+
+        return jsonify({
+            'success': True,
+            'message': 'Payment method saved'
+        })
+
+    except Exception as e:
+        print(f"❌ Save payment method error: {e}")
+        return jsonify({'error': str(e)}), 500
+
 @bp.route('/generation-progress', methods=['GET'])
 def generation_progress():
     """

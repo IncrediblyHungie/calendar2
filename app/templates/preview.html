@@ -443,19 +443,48 @@ async function handleUnlock() {
 
         console.log('✓ Card confirmed! Payment method:', setupIntent.payment_method);
 
-        // Step 3: Show success and start polling
+        // Step 3: Save payment method immediately (don't wait for webhook)
+        unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving payment method...';
+
+        const saveResponse = await fetch('/api/save-payment-method', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                payment_method_id: setupIntent.payment_method
+            })
+        });
+
+        const saveData = await saveResponse.json();
+
+        if (!saveData.success) {
+            throw new Error(saveData.error || 'Failed to save payment method');
+        }
+
+        console.log('✓ Payment method saved!');
+
+        // Step 4: Trigger generation of remaining months
+        unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Starting generation...';
+
+        const genResponse = await fetch('/api/generate-remaining-months', {
+            method: 'POST'
+        });
+
+        if (!genResponse.ok) {
+            throw new Error('Failed to start generation');
+        }
+
+        console.log('✓ Generation started!');
+
+        // Step 5: Show success and reload
         unlockButton.innerHTML = '<i class="fas fa-check me-2"></i>Payment Authorized!';
         unlockButton.classList.remove('btn-warning');
         unlockButton.classList.add('btn-success');
 
-        // Hide unlock form and start generation
+        // Reload page to show generation progress
         setTimeout(() => {
-            document.getElementById('unlock-form-container').style.display = 'none';
-            // No alert - just start polling for generation
-
-            // Start polling for payment method confirmation and generation trigger
-            startPollingForGeneration();
-        }, 1500);
+            console.log('🚀 Reloading to show generation progress...');
+            window.location.reload();
+        }, 1000);
 
     } catch (error) {
         console.error('Unlock error:', error);
@@ -463,54 +492,6 @@ async function handleUnlock() {
         unlockButton.innerHTML = originalHTML;
         unlockButton.disabled = false;
     }
-}
-
-// Poll for payment method saved and trigger generation
-function startPollingForGeneration() {
-    let pollCount = 0;
-    const maxPolls = 30; // 30 seconds max wait
-
-    const pollInterval = setInterval(async () => {
-        pollCount++;
-        console.log(`Polling for generation status... (${pollCount}/${maxPolls})`);
-
-        try {
-            const response = await fetch('/api/generation-progress');
-            const data = await response.json();
-
-            if (data.has_payment_method && data.stage === 'preview_only') {
-                // Payment method saved, trigger generation
-                console.log('✓ Payment method detected! Triggering generation...');
-                clearInterval(pollInterval);
-
-                // Call backend to start generating remaining months
-                const genResponse = await fetch('/api/generate-remaining-months', {
-                    method: 'POST'
-                });
-
-                if (genResponse.ok) {
-                    console.log('✓ Generation started! Reloading page...');
-                    window.location.reload();
-                } else {
-                    console.error('Failed to start generation');
-                    alert('Error starting generation. Please refresh the page.');
-                }
-            } else if (data.stage === 'generating_full') {
-                // Already generating, reload to show progress
-                console.log('✓ Generation in progress! Reloading...');
-                clearInterval(pollInterval);
-                window.location.reload();
-            }
-
-            if (pollCount >= maxPolls) {
-                clearInterval(pollInterval);
-                // Just reload - no alert needed
-                window.location.reload();
-            }
-        } catch (error) {
-            console.error('Polling error:', error);
-        }
-    }, 1000);
 }
 
 // Start countdown on page load
