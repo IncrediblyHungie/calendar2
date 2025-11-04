@@ -4,6 +4,30 @@
 
 {% block content %}
 <div class="container py-5">
+    <!-- Progress Steps -->
+    <div class="progress-steps mb-5">
+        <div class="step completed">
+            <div class="step-number"><i class="fas fa-check"></i></div>
+            <div class="step-label">Upload Photos</div>
+        </div>
+        <div class="step completed">
+            <div class="step-number"><i class="fas fa-check"></i></div>
+            <div class="step-label">Review Themes</div>
+        </div>
+        <div class="step completed">
+            <div class="step-number"><i class="fas fa-check"></i></div>
+            <div class="step-label">Generate</div>
+        </div>
+        <div class="step completed">
+            <div class="step-number"><i class="fas fa-check"></i></div>
+            <div class="step-label">Preview</div>
+        </div>
+        <div class="step active">
+            <div class="step-number">5</div>
+            <div class="step-label">Checkout</div>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <h1 class="text-center mb-4">
@@ -159,6 +183,56 @@
 </div>
 
 <style>
+/* Progress Steps */
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.step.completed .step-number {
+    background: #198754;
+    color: white;
+}
+
+.step.active .step-number {
+    background: #0d6efd;
+    color: white;
+}
+
+.step-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.step.completed .step-label,
+.step.active .step-label {
+    color: #333;
+    font-weight: 600;
+}
+
 .hover-lift {
     transition: transform 0.2s ease-in-out;
 }
