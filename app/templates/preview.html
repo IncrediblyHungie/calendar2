@@ -47,11 +47,11 @@
 
             <!-- Calendar Grid -->
             <div class="row g-4">
-                {% for month in months %}
+                {% for month in months | sort(attribute='month_number') %}
                 <div class="col-md-6 col-lg-4">
                     <div class="calendar-month-card">
                         <div class="month-header">
-                            <h5 class="mb-0">{{ month_names[month.month_number - 1] }}</h5>
+                            <h5 class="mb-0">{{ month_names[month.month_number] }}</h5>
                         </div>
                         <div class="month-image-container">
                             <!-- Lightbox with thumbnail (bs5-lightbox handles smooth transitions) -->
@@ -59,9 +59,9 @@
                                data-toggle="lightbox"
                                data-gallery="calendar-gallery"
                                data-size="fullscreen"
-                               data-caption="{{ month_names[month.month_number - 1] }}: {{ month.prompt }}">
+                               data-caption="{{ month_names[month.month_number] }}: {{ month.prompt }}">
                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                                     alt="{{ month_names[month.month_number - 1] }}"
+                                     alt="{{ month_names[month.month_number] }}"
                                      class="img-fluid rounded"
                                      style="cursor: pointer;">
                             </a>
