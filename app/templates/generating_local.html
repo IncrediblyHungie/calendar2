@@ -40,7 +40,7 @@
                     <div class="generation-status">
                         <h5 class="mb-3">Generation Progress:</h5>
                         <div class="row g-2 justify-content-center">
-                            {% for month in months %}
+                            {% for month in months | sort(attribute='month_number') %}
                             <div class="col-3">
                                 <div class="month-status-badge
                                     {% if month.generation_status == 'completed' %}bg-success
