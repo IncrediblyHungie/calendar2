@@ -330,6 +330,9 @@ def create_order(product_id, variant_id, quantity, shipping_address, customer_em
 
     shipping_options = calc_response.json()
 
+    # DEBUG: Log full shipping response to understand API format
+    print(f"  📋 Full shipping calc response: {shipping_options}")
+
     # Select the first (usually cheapest/standard) shipping method
     if not shipping_options.get('standard') and not shipping_options.get('express'):
         print(f"  ❌ No shipping methods available!")
@@ -339,6 +342,7 @@ def create_order(product_id, variant_id, quantity, shipping_address, customer_em
     # Prefer standard, fallback to express
     shipping_method_id = shipping_options.get('standard', shipping_options.get('express'))
     print(f"  ✓ Selected shipping method: {shipping_method_id}")
+    print(f"  ℹ️  Shipping method type: {type(shipping_method_id)}")
 
     # STEP 2: Create order with valid shipping method
     payload = {
