@@ -161,11 +161,16 @@ def generate_month(month_num):
 
         # Check if all months are now complete
         all_months = session_storage.get_all_months()
-        if all(m['generation_status'] == 'completed' for m in all_months):
-            print(f"🎉 All {len(all_months)} months complete! Updating stage to fully_generated")
+        completed_count = sum(1 for m in all_months if m['generation_status'] == 'completed')
+
+        # Only set to fully_generated when ALL 13 months are complete
+        if len(all_months) == 13 and completed_count == 13:
+            print(f"🎉 All 13 months complete! Updating stage to fully_generated")
             session_storage.set_generation_stage('fully_generated')
+        elif len(all_months) == 3 and completed_count == 3:
+            print(f"✅ Preview complete (3/3 months) - keeping stage as preview_only to show payment gate")
+            # Don't change stage - stay at preview_only to show payment gate
         else:
-            completed_count = sum(1 for m in all_months if m['generation_status'] == 'completed')
             print(f"📊 Progress: {completed_count}/{len(all_months)} months complete")
 
         return jsonify({

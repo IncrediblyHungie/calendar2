@@ -132,10 +132,15 @@ def _get_active_project():
                 months = project.get('months', [])
                 if not months:
                     project['generation_stage'] = 'not_started'
-                elif all(m.get('generation_status') == 'completed' for m in months):
+                elif len(months) == 3 and all(m.get('generation_status') == 'completed' for m in months):
+                    # 3 preview months complete → show payment gate
+                    project['generation_stage'] = 'preview_only'
+                elif len(months) == 13 and all(m.get('generation_status') == 'completed' for m in months):
+                    # All 13 months complete → show product selection
                     project['generation_stage'] = 'fully_generated'
                 else:
-                    project['generation_stage'] = 'preview_only'
+                    # Generation in progress
+                    project['generation_stage'] = 'generating_full' if len(months) > 3 else 'preview_only'
                 project['generation_progress'] = 0
                 _save_session(_get_session_id())
             return project
@@ -689,12 +694,25 @@ def get_generation_status():
 
     completed_count = sum(1 for m in months if m.get('generation_status') == 'completed')
 
+    # Smart stage detection (safety check in case stage wasn't set correctly)
+    current_stage = project.get('generation_stage', 'not_started')
+    if len(months) == 3 and completed_count == 3:
+        # 3 preview months done → should show payment gate
+        current_stage = 'preview_only'
+    elif len(months) == 13 and completed_count == 13:
+        # All 13 months done → show product selection
+        current_stage = 'fully_generated'
+    elif len(months) > 3 and completed_count < len(months):
+        # Generating remaining months
+        current_stage = 'generating_full'
+
     return {
-        'stage': project.get('generation_stage', 'not_started'),
+        'stage': current_stage,
         'progress': project.get('generation_progress', 0),
         'completed_months': completed_count,
         'total_months': len(months),
         'preview_expiry': project.get('preview_expiry'),
         'is_expired': is_preview_expired(),
-        'has_payment_method': bool(project.get('payment_method_id'))
+        'has_payment_method': bool(project.get('payment_method_id')),
+        'is_complete': (len(months) == 13 and completed_count == 13)
     }
