@@ -704,16 +704,13 @@ def generation_progress():
 @bp.route('/generate-remaining-months', methods=['POST'])
 def generate_remaining_months():
     """
-    Generate Cover + months 4-12 after payment method authorized (10 total)
-    Called internally by webhook handler after setup_intent.succeeded
+    Prepare remaining 10 months (Cover + Apr-Dec) for generation after payment authorization
+    Returns immediately - actual generation happens via AJAX in generating_local.html
     """
-    from app.services.gemini_service import generate_calendar_image
-    from app.services.monthly_themes import get_enhanced_prompt, get_all_themes
-    from PIL import Image as PILImage
-    import gc
+    from app.services.monthly_themes import get_all_themes
 
     print(f"\n{'='*70}")
-    print(f"🎨 GENERATING REMAINING 10 MONTHS (Cover + Apr-Dec)")
+    print(f"🎨 PREPARING REMAINING 10 MONTHS (Cover + Apr-Dec)")
     print(f"{'='*70}\n")
 
     project = get_current_project()
@@ -732,83 +729,22 @@ def generate_remaining_months():
         # Get all themes
         all_themes = get_all_themes()
 
-        # Create remaining month records (Cover + Apr-Dec)
+        # Create remaining month records (Cover + Apr-Dec) with status 'pending'
+        # Actual generation will happen via /api/generate/month/{month_num} calls from frontend
         session_storage.create_remaining_months(all_themes)
 
-        # Get reference images
-        uploaded_images = session_storage.get_uploaded_images()
-        reference_image_data = [img['file_data'] for img in uploaded_images]
-
-        if not reference_image_data:
-            raise Exception('No reference images found')
-
-        # Generate Cover + months 4-12 (Cover + April through December) = 10 months
-        remaining_months = [0, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        month_names = ['Cover', 'January', 'February', 'March', 'April', 'May', 'June',
-                       'July', 'August', 'September', 'October', 'November', 'December']
-
-        for i, month_num in enumerate(remaining_months):
-            try:
-                print(f"\n{'─'*50}")
-                print(f"📸 Generating {month_names[month_num]} (Month {month_num})...")
-
-                # Check if already completed (race condition protection)
-                month = session_storage.get_month_by_number(month_num)
-                if month and month.get('generation_status') == 'completed':
-                    print(f"✓ {month_names[month_num]} already completed, skipping")
-                    continue
-
-                # Mark as processing
-                session_storage.update_month_status(month_num, 'processing')
-
-                # Get enhanced prompt
-                enhanced_prompt = get_enhanced_prompt(month_num)
-
-                # Generate image
-                image_data = generate_calendar_image(enhanced_prompt, reference_image_data)
-
-                # Convert PNG to JPEG (quality 80)
-                img = PILImage.open(io.BytesIO(image_data))
-                img_io = io.BytesIO()
-                img.convert('RGB').save(img_io, format='JPEG', quality=80, optimize=True)
-                jpeg_data = img_io.getvalue()
-
-                # Clear memory
-                del image_data
-                del img
-                del img_io
-                gc.collect()
-
-                # Save to session storage
-                session_storage.update_month_status(month_num, 'completed', image_data=jpeg_data)
-
-                # Update progress: 0% to 100%
-                progress = int((i + 1) / len(remaining_months) * 100)
-                session_storage.update_generation_progress(progress)
-
-                print(f"✅ {month_names[month_num]} completed ({progress}%)")
-
-            except Exception as month_error:
-                print(f"❌ Failed to generate {month_names[month_num]}: {month_error}")
-                session_storage.update_month_status(month_num, 'failed', error=str(month_error))
-                # Continue with other months
-
-        # Mark as fully generated
-        session_storage.set_generation_stage('fully_generated')
-        session_storage.update_generation_progress(100)
-
-        print(f"\n{'='*70}")
-        print(f"✅ REMAINING MONTHS GENERATION COMPLETE!")
+        print("✅ Created 10 month records with status 'pending'")
+        print("📋 Frontend will generate these via individual AJAX calls")
         print(f"{'='*70}\n")
 
         return jsonify({
             'success': True,
-            'completed_months': session_storage.get_completion_count(),
-            'message': 'All remaining months generated successfully'
+            'months_created': 10,
+            'message': 'Remaining months prepared for generation'
         })
 
     except Exception as e:
-        print(f"\n❌ REMAINING MONTHS GENERATION FAILED")
+        print(f"\n❌ REMAINING MONTHS PREPARATION FAILED")
         print(f"   Error: {e}")
         import traceback
         traceback.print_exc()

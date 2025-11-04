@@ -488,7 +488,8 @@ function startPollingForGeneration() {
 
             if (pollCount >= maxPolls) {
                 clearInterval(pollInterval);
-                alert('Generation startup is taking longer than expected. Please refresh the page.');
+                // Just reload - no alert needed
+                window.location.reload();
             }
         } catch (error) {
             console.error('Polling error:', error);
