@@ -31,187 +31,114 @@
             You're Now a Hunk for Every Month!
         </h4>
         <p class="mb-0">
-            All 12 transformations complete! Scroll down to see YOUR FACE on 12 ridiculously sexy hunks.
-            Warning: May cause uncontrollable laughter and sudden confidence boost!
+            All 12 transformations complete! Check out your AI-generated calendar images below, then choose your calendar style to order.
         </p>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
-    <!-- Printify Product Mockup - THE ACTUAL CALENDAR -->
-    {% if mockup_data and mockup_data.calendar_2026 and mockup_data.calendar_2026.mockup_images %}
-    <div class="card shadow-lg border-success mb-5" style="border-width: 3px;">
-        <div class="card-header bg-gradient text-white text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <!-- ============================================================ -->
+    <!-- SECTION 1: YOUR 12 AI-GENERATED MONTH IMAGES -->
+    <!-- ============================================================ -->
+    <div class="card shadow-lg border-primary mb-5" style="border-width: 3px;">
+        <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
             <h2 class="mb-2">
-                <i class="fas fa-calendar-check me-2"></i>
-                Your Actual Calendar Product
+                <i class="fas fa-images me-2"></i>
+                Your 12 AI-Generated Calendar Images
             </h2>
-            <p class="mb-0 lead">
-                <i class="fas fa-check-circle me-1"></i>
-                This is EXACTLY how your calendar will look when printed and shipped!
-            </p>
-            <p class="mb-0 mt-2 small opacity-75">
-                Professional 10.8" × 8.4" wall calendar with wire binding
+            <p class="mb-0">
+                These are the custom images created just for you. Click any image to view full size.
             </p>
         </div>
-        <div class="card-body p-5 bg-light">
-            <!-- Main Product Mockup -->
-            <div class="row justify-content-center mb-4">
-                {% for mockup in mockup_data.calendar_2026.mockup_images %}
-                    {% if mockup.is_default %}
-                    <div class="col-lg-10 col-xl-8">
-                        <div class="position-relative mockup-container">
-                            <img src="{{ mockup.src }}"
-                                 alt="Your Hunk Calendar - Professional Product Preview"
-                                 class="img-fluid rounded-3 shadow-lg w-100"
-                                 style="cursor: zoom-in; transition: transform 0.3s ease;"
-                                 onclick="window.open('{{ mockup.src }}', '_blank')"
-                                 onmouseover="this.style.transform='scale(1.02)'"
-                                 onmouseout="this.style.transform='scale(1)'">
-                            <div class="position-absolute top-0 end-0 m-3">
-                                <span class="badge bg-success fs-6 shadow">
-                                    <i class="fas fa-certificate me-1"></i>
-                                    Official Product Preview
-                                </span>
-                            </div>
-                        </div>
-                        <div class="text-center mt-4">
-                            <p class="text-muted mb-2">
-                                <i class="fas fa-mouse-pointer me-1"></i>
-                                <strong>Click image to view full resolution</strong>
-                            </p>
-                            <div class="alert alert-info d-inline-block mb-0 py-2 px-4">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <small>This mockup shows your actual AI-generated images printed on premium 270gsm semi-glossy paper</small>
+        <div class="card-body p-4 bg-light">
+            <!-- 12 Month Grid -->
+            <div class="row g-4">
+                {% for month in months %}
+                    {% if month.month_number >= 1 and month.month_number <= 12 %}
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="month-image-card">
+                            <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                                 alt="{{ month_names[month.month_number] }}"
+                                 class="month-image"
+                                 onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')"
+                                 style="cursor: zoom-in;">
+                            <div class="month-label">
+                                {{ month_names[month.month_number] }}
                             </div>
                         </div>
                     </div>
                     {% endif %}
                 {% endfor %}
             </div>
-
-            <!-- Additional Product Angles -->
-            {% set other_mockups = mockup_data.calendar_2026.mockup_images | selectattr('is_default', 'equalto', false) | list %}
-            {% if other_mockups | length > 0 %}
-            <div class="mt-5 pt-4 border-top">
-                <h4 class="text-center mb-4">
-                    <i class="fas fa-images me-2"></i>
-                    Additional Product Views
-                </h4>
-                <div class="row g-4 justify-content-center">
-                    {% for mockup in other_mockups %}
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card shadow-sm h-100">
-                            <img src="{{ mockup.src }}"
-                                 alt="Calendar Preview - {{ mockup.position }}"
-                                 class="card-img-top"
-                                 style="cursor: zoom-in; transition: transform 0.3s ease;"
-                                 onclick="window.open('{{ mockup.src }}', '_blank')"
-                                 onmouseover="this.style.transform='scale(1.05)'"
-                                 onmouseout="this.style.transform='scale(1)'">
-                            <div class="card-body text-center py-2">
-                                <p class="mb-0 text-muted small text-capitalize">
-                                    <i class="fas fa-camera me-1"></i>
-                                    {{ mockup.position }} View
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
-    {% else %}
-    <!-- Fallback if mockup not generated yet -->
-    <div class="alert alert-warning mb-5">
-        <h5 class="alert-heading">
-            <i class="fas fa-hourglass-half me-2"></i>
-            Product Mockup Generating...
-        </h5>
-        <p class="mb-0">
-            The realistic calendar preview is being created. Refresh the page in a moment to see your actual product!
-        </p>
-    </div>
-    {% endif %}
 
-    <!-- Order Your Custom Calendar -->
-    <div class="card shadow-lg border-success mb-5">
-        <div class="card-header text-white text-center py-4"
-             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <!-- ============================================================ -->
+    <!-- SECTION 2: CHOOSE YOUR CALENDAR PRODUCT -->
+    <!-- ============================================================ -->
+    <div class="card shadow-lg border-success mb-5" style="border-width: 3px;">
+        <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
             <h2 class="mb-2">
                 <i class="fas fa-shopping-cart me-2"></i>
-                Order Your Custom Calendar
+                Choose Your Calendar Product
             </h2>
-            <p class="mb-0 lead">
-                Your 12 hunk months are ready! Choose your calendar style and we'll print and ship it to you.
+            <p class="mb-0">
+                Your images are ready! Select a calendar style and we'll print and ship it to you.
             </p>
         </div>
         <div class="card-body p-5">
-            <!-- Product Cards -->
             <div class="row g-4">
-                <!-- Calendar 2026 -->
+                <!-- Calendar 2026 Product -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-sm border-primary" style="transition: transform 0.3s ease;">
-                        <div class="card-header bg-primary text-white text-center">
+                    <div class="product-card h-100">
+                        <div class="product-header bg-primary text-white text-center py-3">
                             <h4 class="mb-0">Calendar 2026</h4>
                             <small class="opacity-75">Most Popular</small>
                         </div>
-                        <div class="card-body p-4">
-                            <!-- Sample Month Previews -->
-                            <div class="mb-3">
-                                <div class="row g-2">
-                                    {% set sample_months = [1, 6] %}
-                                    {% for month_num in sample_months %}
-                                        {% set month = months | selectattr('month_number', 'equalto', month_num) | first %}
-                                        {% if month %}
-                                        <div class="col-6">
-                                            <div class="calendar-page-preview">
-                                                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                                                     alt="{{ month_names[month.month_number] }}"
-                                                     class="calendar-page-image"
-                                                     style="cursor: zoom-in;"
-                                                     onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')">
-                                                <div class="text-center py-2 bg-light">
-                                                    <small class="text-muted fw-bold">{{ month_names[month.month_number] }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <div class="text-center mt-3">
-                                    <button class="btn btn-outline-primary btn-sm" onclick="viewAllMonths()">
-                                        <i class="fas fa-images me-2"></i>
-                                        View All 12 Months
-                                    </button>
-                                    <p class="text-muted small mb-0 mt-2">
-                                        Preview showing 2 of your 12 unique hunk months
-                                    </p>
-                                </div>
-                            </div>
 
-                            <!-- Product Specs -->
-                            <div class="mb-3">
-                                <h5 class="text-primary">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    Specifications
-                                </h5>
-                                <ul class="list-unstyled small">
-                                    <li><i class="fas fa-ruler-combined me-2 text-muted"></i>10.8" × 8.4"</li>
-                                    <li><i class="fas fa-file-alt me-2 text-muted"></i>Premium 270gsm semi-glossy paper</li>
-                                    <li><i class="fas fa-book me-2 text-muted"></i>Wire binding, centered holes for hanging</li>
-                                    <li><i class="fas fa-truck me-2 text-muted"></i>Free shipping to US</li>
-                                </ul>
-                            </div>
+                        <!-- Printify Mockup for Calendar 2026 -->
+                        {% if mockup_data and mockup_data.calendar_2026 and mockup_data.calendar_2026.mockup_images %}
+                            {% for mockup in mockup_data.calendar_2026.mockup_images %}
+                                {% if mockup.is_default %}
+                                <div class="product-mockup">
+                                    <img src="{{ mockup.src }}"
+                                         alt="Calendar 2026 Product Preview"
+                                         class="product-mockup-image"
+                                         onclick="window.open('{{ mockup.src }}', '_blank')"
+                                         style="cursor: zoom-in;">
+                                    <div class="mockup-badge">
+                                        <i class="fas fa-certificate me-1"></i>
+                                        Actual Product
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                        <div class="product-mockup-placeholder">
+                            <i class="fas fa-calendar-alt fa-4x text-muted mb-3"></i>
+                            <p class="text-muted small">Product mockup generating...</p>
+                        </div>
+                        {% endif %}
+
+                        <div class="product-details p-4">
+                            <!-- Specs -->
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Specifications
+                            </h5>
+                            <ul class="product-specs mb-4">
+                                <li><i class="fas fa-ruler-combined me-2"></i>10.8" × 8.4"</li>
+                                <li><i class="fas fa-file-alt me-2"></i>Premium 270gsm semi-glossy paper</li>
+                                <li><i class="fas fa-book me-2"></i>Wire binding, centered holes</li>
+                                <li><i class="fas fa-truck me-2"></i>Free shipping to US</li>
+                            </ul>
 
                             <!-- Price -->
                             <div class="text-center mb-3">
                                 <h3 class="text-success mb-0">$24.99</h3>
                                 <small class="text-muted">One-time purchase</small>
                             </div>
-                        </div>
-                        <div class="card-footer bg-transparent p-4">
+
+                            <!-- Order Button -->
                             <button class="btn btn-success btn-lg w-100" onclick="orderProduct('calendar_2026')">
                                 <i class="fas fa-shopping-cart me-2"></i>
                                 Order Now
@@ -220,68 +147,58 @@
                     </div>
                 </div>
 
-                <!-- Desktop Calendar -->
+                <!-- Desktop Calendar Product -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-sm border-secondary" style="transition: transform 0.3s ease;">
-                        <div class="card-header bg-secondary text-white text-center">
+                    <div class="product-card h-100">
+                        <div class="product-header bg-secondary text-white text-center py-3">
                             <h4 class="mb-0">Desktop Calendar</h4>
                             <small class="opacity-75">Compact & Professional</small>
                         </div>
-                        <div class="card-body p-4">
-                            <!-- Sample Month Previews -->
-                            <div class="mb-3">
-                                <div class="row g-2">
-                                    {% set sample_months = [2, 8] %}
-                                    {% for month_num in sample_months %}
-                                        {% set month = months | selectattr('month_number', 'equalto', month_num) | first %}
-                                        {% if month %}
-                                        <div class="col-6">
-                                            <div class="calendar-page-preview">
-                                                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                                                     alt="{{ month_names[month.month_number] }}"
-                                                     class="calendar-page-image"
-                                                     style="cursor: zoom-in;"
-                                                     onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')">
-                                                <div class="text-center py-2 bg-light">
-                                                    <small class="text-muted fw-bold">{{ month_names[month.month_number] }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <div class="text-center mt-3">
-                                    <button class="btn btn-outline-secondary btn-sm" onclick="viewAllMonths()">
-                                        <i class="fas fa-images me-2"></i>
-                                        View All 12 Months
-                                    </button>
-                                    <p class="text-muted small mb-0 mt-2">
-                                        Preview showing 2 of your 12 unique hunk months
-                                    </p>
-                                </div>
-                            </div>
 
-                            <!-- Product Specs -->
-                            <div class="mb-3">
-                                <h5 class="text-secondary">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    Specifications
-                                </h5>
-                                <ul class="list-unstyled small">
-                                    <li><i class="fas fa-ruler-combined me-2 text-muted"></i>10" × 5"</li>
-                                    <li><i class="fas fa-file-alt me-2 text-muted"></i>250gsm premium paper</li>
-                                    <li><i class="fas fa-book me-2 text-muted"></i>Spiral bound at top</li>
-                                    <li><i class="fas fa-truck me-2 text-muted"></i>Free shipping to US</li>
-                                </ul>
-                            </div>
+                        <!-- Printify Mockup for Desktop -->
+                        {% if mockup_data and mockup_data.desktop and mockup_data.desktop.mockup_images %}
+                            {% for mockup in mockup_data.desktop.mockup_images %}
+                                {% if mockup.is_default %}
+                                <div class="product-mockup">
+                                    <img src="{{ mockup.src }}"
+                                         alt="Desktop Calendar Product Preview"
+                                         class="product-mockup-image"
+                                         onclick="window.open('{{ mockup.src }}', '_blank')"
+                                         style="cursor: zoom-in;">
+                                    <div class="mockup-badge">
+                                        <i class="fas fa-certificate me-1"></i>
+                                        Actual Product
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                        <div class="product-mockup-placeholder">
+                            <i class="fas fa-calendar-alt fa-4x text-muted mb-3"></i>
+                            <p class="text-muted small">Product mockup generating...</p>
+                        </div>
+                        {% endif %}
+
+                        <div class="product-details p-4">
+                            <!-- Specs -->
+                            <h5 class="text-secondary mb-3">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Specifications
+                            </h5>
+                            <ul class="product-specs mb-4">
+                                <li><i class="fas fa-ruler-combined me-2"></i>10" × 5"</li>
+                                <li><i class="fas fa-file-alt me-2"></i>250gsm premium paper</li>
+                                <li><i class="fas fa-book me-2"></i>Spiral bound at top</li>
+                                <li><i class="fas fa-truck me-2"></i>Free shipping to US</li>
+                            </ul>
 
                             <!-- Price -->
                             <div class="text-center mb-3">
                                 <h3 class="text-success mb-0">$19.99</h3>
                                 <small class="text-muted">One-time purchase</small>
                             </div>
-                        </div>
-                        <div class="card-footer bg-transparent p-4">
+
+                            <!-- Order Button -->
                             <button class="btn btn-secondary btn-lg w-100" onclick="orderProduct('desktop')">
                                 <i class="fas fa-shopping-cart me-2"></i>
                                 Order Now
@@ -290,68 +207,58 @@
                     </div>
                 </div>
 
-                <!-- Wall Calendar -->
+                <!-- Wall Calendar Product -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="card h-100 shadow-sm border-info" style="transition: transform 0.3s ease;">
-                        <div class="card-header bg-info text-white text-center">
+                    <div class="product-card h-100">
+                        <div class="product-header bg-info text-white text-center py-3">
                             <h4 class="mb-0">Wall Calendar 2026</h4>
                             <small class="opacity-75">Large & Eye-Catching</small>
                         </div>
-                        <div class="card-body p-4">
-                            <!-- Sample Month Previews -->
-                            <div class="mb-3">
-                                <div class="row g-2">
-                                    {% set sample_months = [4, 10] %}
-                                    {% for month_num in sample_months %}
-                                        {% set month = months | selectattr('month_number', 'equalto', month_num) | first %}
-                                        {% if month %}
-                                        <div class="col-6">
-                                            <div class="calendar-page-preview">
-                                                <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                                                     alt="{{ month_names[month.month_number] }}"
-                                                     class="calendar-page-image"
-                                                     style="cursor: zoom-in;"
-                                                     onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')">
-                                                <div class="text-center py-2 bg-light">
-                                                    <small class="text-muted fw-bold">{{ month_names[month.month_number] }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <div class="text-center mt-3">
-                                    <button class="btn btn-outline-info btn-sm" onclick="viewAllMonths()">
-                                        <i class="fas fa-images me-2"></i>
-                                        View All 12 Months
-                                    </button>
-                                    <p class="text-muted small mb-0 mt-2">
-                                        Preview showing 2 of your 12 unique hunk months
-                                    </p>
-                                </div>
-                            </div>
 
-                            <!-- Product Specs -->
-                            <div class="mb-3">
-                                <h5 class="text-info">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    Specifications
-                                </h5>
-                                <ul class="list-unstyled small">
-                                    <li><i class="fas fa-ruler-combined me-2 text-muted"></i>Multiple sizes available</li>
-                                    <li><i class="fas fa-file-alt me-2 text-muted"></i>250gsm high-quality paper</li>
-                                    <li><i class="fas fa-book me-2 text-muted"></i>Spiral binding, matte grid area</li>
-                                    <li><i class="fas fa-truck me-2 text-muted"></i>Free shipping to US</li>
-                                </ul>
-                            </div>
+                        <!-- Printify Mockup for Wall Calendar -->
+                        {% if mockup_data and mockup_data.standard_wall and mockup_data.standard_wall.mockup_images %}
+                            {% for mockup in mockup_data.standard_wall.mockup_images %}
+                                {% if mockup.is_default %}
+                                <div class="product-mockup">
+                                    <img src="{{ mockup.src }}"
+                                         alt="Wall Calendar Product Preview"
+                                         class="product-mockup-image"
+                                         onclick="window.open('{{ mockup.src }}', '_blank')"
+                                         style="cursor: zoom-in;">
+                                    <div class="mockup-badge">
+                                        <i class="fas fa-certificate me-1"></i>
+                                        Actual Product
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                        <div class="product-mockup-placeholder">
+                            <i class="fas fa-calendar-alt fa-4x text-muted mb-3"></i>
+                            <p class="text-muted small">Product mockup generating...</p>
+                        </div>
+                        {% endif %}
+
+                        <div class="product-details p-4">
+                            <!-- Specs -->
+                            <h5 class="text-info mb-3">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Specifications
+                            </h5>
+                            <ul class="product-specs mb-4">
+                                <li><i class="fas fa-ruler-combined me-2"></i>Multiple sizes available</li>
+                                <li><i class="fas fa-file-alt me-2"></i>250gsm premium paper</li>
+                                <li><i class="fas fa-book me-2"></i>Spiral binding</li>
+                                <li><i class="fas fa-truck me-2"></i>Free shipping to US</li>
+                            </ul>
 
                             <!-- Price -->
                             <div class="text-center mb-3">
                                 <h3 class="text-success mb-0">$29.99</h3>
                                 <small class="text-muted">One-time purchase</small>
                             </div>
-                        </div>
-                        <div class="card-footer bg-transparent p-4">
+
+                            <!-- Order Button -->
                             <button class="btn btn-info btn-lg w-100" onclick="orderProduct('standard_wall')">
                                 <i class="fas fa-shopping-cart me-2"></i>
                                 Order Now
@@ -382,300 +289,207 @@
             </div>
         </div>
     </div>
-
-    <!-- All Months Modal -->
-    <div class="modal fade" id="allMonthsModal" tabindex="-1" aria-labelledby="allMonthsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <h4 class="modal-title" id="allMonthsModalLabel">
-                        <i class="fas fa-calendar-alt me-2"></i>
-                        Your 12 Hunk Months
-                    </h4>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <p class="text-center text-muted mb-4">
-                        These are the 12 unique AI-generated images that will be included in your calendar
-                    </p>
-                    <div class="row g-3">
-                        {% for month in months %}
-                            {% if month.month_number >= 1 and month.month_number <= 12 %}
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="calendar-page-modal">
-                                    <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                                         alt="{{ month_names[month.month_number] }}"
-                                         class="calendar-modal-image"
-                                         onclick="window.open('{{ url_for('api.get_month_image', month_id=month.id) }}', '_blank')"
-                                         style="cursor: zoom-in;">
-                                    <div class="text-center py-2 bg-light border-top">
-                                        <strong class="text-dark">{{ month_names[month.month_number] }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}
 
 {% block extra_css %}
 <style>
-/* Calendar Page Preview Styling - Product Cards */
-.calendar-page-preview {
+/* ============================================================
+   SECTION 1: Month Images Gallery Styling
+   ============================================================ */
+.month-image-card {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 3px solid #f8f9fa;
-}
-
-.calendar-page-preview:hover {
-    transform: translateY(-4px) rotate(1deg);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-}
-
-.calendar-page-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-}
-
-.calendar-dates-section {
-    background: white;
-    padding: 8px;
-    border-top: 2px solid #e9ecef;
-}
-
-.calendar-month-header {
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.75rem;
-    color: #495057;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.calendar-grid-compact {
-    font-size: 0.55rem;
-}
-
-.calendar-weekdays-compact {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-    margin-bottom: 2px;
-    font-weight: 600;
-    color: #6c757d;
-    text-align: center;
-}
-
-.calendar-weekdays-compact span {
-    padding: 2px 0;
-}
-
-.calendar-dates-compact {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-}
-
-.calendar-day-compact {
-    text-align: center;
-    padding: 2px 0;
-    color: #212529;
-    font-weight: 500;
-}
-
-.empty-day {
-    padding: 2px 0;
-}
-
-/* Calendar Page Modal Styling */
-.calendar-page-modal {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border: 2px solid #e9ecef;
-}
-
-.calendar-page-modal:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-    border-color: #667eea;
-}
-
-.calendar-modal-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-}
-
-.calendar-dates-section-modal {
-    background: white;
-    padding: 12px;
-    border-top: 2px solid #e9ecef;
-}
-
-.calendar-month-header-modal {
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: #495057;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 8px;
-    border-radius: 4px;
-}
-
-.calendar-grid-modal {
-    font-size: 0.65rem;
-}
-
-.calendar-weekdays-modal {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
-    margin-bottom: 4px;
-    font-weight: 600;
-    color: #6c757d;
-    text-align: center;
-}
-
-.calendar-weekdays-modal span {
-    padding: 3px 0;
-}
-
-.calendar-dates-modal {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
-}
-
-.calendar-day-modal {
-    text-align: center;
-    padding: 3px 0;
-    color: #212529;
-    font-weight: 500;
-}
-
-/* Calendar Wall Mockup - Realistic Physical Calendar Layout */
-.calendar-wall-mockup {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.calendar-page {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    overflow: hidden;
-    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.calendar-page:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+.month-image-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
-.calendar-month-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 12px;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-}
-
-.calendar-month-image {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 3/4;
-    background: #f8f9fa;
-}
-
-.calendar-month-image img {
+.month-image {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
     transition: transform 0.3s ease;
 }
 
-.calendar-page:hover .calendar-month-image img {
+.month-image-card:hover .month-image {
     transform: scale(1.05);
 }
 
-.calendar-mini-grid {
-    padding: 10px;
-    background: #f8f9fa;
-    border-top: 1px solid #dee2e6;
-}
-
-.grid-week {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    font-size: 0.7rem;
-    color: #6c757d;
+.month-label {
+    background: white;
     text-align: center;
-    font-weight: 500;
-}
-
-/* Month Thumbnail Cards */
-.month-thumbnail-card {
-    position: relative;
-    cursor: pointer;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.2s ease;
-}
-
-.month-thumbnail-card:hover {
-    transform: scale(1.05);
-}
-
-.month-thumb-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: white;
-    padding: 8px;
-    text-align: center;
+    padding: 12px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    color: #333;
+    border-top: 2px solid #f0f0f0;
 }
 
-/* Responsive Design */
+/* ============================================================
+   SECTION 2: Product Cards Styling
+   ============================================================ */
+.product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.product-header {
+    flex-shrink: 0;
+}
+
+.product-mockup {
+    position: relative;
+    background: #f8f9fa;
+    padding: 20px;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-mockup-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.product-mockup:hover .product-mockup-image {
+    transform: scale(1.05);
+}
+
+.mockup-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #198754;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.product-mockup-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    background: #f8f9fa;
+    padding: 40px 20px;
+}
+
+.product-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-specs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.product-specs li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #666;
+}
+
+.product-specs li:last-child {
+    border-bottom: none;
+}
+
+.product-specs i {
+    color: #999;
+    width: 20px;
+}
+
+/* Progress Steps */
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.step.completed .step-number {
+    background: #198754;
+    color: white;
+}
+
+.step.active .step-number {
+    background: #0d6efd;
+    color: white;
+}
+
+.step-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.step.completed .step-label,
+.step.active .step-label {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .calendar-wall-mockup {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 1rem;
+    .month-label {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .product-mockup {
+        min-height: 250px;
+        padding: 15px;
+    }
+
+    .product-mockup-placeholder {
+        min-height: 250px;
+        padding: 30px 15px;
     }
 }
 </style>
@@ -683,60 +497,31 @@
 
 {% block extra_scripts %}
 <script>
-// Product Order JavaScript
-async function orderProduct(productType) {
-    console.log(`🛒 Ordering product: ${productType}`);
-
-    // Show loading state
-    const button = event.target;
-    const originalHTML = button.innerHTML;
-    button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-
-    try {
-        // Call existing checkout API
-        const response = await fetch('/api/checkout/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                product_type: productType
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.success && data.checkout_url) {
-            console.log(`✅ Checkout session created, redirecting to Stripe...`);
+// Stripe checkout integration
+function orderProduct(productType) {
+    // Create Stripe checkout session
+    fetch('/api/checkout/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_type: productType
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
             // Redirect to Stripe checkout
             window.location.href = data.checkout_url;
         } else {
-            throw new Error(data.error || 'Failed to create checkout session');
+            alert('Error creating checkout: ' + data.error);
         }
-
-    } catch (error) {
-        console.error('❌ Checkout error:', error);
-        alert(`Failed to start checkout: ${error.message}\n\nPlease try again or contact support.`);
-
-        // Restore button
-        button.disabled = false;
-        button.innerHTML = originalHTML;
-    }
-}
-
-// View All Months Modal
-function viewAllMonths() {
-    const modal = new bootstrap.Modal(document.getElementById('allMonthsModal'));
-    modal.show();
-}
-
-// Smooth scroll on page load
-document.addEventListener('DOMContentLoaded', () => {
-    window.scrollTo({
-        top: 300,
-        behavior: 'smooth'
+    })
+    .catch(error => {
+        console.error('Checkout error:', error);
+        alert('Error creating checkout. Please try again.');
     });
-});
+}
 </script>
 {% endblock %}
