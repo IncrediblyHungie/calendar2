@@ -3,8 +3,8 @@
 {% block title %}Create Your Hilarious 'Hunk of the Month' Calendar{% endblock %}
 
 {% block head %}
+{{ super() }}
 <!-- Play Bootstrap Template CSS -->
-<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/lineicons.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/ud-styles.css') }}" />
