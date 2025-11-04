@@ -190,6 +190,9 @@ def preview():
     # Get mockup data if available
     mockup_data = session_storage.get_preview_mockup_data()
 
+    # Get generation status for 3-month preview system
+    gen_status = session_storage.get_generation_status()
+
     # Create JSON-serializable version of months (without binary image_data)
     months_json = [
         {
@@ -205,7 +208,8 @@ def preview():
                           months=months,
                           months_json=months_json,
                           month_names=month_names,
-                          mockup_data=mockup_data)
+                          mockup_data=mockup_data,
+                          generation_status=gen_status)
 
 @bp.route('/calendar-preview')
 def calendar_preview():

@@ -120,6 +120,21 @@ def _get_active_project():
     active_id = storage['active_project_id']
     for project in storage['projects']:
         if project['id'] == active_id:
+            # MIGRATION: Add new fields to existing projects
+            if 'generation_stage' not in project:
+                project['preview_expiry'] = None
+                project['payment_method_id'] = None
+                project['setup_intent_id'] = None
+                # Determine stage based on existing data
+                months = project.get('months', [])
+                if not months:
+                    project['generation_stage'] = 'not_started'
+                elif all(m.get('generation_status') == 'completed' for m in months):
+                    project['generation_stage'] = 'fully_generated'
+                else:
+                    project['generation_stage'] = 'preview_only'
+                project['generation_progress'] = 0
+                _save_session(_get_session_id())
             return project
     # Fallback: return first project if active not found
     if storage['projects']:
@@ -134,7 +149,13 @@ def _get_active_project():
         'created_at': datetime.utcnow().isoformat(),
         'images': [],
         'months': [],
-        'preferences': None
+        'preferences': None,
+        # New fields for 3-month preview system
+        'preview_expiry': None,
+        'payment_method_id': None,
+        'setup_intent_id': None,
+        'generation_stage': 'not_started',
+        'generation_progress': 0
     }
     storage['projects'].append(new_project)
     storage['active_project_id'] = project_id
@@ -192,11 +213,18 @@ def get_all_months():
     return project.get('months', [])
 
 def create_months_with_themes(themes):
-    """Create 13 images with themes (cover + 12 months) for active project"""
+    """
+    Create months for active project
+    NEW: Only creates 4 months initially (cover + Jan, Feb, Mar) for preview
+    Remaining 9 months created after payment method authorization
+    """
     project = _get_active_project()
     project['months'] = []
 
-    for month_num in range(0, 13):
+    # Phase 1: Only create first 4 months for FREE preview (cover + Jan, Feb, Mar)
+    preview_months = [0, 1, 2, 3]  # Cover, January, February, March
+
+    for month_num in preview_months:
         theme = themes[month_num]
         project['months'].append({
             'id': month_num,
@@ -207,6 +235,39 @@ def create_months_with_themes(themes):
             'error_message': None,
             'generated_at': None
         })
+
+    # Set generation stage and preview expiry
+    project['generation_stage'] = 'preview_only'
+    set_preview_expiry()  # 48 hours from now
+
+    _save_session(_get_session_id())  # Persist to disk
+
+def create_remaining_months(themes):
+    """
+    Create remaining 9 months (April-December) after payment authorization
+    Called after setup_intent.succeeded webhook
+    """
+    project = _get_active_project()
+
+    # Phase 2: Create months 4-12 (April through December)
+    remaining_months = [4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+    for month_num in remaining_months:
+        theme = themes[month_num]
+        project['months'].append({
+            'id': month_num,
+            'month_number': month_num,
+            'prompt': theme['title'],
+            'generation_status': 'pending',
+            'master_image_data': None,  # Raw binary data
+            'error_message': None,
+            'generated_at': None
+        })
+
+    # Update generation stage
+    project['generation_stage'] = 'generating_full'
+    project['generation_progress'] = 0
+
     _save_session(_get_session_id())  # Persist to disk
 
 def get_month_by_number(month_num):
@@ -302,7 +363,13 @@ def create_new_project():
         'created_at': datetime.utcnow().isoformat(),
         'images': [],
         'months': [],
-        'preferences': None
+        'preferences': None,
+        # New fields for 3-month preview system
+        'preview_expiry': None,
+        'payment_method_id': None,
+        'setup_intent_id': None,
+        'generation_stage': 'not_started',  # 'not_started' | 'preview_only' | 'generating_full' | 'fully_generated'
+        'generation_progress': 0  # 0-100 percentage for remaining months generation
     }
 
     storage['projects'].append(new_project)
@@ -526,3 +593,105 @@ def get_preview_mockup_by_session_id(session_id):
                 return {'calendar_2026': single_mockup}
         return mockups
     return None
+
+# ============================================================================
+# 3-MONTH PREVIEW SYSTEM FUNCTIONS
+# ============================================================================
+
+def set_preview_expiry():
+    """Set preview expiry to 48 hours from now"""
+    from datetime import timedelta
+    project = _get_active_project()
+    expiry = datetime.utcnow() + timedelta(hours=48)
+    project['preview_expiry'] = expiry.isoformat()
+    _save_session(_get_session_id())
+
+def get_preview_expiry():
+    """Get preview expiry datetime"""
+    project = _get_active_project()
+    expiry_str = project.get('preview_expiry')
+    if expiry_str:
+        return datetime.fromisoformat(expiry_str)
+    return None
+
+def is_preview_expired():
+    """Check if preview has expired"""
+    expiry = get_preview_expiry()
+    if not expiry:
+        return False
+    return datetime.utcnow() > expiry
+
+def save_setup_intent(setup_intent_id):
+    """Save Stripe Setup Intent ID"""
+    project = _get_active_project()
+    project['setup_intent_id'] = setup_intent_id
+    _save_session(_get_session_id())
+
+def save_payment_method(payment_method_id):
+    """Save Stripe payment method ID"""
+    project = _get_active_project()
+    project['payment_method_id'] = payment_method_id
+    _save_session(_get_session_id())
+
+def get_payment_method_id():
+    """Get saved payment method ID"""
+    project = _get_active_project()
+    return project.get('payment_method_id')
+
+def save_payment_method_by_session_id(session_id, payment_method_id):
+    """Save payment method for a specific session (used by webhooks)"""
+    _load_storage()
+    if session_id in _storage:
+        active_id = _storage[session_id].get('active_project_id')
+        if active_id:
+            for project in _storage[session_id].get('projects', []):
+                if project['id'] == active_id:
+                    project['payment_method_id'] = payment_method_id
+                    _save_session(session_id)
+                    return True
+    return False
+
+def set_generation_stage(stage):
+    """
+    Set generation stage
+    Stages: 'not_started' | 'preview_only' | 'generating_full' | 'fully_generated'
+    """
+    project = _get_active_project()
+    project['generation_stage'] = stage
+    _save_session(_get_session_id())
+
+def get_generation_stage():
+    """Get current generation stage"""
+    project = _get_active_project()
+    return project.get('generation_stage', 'not_started')
+
+def update_generation_progress(progress):
+    """Update generation progress (0-100)"""
+    project = _get_active_project()
+    project['generation_progress'] = progress
+    _save_session(_get_session_id())
+
+def get_generation_progress():
+    """Get generation progress (0-100)"""
+    project = _get_active_project()
+    return project.get('generation_progress', 0)
+
+def get_generation_status():
+    """
+    Get detailed generation status for frontend
+    Returns dict with stage, progress, and counts
+    """
+    project = _get_active_project()
+    months = project.get('months', [])
+
+    completed_count = sum(1 for m in months if m.get('generation_status') == 'completed')
+
+    return {
+        'stage': project.get('generation_stage', 'not_started'),
+        'progress': project.get('generation_progress', 0),
+        'completed_months': completed_count,
+        'total_months': len(months),
+        'preview_expiry': project.get('preview_expiry'),
+        'is_expired': is_preview_expired(),
+        'has_payment_method': bool(project.get('payment_method_id'))
+    }

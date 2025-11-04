@@ -176,3 +176,56 @@ def extract_shipping_address(checkout_session):
         'country': shipping['country'] if isinstance(shipping, dict) else shipping.country,
         'phone': checkout_session.customer_details.phone or ''
     }
+
+# ============================================================================
+# SETUP INTENT FUNCTIONS (3-Month Preview System)
+# ============================================================================
+
+def create_setup_intent(metadata=None):
+    """
+    Create Setup Intent for card authorization WITHOUT charging
+    Used for 3-month preview unlock gate
+
+    Args:
+        metadata: Optional dict of metadata (internal_session_id, project_id, etc.)
+
+    Returns:
+        dict: {'client_secret': str, 'setup_intent_id': str}
+    """
+    setup_intent = stripe.SetupIntent.create(
+        payment_method_types=['card'],
+        usage='off_session',  # Allow charging later without customer present
+        metadata=metadata or {}
+    )
+
+    return {
+        'client_secret': setup_intent.client_secret,
+        'setup_intent_id': setup_intent.id
+    }
+
+def charge_saved_payment_method(payment_method_id, amount_cents, customer_email, metadata=None):
+    """
+    Charge a previously saved payment method
+    Used for final checkout after full calendar preview
+
+    Args:
+        payment_method_id: Stripe payment method ID (from Setup Intent)
+        amount_cents: Amount in cents (e.g., 2999 for $29.99)
+        customer_email: Customer email address
+        metadata: Optional dict of metadata
+
+    Returns:
+        Stripe PaymentIntent object
+    """
+    payment_intent = stripe.PaymentIntent.create(
+        amount=amount_cents,
+        currency='usd',
+        payment_method=payment_method_id,
+        confirm=True,
+        off_session=True,  # Customer not present
+        receipt_email=customer_email,
+        metadata=metadata or {},
+        description=f"Calendar purchase for {customer_email}"
+    )
+
+    return payment_intent
