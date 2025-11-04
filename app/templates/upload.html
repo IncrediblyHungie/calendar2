@@ -38,7 +38,7 @@
                     </p>
 
                     <!-- Permanent, Concise Photo Tips -->
-                    <div class="card border-primary mb-4" style="position: sticky; top: 20px; z-index: 100;">
+                    <div class="card border-primary mb-4">
                         <div class="card-header bg-primary text-white">
                             <strong>📸 Photo Requirements for Best Results</strong>
                         </div>
@@ -153,14 +153,15 @@
                         {% endif %}
                     </div>
 
-                    <div class="d-flex gap-3 flex-wrap">
+                    <!-- Action Buttons - Mobile Optimized -->
+                    <div class="d-grid gap-3 d-md-flex" style="margin-bottom: 3rem;">
                         {% if images|length >= 3 %}
-                        <a href="{{ url_for('projects.themes') }}" class="btn btn-success btn-lg">
+                        <a href="{{ url_for('projects.themes') }}" class="btn btn-success btn-lg w-100 w-md-auto">
                             <i class="fas fa-arrow-right me-2"></i>
                             Next: Review Monthly Themes
                         </a>
                         {% endif %}
-                        <button type="button" class="btn btn-outline-secondary btn-lg" id="addMorePhotosBtnBottom">
+                        <button type="button" class="btn btn-outline-secondary btn-lg w-100 w-md-auto" id="addMorePhotosBtnBottom">
                             <i class="fas fa-plus-circle me-2"></i>
                             Add More Photos
                         </button>
