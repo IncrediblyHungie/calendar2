@@ -140,6 +140,17 @@
                 <strong>We'll only charge you when you're ready to order!</strong>
             </p>
 
+            {% if generation_status.has_payment_method %}
+            <!-- Payment already authorized - trigger generation -->
+            <div class="alert alert-success text-center" role="alert">
+                <i class="fas fa-check-circle fa-2x mb-3"></i>
+                <h5>Payment Method Authorized!</h5>
+                <p class="mb-3">Starting full calendar generation...</p>
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            {% else %}
             <!-- Stripe Card Element Container -->
             <div id="unlock-form-container" class="mb-4">
                 <div class="row justify-content-center">
@@ -172,6 +183,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     {% elif generation_status.stage == 'generating_full' %}
@@ -496,14 +508,54 @@ async function handleUnlock() {
     }
 }
 
+// Auto-trigger generation if payment already authorized
+async function autoTriggerGeneration() {
+    console.log('💳 Payment method already authorized - triggering generation...');
+
+    try {
+        const response = await fetch('/api/generate-remaining-months', {
+            method: 'POST'
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            console.log('✓ Generation triggered! Created', data.months_created, 'month records');
+            // Wait 2 seconds for session persistence, then reload
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else {
+            console.error('Failed to trigger generation:', data.error);
+            // Reload anyway to show current state
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        }
+    } catch (error) {
+        console.error('Error triggering generation:', error);
+        // Reload anyway to show current state
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+}
+
 // Start countdown on page load
 document.addEventListener('DOMContentLoaded', () => {
     startCountdown();
 
-    // Attach unlock button handler
-    const unlockButton = document.getElementById('unlock-button');
-    if (unlockButton) {
-        unlockButton.addEventListener('click', handleUnlock);
+    // Check if payment already authorized and auto-trigger generation
+    const hasPaymentMethod = {{ generation_status.has_payment_method|tojson }};
+    if (hasPaymentMethod) {
+        console.log('🔍 Detected existing payment method');
+        autoTriggerGeneration();
+    } else {
+        // Attach unlock button handler only if no payment method yet
+        const unlockButton = document.getElementById('unlock-button');
+        if (unlockButton) {
+            unlockButton.addEventListener('click', handleUnlock);
+        }
     }
 });
 {% endif %}
