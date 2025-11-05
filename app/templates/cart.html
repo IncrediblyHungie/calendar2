@@ -165,10 +165,6 @@ document.querySelectorAll('.remove-item-btn').forEach(btn => {
         const itemId = this.dataset.itemId;
         const cartItem = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
 
-        if (!confirm('Remove this item from your cart?')) {
-            return;
-        }
-
         // Show loading
         const originalHTML = this.innerHTML;
         this.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
@@ -209,10 +205,6 @@ document.querySelectorAll('.remove-item-btn').forEach(btn => {
 // Clear entire cart
 {% if cart_items %}
 document.getElementById('clear-cart-btn').addEventListener('click', async function() {
-    if (!confirm('Remove all items from your cart?')) {
-        return;
-    }
-
     // Show loading
     const originalHTML = this.innerHTML;
     this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Clearing...';
