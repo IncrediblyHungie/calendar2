@@ -20,7 +20,7 @@ CALENDAR_PRODUCTS = {
         'title': 'Custom Hunk Wall Calendar 2026',
         'size': '11" × 8.5" or 14" × 11.5"',
         'description': 'High-quality paper, spiral binding, QR codes on back',
-        'price': 2999  # cents
+        'price': 3500  # $35.00
     },
     'desktop': {
         'blueprint_id': 1353,  # Desktop Calendar (2026 grid) - FIXED
@@ -30,7 +30,7 @@ CALENDAR_PRODUCTS = {
         'title': 'Custom Desktop Hunk Calendar',
         'size': '10" × 5"',
         'description': '250gsm matte paper, spiral binding',
-        'price': 1999  # cents
+        'price': 3000  # $30.00
     }
 }
 

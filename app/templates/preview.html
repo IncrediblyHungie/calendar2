@@ -230,25 +230,25 @@
             <!-- Product Selection -->
             <div class="row mb-4 justify-content-center">
                 <div class="col-md-5">
-                    <div class="card h-100 product-option" data-product="desktop" data-price="19.99">
+                    <div class="card h-100 product-option" data-product="desktop" data-price="30">
                         <div class="card-body text-center">
                             <h5>Desktop Calendar</h5>
                             <p class="text-muted mb-1">10" × 5"</p>
                             <small class="text-muted d-block mb-2">250gsm matte paper, spiral binding</small>
                             <small class="text-success d-block mb-2"><i class="fas fa-flag-usa"></i> Made in USA</small>
-                            <h4 class="text-primary mb-0"><del class="text-muted">$26.99</del> $19.99 <small class="text-success">(25% off)</small></h4>
+                            <h4 class="text-primary mb-0"><del class="text-muted">$40</del> $30 <small class="text-success">(25% off)</small></h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class="card h-100 border-success border-3 product-option selected" data-product="wall_calendar" data-price="29.99">
+                    <div class="card h-100 border-success border-3 product-option selected" data-product="wall_calendar" data-price="35">
                         <div class="card-body text-center">
                             <div class="badge bg-success mb-2">MOST POPULAR</div>
                             <h5>Wall Calendar 2026</h5>
                             <p class="text-muted mb-1">11" × 8.5" or 14" × 11.5"</p>
                             <small class="text-muted d-block mb-2">High-quality paper, spiral binding</small>
                             <small class="text-success d-block mb-2"><i class="fas fa-flag-usa"></i> Made in USA</small>
-                            <h4 class="text-success mb-0"><del class="text-muted">$39.99</del> $29.99 <small class="text-success">(25% off)</small></h4>
+                            <h4 class="text-success mb-0"><del class="text-muted">$47</del> $35 <small class="text-success">(25% off)</small></h4>
                         </div>
                     </div>
                 </div>
@@ -259,7 +259,7 @@
                 <div class="col-md-6 mb-3">
                     <button id="add-to-cart-btn" class="btn btn-success btn-lg w-100">
                         <i class="fas fa-cart-plus me-2"></i>
-                        Add to Cart (<span id="selected-price"><del>$39.99</del> $29.99</span>)
+                        Add to Cart (<span id="selected-price"><del>$47</del> $35</span>)
                     </button>
                     <small class="text-muted d-block mt-2 text-center">
                         <i class="fas fa-info-circle me-1"></i>
@@ -651,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const priceSpan = document.getElementById('selected-price');
             if (priceSpan) {
                 // Calculate original price (25% off)
-                const originalPrice = price === '19.99' ? '26.99' : '39.99';
+                const originalPrice = price === '30' ? '40' : '47';
                 priceSpan.innerHTML = '<del>$' + originalPrice + '</del> $' + price;
             }
             console.log('Selected product:', selectedProduct, 'Price:', price);

@@ -7,8 +7,8 @@ from flask import current_app
 
 # Product pricing in cents
 CALENDAR_PRICES = {
-    'wall_calendar': 2999,  # $29.99
-    'desktop': 1999         # $19.99
+    'wall_calendar': 3500,  # $35.00
+    'desktop': 3000         # $30.00
 }
 
 PRODUCT_NAMES = {
