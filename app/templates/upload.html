@@ -301,7 +301,8 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
             if (xhr.status === 200) {
                 progressBar.style.width = '100%';
                 statusText.textContent = 'Upload complete! Redirecting...';
-                setTimeout(() => window.location.reload(), 500);
+                // Navigate directly to avoid duplication issues
+                setTimeout(() => window.location.href = '/project/upload', 500);
             } else {
                 throw new Error(`Upload failed: ${xhr.statusText}`);
             }
