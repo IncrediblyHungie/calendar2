@@ -356,8 +356,8 @@ def clear_session():
 
 # Product pricing (must match checkout.html)
 PRODUCT_PRICES = {
-    'desktop': 19.99,
-    'wall_calendar': 29.99
+    'desktop': 30.00,
+    'wall_calendar': 35.00
 }
 
 def create_new_project():
