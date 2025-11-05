@@ -93,7 +93,7 @@
                 Your Photos ({{ images|length }})
             </h3>
             <div class="d-flex gap-2">
-                <button type="button" class="btn-figma-secondary" id="deleteAllBtn" style="background: transparent; border: 2px solid var(--accent-danger); color: var(--accent-danger);">
+                <button type="button" class="btn-figma-secondary" id="deleteAllBtn" data-image-count="{{ images|length }}" style="background: transparent; border: 2px solid var(--accent-danger); color: var(--accent-danger);">
                     <i class="fas fa-trash-alt me-2"></i>Delete All
                 </button>
                 <button type="button" class="btn-figma-secondary" id="addMorePhotosBtn">
@@ -109,6 +109,7 @@
                     <img src="{{ url_for('api.get_thumbnail', image_id=image.id) }}"
                          alt="Uploaded photo {{ loop.index }}"
                          class="img-fluid"
+                         loading="lazy"
                          style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                     <button type="button"
                             class="btn btn-danger btn-sm delete-image-btn position-absolute"
@@ -430,52 +431,52 @@ addMoreBtns.forEach(btn => {
     }
 });
 
-// Delete image handler with improved UX
-document.querySelectorAll('.delete-image-btn').forEach(btn => {
-    btn.addEventListener('click', async function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+// Delete image handler with event delegation (better performance)
+document.addEventListener('click', async function(e) {
+    // Check if clicked element is a delete button or inside one
+    const deleteBtn = e.target.closest('.delete-image-btn');
+    if (!deleteBtn) return;
 
-        const imageId = this.dataset.imageId;
-        const card = this.closest('.upload-thumbnail-card');
+    e.preventDefault();
+    e.stopPropagation();
 
-        // Show deleting state
-        card.style.opacity = '0.5';
-        card.style.pointerEvents = 'none';
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    const imageId = deleteBtn.dataset.imageId;
+    const card = deleteBtn.closest('.upload-thumbnail-card');
 
-        try {
-            const response = await fetch(`/api/delete/image/${imageId}`, {
-                method: 'POST'
-            });
+    // Show deleting state
+    card.style.opacity = '0.5';
+    card.style.pointerEvents = 'none';
+    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-            if (response.ok) {
-                // Fade out animation
-                card.style.transition = 'all 0.3s ease';
-                card.style.transform = 'scale(0.8)';
-                card.style.opacity = '0';
+    try {
+        const response = await fetch(`/api/delete/image/${imageId}`, {
+            method: 'POST'
+        });
 
-                // Reload after animation
-                setTimeout(() => location.reload(), 300);
-            } else {
-                throw new Error('Delete failed');
-            }
-        } catch (error) {
-            alert('❌ Failed to delete photo. Please try again.');
-            card.style.opacity = '1';
-            card.style.pointerEvents = 'auto';
-            this.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        if (response.ok) {
+            // Fade out animation
+            card.style.transition = 'all 0.3s ease';
+            card.style.transform = 'scale(0.8)';
+            card.style.opacity = '0';
+
+            // Reload after animation
+            setTimeout(() => location.reload(), 300);
+        } else {
+            throw new Error('Delete failed');
         }
-    });
+    } catch (error) {
+        alert('❌ Failed to delete photo. Please try again.');
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+        deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    }
 });
 
-// Delete All button handler
+// Delete All button handler (optimized - no DOM query)
 const deleteAllBtn = document.getElementById('deleteAllBtn');
 if (deleteAllBtn) {
     deleteAllBtn.addEventListener('click', async function(e) {
         e.preventDefault();
-
-        const imageCount = document.querySelectorAll('.delete-image-btn').length;
 
         // Show deleting state
         this.disabled = true;
