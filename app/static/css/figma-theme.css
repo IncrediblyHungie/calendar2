@@ -548,14 +548,14 @@ p {
     position: absolute;
     /* Positioning: overlay on January calendar (upper left in mockup) */
     top: 12%;             /* Position for January calendar */
-    left: 25%;            /* Left-offset for January calendar */
+    left: 29%;            /* Shifted right for better alignment */
     /* Add rotation - flipped direction to clockwise */
     transform: translateX(-50%) perspective(1000px) rotateX(5deg) rotateZ(18deg);
 
-    /* Size: calendar page scaled smaller to match mockup calendar */
-    width: 28%;
+    /* Size: calendar page scaled 25% smaller */
+    width: 21%;
     height: auto;
-    max-width: 28%;       /* Prevent overflow */
+    max-width: 21%;       /* Prevent overflow */
 
     /* Make it look realistic */
     border-radius: 4px;
@@ -595,9 +595,9 @@ p {
 
     .mockup-calendar-page {
         /* Maintain January calendar positioning on tablets */
-        width: 28%;
+        width: 21%;
         top: 12%;
-        left: 25%;
+        left: 29%;
         /* Slightly reduce 3D effect on smaller screens */
         transform: translateX(-50%) perspective(1000px) rotateX(4deg) rotateZ(18deg);
     }
@@ -612,8 +612,8 @@ p {
     .mockup-calendar-page {
         /* Maintain positioning on small screens */
         top: 12%;
-        left: 25%;
-        width: 28%;
+        left: 29%;
+        width: 21%;
         /* Minimal 3D effect on small screens */
         transform: translateX(-50%) perspective(1000px) rotateX(3deg) rotateZ(18deg);
     }
@@ -624,8 +624,8 @@ p {
     .mockup-calendar-page {
         /* Fine-tune for very small screens */
         top: 11.5%;
-        left: 25%;
-        width: 29%;
+        left: 29%;
+        width: 22%;
         transform: translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(18deg);
     }
 }
