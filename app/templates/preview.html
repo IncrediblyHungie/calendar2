@@ -151,7 +151,7 @@
                 </div>
             </div>
             {% else %}
-            <!-- Stripe Card Element Container -->
+            <!-- Stripe Payment Element Container (includes Apple Pay, Google Pay, Cards) -->
             <div id="unlock-form-container" class="mb-4">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -163,16 +163,19 @@
                                 </h5>
                                 <p class="text-muted small mb-3">
                                     We'll securely save your payment info but won't charge you until you place an order.
+                                    <strong>Select your preferred method below:</strong>
                                 </p>
 
-                                <!-- Stripe Card Element -->
-                                <div id="card-element" class="form-control mb-3" style="height: 40px; padding: 10px;"></div>
-                                <div id="card-errors" class="text-danger mb-3" role="alert"></div>
+                                <!-- Stripe Payment Element (Apple Pay, Google Pay, Cards) -->
+                                <form id="payment-form">
+                                    <div id="payment-element" class="mb-3"></div>
+                                    <div id="payment-errors" class="text-danger mb-3" role="alert"></div>
 
-                                <button id="unlock-button" class="btn btn-warning btn-lg w-100">
-                                    <i class="fas fa-unlock-alt me-2"></i>
-                                    Authorize & Unlock Full Calendar
-                                </button>
+                                    <button id="unlock-button" type="submit" class="btn btn-warning btn-lg w-100">
+                                        <i class="fas fa-unlock-alt me-2"></i>
+                                        Authorize & Unlock Full Calendar
+                                    </button>
+                                </form>
 
                                 <p class="text-muted text-center mt-3 mb-0 small">
                                     <i class="fas fa-shield-alt me-1"></i>
@@ -352,39 +355,78 @@
 // Initialize Stripe (if in preview_only stage)
 {% if generation_status.stage == 'preview_only' %}
 const stripe = Stripe('{{ config.STRIPE_PUBLISHABLE_KEY }}');
-const elements = stripe.elements();
-const cardElement = elements.create('card', {
-    style: {
-        base: {
-            fontSize: '16px',
-            color: '#32325d',
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            '::placeholder': {
-                color: '#aab7c4'
-            }
-        },
-        invalid: {
-            color: '#fa755a',
-            iconColor: '#fa755a'
-        }
-    }
-});
+let elements, paymentElement;
 
-// Mount card element after DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-    const cardContainer = document.getElementById('card-element');
-    if (cardContainer) {
-        cardElement.mount('#card-element');
+// Initialize Payment Element after fetching client secret
+async function initializePaymentElement() {
+    try {
+        // Fetch Setup Intent client secret from server
+        const response = await fetch('/api/authorize-payment', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error || 'Failed to initialize payment');
+        }
+
+        // Create Payment Element in setup mode with client secret
+        elements = stripe.elements({
+            clientSecret: data.client_secret,
+            appearance: {
+                theme: 'stripe',
+                variables: {
+                    colorPrimary: '#0570de',
+                    colorBackground: '#ffffff',
+                    colorText: '#30313d',
+                    colorDanger: '#df1b41',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    spacingUnit: '4px',
+                    borderRadius: '8px'
+                }
+            }
+        });
+
+        // Create Payment Element (includes Apple Pay, Google Pay, cards automatically)
+        paymentElement = elements.create('payment', {
+            layout: {
+                type: 'tabs',
+                defaultCollapsed: false
+            },
+            wallets: {
+                applePay: 'auto',  // Show Apple Pay if available
+                googlePay: 'auto'   // Show Google Pay if available
+            }
+        });
+
+        paymentElement.mount('#payment-element');
 
         // Handle real-time validation errors
-        cardElement.on('change', (event) => {
-            const displayError = document.getElementById('card-errors');
+        paymentElement.on('change', (event) => {
+            const displayError = document.getElementById('payment-errors');
             if (event.error) {
                 displayError.textContent = event.error.message;
             } else {
                 displayError.textContent = '';
             }
         });
+
+        console.log('✓ Payment Element initialized with Apple Pay support');
+
+    } catch (error) {
+        console.error('Failed to initialize Payment Element:', error);
+        const displayError = document.getElementById('payment-errors');
+        displayError.textContent = 'Failed to load payment form. Please refresh the page.';
+    }
+}
+
+// Mount payment element after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+    const paymentContainer = document.getElementById('payment-element');
+    if (paymentContainer) {
+        initializePaymentElement();
     }
 });
 
@@ -417,7 +459,9 @@ function startCountdown() {
 }
 
 // Unlock button handler
-async function handleUnlock() {
+async function handleUnlock(e) {
+    e.preventDefault();
+
     const unlockButton = document.getElementById('unlock-button');
     const originalHTML = unlockButton.innerHTML;
 
@@ -426,40 +470,25 @@ async function handleUnlock() {
     unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
 
     try {
-        // Step 1: Create Setup Intent
-        console.log('Creating Setup Intent...');
-        const response = await fetch('/api/authorize-payment', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'}
+        // Step 1: Confirm payment method with Stripe (Apple Pay, Google Pay, or Card)
+        console.log('Confirming payment method...');
+        unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirming payment...';
+
+        const {setupIntent, error} = await stripe.confirmSetup({
+            elements,
+            confirmParams: {
+                return_url: window.location.origin + '/project/preview'
+            },
+            redirect: 'if_required'
         });
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.error || 'Failed to create payment authorization');
-        }
-
-        console.log('Setup Intent created:', data.setup_intent_id);
-
-        // Step 2: Confirm card with Stripe
-        unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirming card...';
-
-        const {setupIntent, error} = await stripe.confirmCardSetup(
-            data.client_secret,
-            {
-                payment_method: {
-                    card: cardElement
-                }
-            }
-        );
 
         if (error) {
             throw new Error(error.message);
         }
 
-        console.log('✓ Card confirmed! Payment method:', setupIntent.payment_method);
+        console.log('✓ Payment method confirmed! Method:', setupIntent.payment_method);
 
-        // Step 3: Save payment method immediately (don't wait for webhook)
+        // Step 2: Save payment method immediately (don't wait for webhook)
         unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving payment method...';
 
         const saveResponse = await fetch('/api/save-payment-method', {
@@ -478,7 +507,7 @@ async function handleUnlock() {
 
         console.log('✓ Payment method saved!');
 
-        // Step 4: Trigger generation of remaining months
+        // Step 3: Trigger generation of remaining months
         unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Starting generation...';
 
         const genResponse = await fetch('/api/generate-remaining-months', {
@@ -493,7 +522,7 @@ async function handleUnlock() {
 
         console.log('✓ Generation started! Created', genData.months_created, 'month records');
 
-        // Step 5: Show success and reload (with delay for session persistence)
+        // Step 4: Show success and reload (with delay for session persistence)
         unlockButton.innerHTML = '<i class="fas fa-check me-2"></i>Payment Authorized!';
         unlockButton.classList.remove('btn-warning');
         unlockButton.classList.add('btn-success');
@@ -506,7 +535,7 @@ async function handleUnlock() {
 
     } catch (error) {
         console.error('Unlock error:', error);
-        document.getElementById('card-errors').textContent = error.message;
+        document.getElementById('payment-errors').textContent = error.message;
         unlockButton.innerHTML = originalHTML;
         unlockButton.disabled = false;
     }
@@ -555,10 +584,10 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('🔍 Detected existing payment method');
         autoTriggerGeneration();
     } else {
-        // Attach unlock button handler only if no payment method yet
-        const unlockButton = document.getElementById('unlock-button');
-        if (unlockButton) {
-            unlockButton.addEventListener('click', handleUnlock);
+        // Attach form submit handler only if no payment method yet
+        const paymentForm = document.getElementById('payment-form');
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', handleUnlock);
         }
     }
 });
