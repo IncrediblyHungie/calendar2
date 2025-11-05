@@ -242,14 +242,25 @@ fileInput.addEventListener('change', function(e) {
     document.getElementById('uploadForm').dispatchEvent(new Event('submit'));
 });
 
+// Prevent double submission
+let isUploading = false;
+
 // Client-side image compression and upload with progress
 document.getElementById('uploadForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+
+    // Prevent double submission
+    if (isUploading) {
+        console.log('Upload already in progress, ignoring duplicate submission');
+        return;
+    }
+    isUploading = true;
 
     const files = Array.from(fileInput.files);
 
     if (files.length === 0) {
         alert('Please select at least one photo');
+        isUploading = false;
         return;
     }
 
@@ -298,17 +309,21 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
 
         // Handle completion
         xhr.addEventListener('load', () => {
-            if (xhr.status === 200) {
+            if (xhr.status === 200 || xhr.status === 302) {
                 progressBar.style.width = '100%';
                 statusText.textContent = 'Upload complete! Redirecting...';
+                // Clear file input to prevent resubmission
+                fileInput.value = '';
                 // Navigate directly to avoid duplication issues
                 setTimeout(() => window.location.href = '/project/upload', 500);
             } else {
+                isUploading = false;
                 throw new Error(`Upload failed: ${xhr.statusText}`);
             }
         });
 
         xhr.addEventListener('error', () => {
+            isUploading = false;
             throw new Error('Network error during upload');
         });
 
@@ -322,6 +337,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
         progressDiv.style.display = 'none';
         browseBtn.disabled = false;
         browseBtn.style.opacity = '1';
+        isUploading = false;
     }
 });
 

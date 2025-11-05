@@ -189,6 +189,12 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
     """Add an uploaded image to active project"""
     project = _get_active_project()
 
+    # Check for duplicate filename to prevent double uploads
+    for existing_image in project.get('images', []):
+        if existing_image['filename'] == filename:
+            print(f"⚠️ Duplicate image detected: {filename} - skipping")
+            return existing_image['id']  # Return existing ID
+
     # Store binary data directly in server memory (no base64 needed!)
     image_id = len(project['images']) + 1
     project['images'].append({
