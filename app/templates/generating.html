@@ -2,65 +2,127 @@
 
 {% block title %}Generating Calendar{% endblock %}
 
+{% block extra_head %}
+<style>
+@keyframes magic-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 20px var(--accent-primary)) drop-shadow(0 0 40px rgba(255, 90, 121, 0.5));
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        filter: drop-shadow(0 0 30px var(--accent-purple)) drop-shadow(0 0 60px rgba(139, 92, 246, 0.5));
+        transform: rotate(90deg) scale(1.1);
+    }
+    50% {
+        filter: drop-shadow(0 0 20px var(--accent-primary)) drop-shadow(0 0 40px rgba(255, 90, 121, 0.5));
+        transform: rotate(180deg) scale(1);
+    }
+    75% {
+        filter: drop-shadow(0 0 30px var(--accent-purple)) drop-shadow(0 0 60px rgba(139, 92, 246, 0.5));
+        transform: rotate(270deg) scale(1.1);
+    }
+}
+
+.magic-icon {
+    animation: magic-glow 4s ease-in-out infinite;
+    color: var(--accent-primary);
+}
+
+.month-status-badge {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.month-status-badge.bg-success {
+    background: var(--accent-success);
+    border-color: var(--accent-success);
+}
+
+.month-status-badge.bg-warning {
+    background: var(--accent-warning);
+    border-color: var(--accent-warning);
+    animation: pulse 2s infinite;
+}
+
+.month-status-badge.bg-info {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+}
+
+.month-status-badge.bg-danger {
+    background: var(--accent-danger);
+    border-color: var(--accent-danger);
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
+<div class="container-figma section-figma">
     <div class="row justify-content-center">
         <div class="col-lg-8 text-center">
-            <div class="card shadow">
-                <div class="card-body p-5">
-                    <div class="generating-animation mb-4">
-                        <i class="fas fa-magic fa-5x text-primary rotating"></i>
-                    </div>
+            <div class="card-figma-dark" style="padding: var(--spacing-xl);">
+                <!-- Magic Animation -->
+                <div class="mb-lg">
+                    <i class="fas fa-magic magic-icon" style="font-size: 64px;"></i>
+                </div>
 
-                    <h2 class="mb-4">AI is Transforming You into 12 Hunks...</h2>
+                <!-- Header -->
+                <h2 style="font-size: 32px; margin-bottom: var(--spacing-md); color: var(--text-primary);">
+                    AI is Transforming You into 12 Hunks...
+                </h2>
 
-                    <p class="lead mb-4">
-                        We're putting your face on ridiculously sexy bodies! Generating all 12 months simultaneously.
-                        This takes 2-3 minutes. Feel free to close this page and return later!
-                    </p>
+                <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: var(--spacing-xl); max-width: 600px; margin-left: auto; margin-right: auto;">
+                    We're putting your face on ridiculously sexy bodies! Generating all 12 months simultaneously.
+                    This takes 2-3 minutes. Feel free to close this page and return later!
+                </p>
 
-                    <div class="progress mb-4" style="height: 30px;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                             role="progressbar"
-                             id="progressBar"
-                             style="width: 0%">
-                            <span id="progressText">0/12 months</span>
+                <!-- Progress Bar -->
+                <div class="progress-figma mb-md">
+                    <div class="progress-figma-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+                <div id="progressText" class="progress-text text-center mb-xl">0/12 months</div>
+
+                <!-- Generation Status -->
+                <div class="generation-status mb-xl">
+                    <h5 class="mb-md" style="color: var(--text-primary);">Generation Progress:</h5>
+                    <div class="month-badges">
+                        {% for month in months %}
+                        <div class="month-status-badge
+                            {% if month.generation_status == 'completed' %}bg-success
+                            {% elif month.generation_status == 'processing' %}bg-warning
+                            {% elif month.generation_status == 'failed' %}bg-danger
+                            {% else %}bg-secondary{% endif %}"
+                            data-month="{{ month.month_number }}">
+                            {{ month.month_number }}
+                            {% if month.generation_status == 'completed' %}
+                                <i class="fas fa-check mt-1"></i>
+                            {% elif month.generation_status == 'processing' %}
+                                <i class="fas fa-spinner fa-spin mt-1"></i>
+                            {% elif month.generation_status == 'failed' %}
+                                <i class="fas fa-times mt-1"></i>
+                            {% endif %}
                         </div>
-                    </div>
-
-                    <!-- Generation Status -->
-                    <div class="generation-status">
-                        <h5 class="mb-3">Generation Progress:</h5>
-                        <div class="row g-2">
-                            {% for month in months %}
-                            <div class="col-3">
-                                <div class="month-status-badge
-                                    {% if month.generation_status == 'completed' %}bg-success
-                                    {% elif month.generation_status == 'processing' %}bg-warning
-                                    {% elif month.generation_status == 'failed' %}bg-danger
-                                    {% else %}bg-secondary{% endif %}"
-                                    data-month="{{ month.month_number }}">
-                                    {{ month.month_number }}
-                                    {% if month.generation_status == 'completed' %}
-                                        <i class="fas fa-check"></i>
-                                    {% elif month.generation_status == 'processing' %}
-                                        <i class="fas fa-spinner fa-spin"></i>
-                                    {% elif month.generation_status == 'failed' %}
-                                        <i class="fas fa-times"></i>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="mt-5">
-                        <button class="btn btn-primary" onclick="location.reload()">
-                            <i class="fas fa-sync-alt me-2"></i>
-                            Check Status
-                        </button>
+                        {% endfor %}
                     </div>
                 </div>
+
+                <!-- Check Status Button -->
+                <button class="btn-figma-secondary" onclick="location.reload()">
+                    <i class="fas fa-sync-alt me-2"></i>
+                    Check Status
+                </button>
             </div>
         </div>
     </div>
