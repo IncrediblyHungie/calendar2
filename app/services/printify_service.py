@@ -142,6 +142,38 @@ def upload_image(image_data_bytes, filename="month.jpg"):
     print(f"  ✓ Uploaded {filename}: {upload_data['id']}")
     return upload_data
 
+def get_optimal_scale(product_type, position):
+    """
+    Calculate optimal scale for 2:1 landscape images based on product and position
+
+    Scale values determined by placeholder aspect ratios:
+    - Lower scale = more zoom out (show more of image with margins)
+    - Higher scale = less zoom out (fill placeholder more)
+
+    Args:
+        product_type: 'wall_calendar' or 'desktop'
+        position: 'front_cover' or month name
+
+    Returns:
+        float: Optimal scale value
+    """
+    # Wall Calendar (blueprint 965): 1.39:1 aspect ratio
+    # - Image 2:1 is wider than 1.39:1, needs moderate zoom out
+    if product_type == 'wall_calendar':
+        return 0.75  # Moderate zoom out for 1.39:1 placeholder
+
+    # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
+    elif product_type == 'desktop':
+        if position == 'front_cover':
+            # Desktop cover: 1.96:1 aspect ratio (very close to 2:1)
+            return 0.90  # Minimal zoom out, almost perfect fit
+        else:
+            # Desktop monthly: 1.19:1 aspect ratio (much narrower than 2:1)
+            return 0.65  # Heavy zoom out to protect center content
+
+    # Fallback (should never reach here)
+    return 0.75
+
 def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Calendar 2026"):
     """
     Create a calendar product with user's images
@@ -183,6 +215,10 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
     else:
         print("  ✓ Using dedicated cover image for front cover")
 
+    # Get optimal scale for cover based on product type
+    cover_scale = get_optimal_scale(product_type, 'front_cover')
+    print(f"  📐 Cover scale: {cover_scale} (optimized for {product_type})")
+
     print_areas[0]["placeholders"].append({
         "position": "front_cover",
         "images": [
@@ -190,7 +226,7 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
                 "id": cover_id,
                 "x": 0.5,  # Center horizontally
                 "y": 0.5,  # Center vertically
-                "scale": 0.7,  # Zoomed out to 70% - increased margin to prevent cropping
+                "scale": cover_scale,  # Product-specific scale for 2:1 landscape images
                 "angle": 0
             }
         ]
@@ -199,6 +235,10 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
     # Add all 12 months
     months = ["january", "february", "march", "april", "may", "june",
               "july", "august", "september", "october", "november", "december"]
+
+    # Get optimal scale for monthly pages
+    monthly_scale = get_optimal_scale(product_type, 'january')  # Same scale for all months
+    print(f"  📐 Monthly pages scale: {monthly_scale} (optimized for {product_type})")
 
     for month in months:
         if month not in month_image_ids:
@@ -211,7 +251,7 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
                     "id": month_image_ids[month],
                     "x": 0.5,
                     "y": 0.5,
-                    "scale": 0.7,  # Zoomed out to 70% - increased margin to prevent cropping
+                    "scale": monthly_scale,  # Product-specific scale for 2:1 landscape images
                     "angle": 0
                 }
             ]
