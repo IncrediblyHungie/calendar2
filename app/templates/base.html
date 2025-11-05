@@ -6,10 +6,19 @@
     <title>{% block title %}Hunk of the Month{% endblock %} - AI Calendar Platform</title>
 
     {% block head %}
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Figma Design System CSS (NEW) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/figma-theme.css') }}">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% endblock %}
@@ -18,18 +27,17 @@
 </head>
 <body>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Navigation Bar - Figma Style -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--bg-primary); border-bottom: 1px solid var(--border-color);">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <i class="fas fa-fire me-2"></i>
-                Hunk of the Month
+            <a class="navbar-brand" href="{{ url_for('main.index') }}" style="font-weight: 600; color: var(--text-primary);">
+                🔥 Hunk of the Month
             </a>
             <div class="ms-auto">
-                <a href="{{ url_for('projects.cart_page') }}" class="btn btn-outline-light position-relative">
+                <a href="{{ url_for('projects.cart_page') }}" class="btn position-relative" style="background: transparent; border: 2px solid var(--accent-primary); color: var(--accent-primary); border-radius: var(--radius-pill); padding: 8px 16px;">
                     <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                          style="display: none;">
+                    <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill"
+                          style="display: none; background: var(--accent-primary);">
                         0
                     </span>
                 </a>
@@ -56,10 +64,13 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4 mt-5">
+    <!-- Footer - Figma Style -->
+    <footer class="text-center py-4 mt-5" style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color);">
         <div class="container">
-            <p class="mb-0">&copy; 2025 Hunk of the Month. AI-powered personalized calendars.</p>
+            <p class="mb-2" style="color: var(--text-secondary); font-size: 14px;">&copy; 2025 Hunk of the Month. AI-powered personalized calendars.</p>
+            <div style="color: var(--text-muted); font-size: 12px;">
+                Join 10,000+ people who've turned their favorites into calendars
+            </div>
         </div>
     </footer>
 

@@ -1,0 +1,484 @@
+{% extends "base.html" %}
+
+{% block title %}Create Your Hilarious 'Hunk of the Month' Calendar{% endblock %}
+
+{% block head %}
+{{ super() }}
+<!-- Play Bootstrap Template CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/lineicons.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/ud-styles.css') }}" />
+{% endblock %}
+
+{% block content %}
+<!-- ====== Hero Start ====== -->
+<section class="ud-hero" id="home">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ud-hero-content wow fadeInUp" data-wow-delay=".2s">
+          <h1 class="ud-hero-title">
+            Create Your Hilarious<br>'Hunk of the Month' Calendar
+          </h1>
+          <p class="ud-hero-desc">
+            AI transforms YOUR face onto 12 ridiculously sexy hunks in hilarious scenarios!
+            Perfect gift. 100% laughs guaranteed. FREE Preview!
+          </p>
+          <ul class="ud-hero-buttons">
+            <li>
+              <a href="{{ url_for('main.start') }}" class="ud-main-btn ud-white-btn">
+                Start Creating - It's FREE!
+              </a>
+            </li>
+            <li>
+              <a href="#examples" class="ud-main-btn ud-link-btn ud-menu-scroll">
+                See Examples <i class="lni lni-arrow-right"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="ud-hero-brands-wrapper wow fadeInUp" data-wow-delay=".3s">
+          <div class="d-flex justify-content-center gap-4 flex-wrap">
+            <span class="badge bg-success px-4 py-2 fs-6">
+              <i class="lni lni-checkmark-circle"></i> FREE Preview
+            </span>
+            <span class="badge bg-primary px-4 py-2 fs-6">
+              <i class="lni lni-user"></i> No Account Needed
+            </span>
+            <span class="badge bg-info px-4 py-2 fs-6">
+              <i class="lni lni-timer"></i> Ready in 5 Minutes
+            </span>
+          </div>
+        </div>
+        <div class="ud-hero-image wow fadeInUp" data-wow-delay=".25s">
+          <div class="calendar-preview-grid">
+            <div class="row g-2">
+              <div class="col-3"><div class="month-preview">JAN<br><small>Firefighter</small></div></div>
+              <div class="col-3"><div class="month-preview">FEB<br><small>Cupid</small></div></div>
+              <div class="col-3"><div class="month-preview">MAR<br><small>Irish</small></div></div>
+              <div class="col-3"><div class="month-preview">APR<br><small>Astronaut</small></div></div>
+              <div class="col-3"><div class="month-preview">MAY<br><small>Gardener</small></div></div>
+              <div class="col-3"><div class="month-preview">JUN<br><small>Lifeguard</small></div></div>
+              <div class="col-3"><div class="month-preview">JUL<br><small>BBQ King</small></div></div>
+              <div class="col-3"><div class="month-preview">AUG<br><small>Rockstar</small></div></div>
+              <div class="col-3"><div class="month-preview">SEP<br><small>Chef</small></div></div>
+              <div class="col-3"><div class="month-preview">OCT<br><small>Cowboy</small></div></div>
+              <div class="col-3"><div class="month-preview">NOV<br><small>Viking</small></div></div>
+              <div class="col-3"><div class="month-preview">DEC<br><small>Santa</small></div></div>
+            </div>
+          </div>
+          <img
+            src="{{ url_for('static', filename='assets/images/hero/dotted-shape.svg') }}"
+            alt="shape"
+            class="shape shape-1"
+          />
+          <img
+            src="{{ url_for('static', filename='assets/images/hero/dotted-shape.svg') }}"
+            alt="shape"
+            class="shape shape-2"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ====== Hero End ====== -->
+
+<!-- ====== Examples Start ====== -->
+<section id="examples" class="ud-features">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ud-section-title">
+          <span>Example Themes</span>
+          <h2>See Yourself as the Hunk!</h2>
+          <p>
+            These are just 3 of the 12 ridiculous scenarios waiting for YOUR face
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-4 col-lg-4 col-sm-6">
+        <div class="ud-single-feature wow fadeInUp" data-wow-delay=".1s">
+          <div class="example-image" style="margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <img src="{{ url_for('static', filename='assets/images/examples/january.png') }}"
+                 alt="January Firefighter Example"
+                 class="img-fluid"
+                 style="width: 100%; height: 400px; object-fit: cover; object-position: top center;">
+          </div>
+          <div class="ud-feature-content">
+            <h3 class="ud-feature-title">
+              <i class="lni lni-fire text-danger me-2"></i>
+              January: New Year's Firefighter
+            </h3>
+            <p class="ud-feature-desc">
+              Ripped, shirtless firefighter putting out fireworks with champagne bottle spray.
+              Confetti everywhere. Absolute hero energy!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-4 col-sm-6">
+        <div class="ud-single-feature wow fadeInUp" data-wow-delay=".15s">
+          <div class="example-image" style="margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <img src="{{ url_for('static', filename='assets/images/examples/february.png') }}"
+                 alt="February Valentine Cop Example"
+                 class="img-fluid"
+                 style="width: 100%; height: 400px; object-fit: cover; object-position: top center;">
+          </div>
+          <div class="ud-feature-content">
+            <h3 class="ud-feature-title">
+              <i class="lni lni-heart text-danger me-2"></i>
+              February: Valentine's Day Cupid Cop
+            </h3>
+            <p class="ud-feature-desc">
+              Shirtless police officer as Cupid, surrounded by roses and romance.
+              Arresting hearts all February long!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-4 col-sm-6">
+        <div class="ud-single-feature wow fadeInUp" data-wow-delay=".2s">
+          <div class="example-image" style="margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <img src="{{ url_for('static', filename='assets/images/examples/july.png') }}"
+                 alt="July BBQ Chef Example"
+                 class="img-fluid"
+                 style="width: 100%; height: 400px; object-fit: cover; object-position: top center;">
+          </div>
+          <div class="ud-feature-content">
+            <h3 class="ud-feature-title">
+              <i class="lni lni-flag text-primary me-2"></i>
+              July: Independence Day BBQ King
+            </h3>
+            <p class="ud-feature-desc">
+              Shirtless chef grilling in patriotic glory with fireworks blazing.
+              America's hottest BBQ master!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 text-center mt-5">
+        <p class="lead mb-4">...and 9 MORE hilarious themes!</p>
+        <a href="#how-it-works" class="ud-main-btn ud-menu-scroll">
+          How It Works <i class="lni lni-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ====== Examples End ====== -->
+
+<!-- ====== How It Works Start ====== -->
+<section id="how-it-works" class="ud-about" style="background: #f3f4fe;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ud-section-title text-center mb-5">
+          <span>How It Works</span>
+          <h2>From Selfie to Sexy Hunk in 4 Easy Steps</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="ud-about-wrapper wow fadeInUp" data-wow-delay=".2s" style="margin-bottom: 80px; align-items: center;">
+      <div class="ud-about-content-wrapper">
+        <div class="ud-about-content">
+          <span class="tag">Step 1</span>
+          <h2><i class="lni lni-upload"></i> Upload Your Photos</h2>
+          <p>
+            Upload 1-5 selfies or photos. The AI analyzes your facial features
+            to create seamless transformations. More photos = better results!
+          </p>
+          <ul style="list-style: none; padding: 0;">
+            <li><i class="lni lni-checkmark-circle text-success"></i> Any angle works</li>
+            <li><i class="lni lni-checkmark-circle text-success"></i> Different expressions help</li>
+            <li><i class="lni lni-checkmark-circle text-success"></i> Good lighting recommended</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ud-about-image" style="display: flex; align-items: center;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 60px 40px; width: 100%;">
+          <div class="text-center text-white">
+            <i class="lni lni-image" style="font-size: 5rem;"></i>
+            <h4 class="mt-3 mb-2">Drag & Drop Photos</h4>
+            <p class="mb-0" style="color: rgba(255, 255, 255, 0.9);">or click to browse</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="ud-about-wrapper wow fadeInUp" data-wow-delay=".2s" style="margin-bottom: 80px; align-items: center;">
+      <div class="ud-about-image order-lg-1">
+        <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+          <div class="row g-2">
+            <div class="col-4"><div class="theme-badge"><i class="lni lni-fire"></i> Fire</div></div>
+            <div class="col-4"><div class="theme-badge"><i class="lni lni-rocket"></i> Space</div></div>
+            <div class="col-4"><div class="theme-badge"><i class="lni lni-gift"></i> West</div></div>
+            <div class="col-4"><div class="theme-badge"><i class="lni lni-music"></i> Rock</div></div>
+            <div class="col-4"><div class="theme-badge"><i class="lni lni-drop"></i> Beach</div></div>
+            <div class="col-4"><div class="theme-badge"><i class="lni lni-gift"></i> Santa</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="ud-about-content-wrapper order-lg-2">
+        <div class="ud-about-content">
+          <span class="tag">Step 2</span>
+          <h2><i class="lni lni-eye"></i> Preview the Themes</h2>
+          <p>
+            See all 12 ridiculous monthly themes before generation. Each month has
+            its own hilarious scenario - from sexy firefighters to shirtless Santas!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="ud-about-wrapper wow fadeInUp" data-wow-delay=".2s" style="margin-bottom: 80px; align-items: center;">
+      <div class="ud-about-content-wrapper">
+        <div class="ud-about-content">
+          <span class="tag">Step 3</span>
+          <h2><i class="lni lni-layers"></i> AI Generates Your Calendar</h2>
+          <p>
+            Our AI works its magic, seamlessly blending YOUR face onto 12 hunky bodies.
+            Takes 2-3 minutes. Watch the progress in real-time!
+          </p>
+        </div>
+      </div>
+      <div class="ud-about-image">
+        <div style="background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-center;">
+          <div class="spinner-border text-primary mb-3" style="width: 4rem; height: 4rem;"></div>
+          <h4>Generating Magic...</h4>
+          <div class="progress mt-3" style="height: 30px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 75%">9/12 months</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="ud-about-wrapper wow fadeInUp" data-wow-delay=".2s" style="align-items: center;">
+      <div class="ud-about-image order-lg-1">
+        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+          <div class="row g-2 mb-3">
+            <div class="col-4">
+              <img src="{{ url_for('static', filename='assets/images/examples/january.png') }}"
+                   class="img-fluid rounded"
+                   style="height: 200px; object-fit: cover; object-position: top center;"
+                   alt="January Example">
+            </div>
+            <div class="col-4">
+              <img src="{{ url_for('static', filename='assets/images/examples/february.png') }}"
+                   class="img-fluid rounded"
+                   style="height: 200px; object-fit: cover; object-position: top center;"
+                   alt="February Example">
+            </div>
+            <div class="col-4">
+              <img src="{{ url_for('static', filename='assets/images/examples/july.png') }}"
+                   class="img-fluid rounded"
+                   style="height: 200px; object-fit: cover; object-position: top center;"
+                   alt="July Example">
+            </div>
+          </div>
+          <button class="btn btn-success btn-lg w-100">
+            <i class="lni lni-cart"></i> Order Calendar - <del>$47</del> $35 <small>(25% off)</small>
+          </button>
+        </div>
+      </div>
+      <div class="ud-about-content-wrapper order-lg-2">
+        <div class="ud-about-content">
+          <span class="tag">Step 4</span>
+          <h2><i class="lni lni-eye"></i> Preview & Order</h2>
+          <p>
+            See all 12 transformations FREE! Click to enlarge. Love it? Order a
+            high-quality printed calendar. Perfect gift for yourself or friends!
+          </p>
+          <ul style="list-style: none; padding: 0;">
+            <li><i class="lni lni-checkmark-circle text-success"></i> 100% FREE preview</li>
+            <li><i class="lni lni-printer text-primary"></i> Premium printing</li>
+            <li><i class="lni lni-gift text-danger"></i> Perfect gag gift</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ====== How It Works End ====== -->
+
+<!-- ====== CTA Start ====== -->
+<section class="ud-cta" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 100px 0;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ud-cta-content text-center wow fadeInUp" data-wow-delay=".2s">
+          <h2 style="color: white; font-size: 3rem; margin-bottom: 30px;">
+            Ready to Become a Hunk?
+          </h2>
+          <p style="color: rgba(255,255,255,0.9); font-size: 1.5rem; margin-bottom: 40px;">
+            Upload photos, preview for FREE, and create the most hilarious calendar ever!
+          </p>
+          <a href="{{ url_for('main.start') }}" class="ud-main-btn ud-white-btn cta-button">
+            <i class="lni lni-rocket"></i> Start Creating Now - It's FREE!
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ====== CTA End ====== -->
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Play Bootstrap Template JS -->
+<script src="{{ url_for('static', filename='assets/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/wow.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+<script>
+// Initialize WOW.js for scroll animations
+new WOW().init();
+
+// Smooth scrolling for menu links
+document.querySelectorAll('.ud-menu-scroll').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+<style>
+/* Custom styles for calendar product */
+.month-preview {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 8px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+  min-height: 85px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.month-preview small {
+  font-size: 0.7rem;
+  line-height: 1.2;
+  margin-top: 4px;
+  display: block;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.month-preview:hover {
+  transform: translateY(-5px);
+}
+
+.theme-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.calendar-preview-grid {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.example-placeholder {
+  transition: transform 0.3s ease;
+}
+
+.example-placeholder:hover {
+  transform: scale(1.05);
+}
+
+/* CTA Button responsive styles */
+.cta-button {
+  font-size: 1.2rem;
+  padding: 20px 50px;
+  white-space: nowrap;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 767px) {
+  .cta-button {
+    font-size: 0.9rem !important;
+    padding: 15px 20px !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    display: inline-block !important;
+  }
+
+  .month-preview {
+    padding: 10px 5px;
+    min-height: 75px;
+    font-size: 0.75rem;
+  }
+
+  .month-preview small {
+    font-size: 0.6rem;
+  }
+
+  .calendar-preview-grid {
+    padding: 15px;
+  }
+
+  .ud-cta h2 {
+    font-size: 1.8rem !important;
+  }
+
+  .ud-cta p {
+    font-size: 1rem !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 991px) {
+  .cta-button {
+    font-size: 1rem;
+    padding: 18px 35px;
+  }
+
+  .month-preview small {
+    font-size: 0.65rem;
+  }
+}
+
+/* Small phone adjustments */
+@media (max-width: 400px) {
+  .month-preview {
+    padding: 8px 4px;
+    min-height: 70px;
+    font-size: 0.7rem;
+  }
+
+  .month-preview small {
+    font-size: 0.55rem;
+  }
+}
+</style>
+{% endblock %}
