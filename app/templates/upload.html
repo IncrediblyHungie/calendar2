@@ -92,9 +92,14 @@
                 <i class="fas fa-images me-2" style="color: var(--accent-primary);"></i>
                 Your Photos ({{ images|length }})
             </h3>
-            <button type="button" class="btn-figma-secondary" id="addMorePhotosBtn">
-                <i class="fas fa-plus-circle me-2"></i>Add More
-            </button>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn-figma-secondary" id="deleteAllBtn" style="background: transparent; border: 2px solid var(--accent-danger); color: var(--accent-danger);">
+                    <i class="fas fa-trash-alt me-2"></i>Delete All
+                </button>
+                <button type="button" class="btn-figma-secondary" id="addMorePhotosBtn">
+                    <i class="fas fa-plus-circle me-2"></i>Add More
+                </button>
+            </div>
         </div>
 
         <div class="row g-3 mb-md">
@@ -196,11 +201,9 @@ dropzone.addEventListener('drop', function(e) {
     const files = e.dataTransfer.files;
     if (files.length > 0) {
         fileInput.files = files;
-        // Trigger change event
+        // Trigger change event (which will handle validation and auto-submit)
         const event = new Event('change', { bubbles: true });
         fileInput.dispatchEvent(event);
-        // Auto-submit after drop
-        setTimeout(() => document.getElementById('uploadForm').dispatchEvent(new Event('submit')), 100);
     }
 });
 
@@ -467,5 +470,38 @@ document.querySelectorAll('.delete-image-btn').forEach(btn => {
         }
     });
 });
+
+// Delete All button handler
+const deleteAllBtn = document.getElementById('deleteAllBtn');
+if (deleteAllBtn) {
+    deleteAllBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+
+        const imageCount = document.querySelectorAll('.delete-image-btn').length;
+
+        if (confirm(`🗑️ Delete all ${imageCount} photo${imageCount > 1 ? 's' : ''}?\n\nThis cannot be undone.`)) {
+            // Show deleting state
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Deleting...';
+
+            try {
+                const response = await fetch('/api/delete/all-images', {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    // Reload page
+                    location.reload();
+                } else {
+                    throw new Error('Delete all failed');
+                }
+            } catch (error) {
+                alert('❌ Failed to delete photos. Please try again.');
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-trash-alt me-2"></i>Delete All';
+            }
+        }
+    });
+}
 </script>
 {% endblock %}

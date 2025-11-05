@@ -70,6 +70,20 @@ def delete_image(image_id):
 
     return jsonify({'success': True})
 
+@bp.route('/delete/all-images', methods=['POST'])
+def delete_all_images():
+    """Delete all uploaded images for the current project"""
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    # Get all images for this project and delete them
+    images = project.images
+    for image in images:
+        session_storage.delete_image(image.id)
+
+    return jsonify({'success': True, 'deleted_count': len(images)})
+
 @bp.route('/generate/month/<int:month_num>', methods=['POST'])
 def generate_month(month_num):
     """Generate a single month's image with AI face-swapping (0=Cover, 1-12=Months)"""
