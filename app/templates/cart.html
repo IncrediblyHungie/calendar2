@@ -20,14 +20,22 @@
                     {% for item in cart_items %}
                     <div class="cart-item mb-4 pb-4 border-bottom" data-item-id="{{ item.id }}">
                         <div class="row align-items-center">
-                            <!-- Product Image -->
+                            <!-- Product Image (Printify Mockup) -->
                             <div class="col-md-3">
-                                {% if item.has_cover_image %}
+                                {% if item.mockup_url %}
+                                <!-- Display Printify-generated mockup (preferred) -->
+                                <img src="{{ item.mockup_url }}"
+                                     class="img-fluid rounded"
+                                     alt="Calendar Mockup"
+                                     style="max-height: 200px; object-fit: contain;">
+                                {% elif item.has_cover_image %}
+                                <!-- Fallback to cover image if mockup not available -->
                                 <img src="{{ url_for('api.get_cart_project_cover', project_id=item.project_id) }}"
                                      class="img-fluid rounded"
                                      alt="Calendar Preview"
                                      style="max-height: 200px; object-fit: cover;">
                                 {% else %}
+                                <!-- Fallback placeholder -->
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center"
                                      style="height: 200px;">
                                     <i class="fas fa-calendar-alt fa-3x text-muted"></i>

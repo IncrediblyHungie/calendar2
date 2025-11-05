@@ -419,6 +419,18 @@ def add_to_cart(project_id, product_type):
             # Already in cart - don't add duplicate
             return item['id']
 
+    # Get Printify mockup URL for this product type
+    mockup_url = None
+    preview_mockups = storage.get('preview_mockups', {})
+    if preview_mockups and product_type in preview_mockups:
+        mockup_data = preview_mockups[product_type]
+        mockup_images = mockup_data.get('mockup_images', [])
+        # Get the first/default mockup image
+        if mockup_images:
+            # Prefer the default image, or fall back to first image
+            default_mockup = next((img for img in mockup_images if img.get('is_default')), mockup_images[0])
+            mockup_url = default_mockup.get('src')
+
     # Create cart item
     cart_item_id = secrets.token_urlsafe(16)
     cart_item = {
@@ -426,6 +438,7 @@ def add_to_cart(project_id, product_type):
         'project_id': project_id,
         'product_type': product_type,
         'price': PRODUCT_PRICES[product_type],
+        'mockup_url': mockup_url,  # Printify mockup image URL
         'added_at': datetime.utcnow().isoformat()
     }
 
@@ -442,7 +455,7 @@ def get_cart_items():
     for cart_item in storage['cart']:
         project = get_project_by_id(cart_item['project_id'])
         if project:
-            # Get cover image (month 0) for preview
+            # Get cover image (month 0) for preview - fallback if no Printify mockup
             cover_month = None
             for month in project.get('months', []):
                 if month['month_number'] == 0:
@@ -456,7 +469,8 @@ def get_cart_items():
                 'price': cart_item['price'],
                 'added_at': cart_item['added_at'],
                 'project_created_at': project['created_at'],
-                'has_cover_image': cover_month is not None and cover_month.get('generation_status') == 'completed'
+                'has_cover_image': cover_month is not None and cover_month.get('generation_status') == 'completed',
+                'mockup_url': cart_item.get('mockup_url')  # Printify mockup URL (preferred)
             })
 
     return cart_items_with_details
