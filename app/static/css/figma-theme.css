@@ -514,3 +514,66 @@ p {
 .section-figma {
     padding: var(--spacing-2xl) 0;
 }
+
+/* ===== MOCKUP PREVIEW SECTION ===== */
+.mockup-preview-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.calendar-mockup-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mockup-background {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.mockup-calendar-page {
+    position: absolute;
+    /* Positioning: centered horizontally, positioned in upper portion */
+    top: 16.5%;           /* Distance from top of mockup */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Size: calendar page should be about 42% of mockup width */
+    width: 42%;
+    height: auto;
+    
+    /* Make it look realistic */
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    
+    /* Optional: slight perspective for 3D effect */
+    transform: translateX(-50%) perspective(1000px) rotateX(2deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .calendar-mockup-wrapper {
+        max-width: 100%;
+    }
+    
+    .mockup-calendar-page {
+        width: 42%;
+        top: 16.5%;
+    }
+}
+
+@media (max-width: 480px) {
+    .mockup-calendar-page {
+        /* Slightly adjust for very small screens */
+        top: 16%;
+        width: 43%;
+    }
+}
