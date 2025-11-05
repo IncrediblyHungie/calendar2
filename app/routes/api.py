@@ -181,6 +181,59 @@ def generate_month(month_num):
         if len(all_months) == 13 and completed_count == 13:
             print(f"🎉 All 13 months complete! Updating stage to fully_generated")
             session_storage.set_generation_stage('fully_generated')
+
+            # Trigger Printify mockup generation automatically
+            print(f"\n{'='*70}")
+            print(f"🎨 AUTO-GENERATING PRINTIFY MOCKUPS")
+            print(f"{'='*70}\n")
+
+            try:
+                # Collect month image data for all 12 months (not cover/month 0)
+                month_image_data = {}
+                for month_num in range(1, 13):
+                    image_data = session_storage.get_month_image_data(month_num)
+                    if image_data:
+                        month_image_data[month_num] = image_data
+
+                print(f"✓ Collected {len(month_image_data)} month images for mockups")
+
+                # Create Printify products for all calendar types
+                from app.services import printify_service
+
+                product_types = ['wall_calendar', 'desktop']
+                total_mockups = 0
+
+                for product_type in product_types:
+                    try:
+                        print(f"\n{'─'*50}")
+                        print(f"📸 Creating mockup for: {product_type}")
+
+                        mockup_result = printify_service.create_product_for_preview(
+                            month_image_data=month_image_data,
+                            product_type=product_type
+                        )
+
+                        # Save mockup data to session (one per product type)
+                        session_storage.save_preview_mockup_data(mockup_result, product_type)
+                        mockup_count = len(mockup_result.get('mockup_images', []))
+                        total_mockups += mockup_count
+                        print(f"✅ {product_type}: {mockup_count} mockup images created")
+
+                    except Exception as product_error:
+                        print(f"⚠️ Failed to create mockup for {product_type}: {product_error}")
+                        # Continue with other products - don't fail the month generation
+
+                print(f"\n{'='*70}")
+                print(f"✅ Mockup generation complete: {total_mockups} total images")
+                print(f"{'='*70}\n")
+
+            except Exception as mockup_error:
+                print(f"\n❌ Mockup generation failed (non-fatal): {mockup_error}")
+                import traceback
+                traceback.print_exc()
+                print(f"{'='*70}\n")
+                # Don't fail the entire month generation if mockups fail
+
         elif len(all_months) == 3 and completed_count == 3:
             print(f"✅ Preview complete (3/3 months) - keeping stage as preview_only to show payment gate")
             # Don't change stage - stay at preview_only to show payment gate
