@@ -83,10 +83,8 @@ def upload():
 
             flash(f'{len(files)} photos uploaded successfully!', 'success')
 
-        # Check if enough photos
-        images = session_storage.get_uploaded_images()
-        if len(images) >= 3:  # Minimum 3 photos
-            return redirect(url_for('projects.themes'))
+        # Stay on upload page to let user review their photos
+        # They can click "Next: Review Monthly Themes" when ready
 
     # Get uploaded images
     images = session_storage.get_uploaded_images()
