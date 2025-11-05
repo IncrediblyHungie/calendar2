@@ -3,174 +3,148 @@
 {% block title %}Upload Photos{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <!-- Progress Steps -->
-            <div class="progress-steps mb-5">
-                <div class="step active">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Upload Photos</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Review Themes</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Generate</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-label">Preview</div>
-                </div>
+<div class="container-figma section-figma">
+    <!-- Hero Section -->
+    <div class="text-center mb-xl">
+        <h1 style="font-size: 36px; margin-bottom: var(--spacing-sm);">
+            Upload Your Selfies
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 18px; max-width: 600px; margin: 0 auto;">
+            Upload 3-10 photos of yourself. The AI will use YOUR FACE and put it on 12 ridiculously hot, hunky bodies!
+        </p>
+    </div>
+
+    <!-- Upload Dropzone -->
+    <div class="upload-dropzone mb-lg" id="dropzone">
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            <div class="upload-icon mb-md">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 48px;"></i>
+            </div>
+            <h3 style="margin-bottom: var(--spacing-sm);">Drop your photos here</h3>
+            <p style="color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+                or click to browse
+            </p>
+            <input
+                type="file"
+                class="d-none"
+                id="photos"
+                name="photos"
+                multiple
+                accept="image/*,.heic,.heif"
+                required
+            >
+            <button type="button" class="btn-figma-secondary" id="browseBtn">
+                <i class="fas fa-folder-open me-2"></i>
+                Browse Files
+            </button>
+            <div class="mt-md" style="color: var(--text-muted); font-size: 14px;">
+                <strong>iPhone/Mobile:</strong> Tap to choose "Take Photo" (one at a time) OR "Photo Library" (select multiple)
+                <br><small>Formats: JPG, PNG, HEIC • Max 8MB/photo, 40MB total • Auto-optimized</small>
             </div>
 
-            <div class="card shadow">
-                <div class="card-body p-5">
-                    <h2 class="card-title mb-4">
-                        <i class="fas fa-upload text-primary me-2"></i>
-                        Upload Your Selfies
-                    </h2>
-
-                    <p class="lead mb-4">
-                        Upload 3-10 photos of yourself. The AI will use YOUR FACE and put it on 12 ridiculously hot, hunky bodies!
-                    </p>
-
-                    <!-- Permanent, Concise Photo Tips -->
-                    <div class="card border-primary mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <strong>📸 Photo Requirements for Best Results</strong>
-                        </div>
-                        <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <strong class="text-success">✅ DO:</strong>
-                                    <ul class="mb-0 small">
-                                        <li>Good lighting - face clearly visible</li>
-                                        <li>Face camera directly (not side profile)</li>
-                                        <li>Clear, in-focus photos</li>
-                                        <li>No sunglasses or face coverings</li>
-                                        <li>5-7 photos recommended</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6">
-                                    <strong class="text-danger">❌ AVOID:</strong>
-                                    <ul class="mb-0 small">
-                                        <li>Dark/shadowed faces</li>
-                                        <li>Blurry images</li>
-                                        <li>Extreme angles</li>
-                                        <li>Snapchat filters</li>
-                                        <li>Group photos</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="mt-2 pt-2 border-top">
-                                <small><strong>💡 Perfect photo:</strong> Well-lit selfie, face the camera, slight smile, whole face visible.</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Upload Form -->
-                    <form method="POST" enctype="multipart/form-data" id="uploadForm">
-                        <div class="mb-4">
-                            <label for="photos" class="form-label">
-                                📸 Upload Your Selfies
-                            </label>
-                            <input
-                                type="file"
-                                class="form-control form-control-lg"
-                                id="photos"
-                                name="photos"
-                                multiple
-                                accept="image/*,.heic,.heif"
-                                required
-                            >
-                            <div class="form-text">
-                                <strong>iPhone/Mobile:</strong> Tap to choose "Take Photo" (one at a time) OR "Photo Library" (select multiple)
-                                <br><small class="text-muted">📷 Take photos one at a time, review, then click "Add More" to take another</small>
-                                <br><small class="text-muted">📁 From gallery: Select multiple photos at once</small>
-                                <br><small class="text-muted">Formats: JPG, PNG, HEIC • Max 8MB/photo, 40MB total • Auto-optimized</small>
-                            </div>
-                            <!-- Upload Progress -->
-                            <div id="uploadProgress" class="mt-3" style="display: none;">
-                                <div class="progress">
-                                    <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
-                                </div>
-                                <small id="uploadStatus" class="text-muted mt-2 d-block"></small>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-lg" id="uploadBtn">
-                            <i class="fas fa-cloud-upload-alt me-2"></i>
-                            <span id="uploadBtnText">Upload Photos</span>
-                        </button>
-                    </form>
-
-                    <!-- Uploaded Images Gallery -->
-                    {% if images %}
-                    <hr class="my-5">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="mb-0">
-                            <i class="fas fa-images text-primary me-2"></i>
-                            Your Photos ({{ images|length }})
-                        </h4>
-                        <button type="button" class="btn btn-outline-primary" id="addMorePhotosBtn">
-                            <i class="fas fa-plus-circle me-2"></i>Add More
-                        </button>
-                    </div>
-
-                    <div class="row g-3 mb-4">
-                        {% for image in images %}
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="upload-thumbnail-card position-relative">
-                                <img src="{{ url_for('api.get_thumbnail', image_id=image.id) }}"
-                                     alt="Uploaded photo {{ loop.index }}"
-                                     class="img-fluid rounded shadow-sm"
-                                     style="width: 100%; height: 200px; object-fit: cover;">
-                                <button type="button"
-                                        class="btn btn-danger btn-sm delete-image-btn position-absolute"
-                                        data-image-id="{{ image.id }}"
-                                        style="top: 8px; right: 8px; opacity: 0.9;"
-                                        title="Delete this photo">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                                <div class="position-absolute bottom-0 start-0 w-100 p-2 text-white text-center"
-                                     style="background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); border-radius: 0 0 0.375rem 0.375rem;">
-                                    <small>Photo {{ loop.index }}</small>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                    <div class="alert alert-info mb-4">
-                        <i class="fas fa-lightbulb me-2"></i>
-                        {% if images|length >= 3 %}
-                            <strong>Looking good!</strong> You have {{ images|length }} photos. You can add more for better AI results, or continue to the next step.
-                        {% else %}
-                            <strong>Almost there!</strong> You need at least 3 photos (currently: {{ images|length }}). More photos = better AI face-swapping results!
-                        {% endif %}
-                    </div>
-
-                    <!-- Action Buttons - Mobile Optimized -->
-                    <div class="d-grid gap-3 d-md-flex" style="margin-bottom: 3rem;">
-                        {% if images|length >= 3 %}
-                        <a href="{{ url_for('projects.themes') }}" class="btn btn-success btn-lg w-100 w-md-auto">
-                            <i class="fas fa-arrow-right me-2"></i>
-                            Next: Review Monthly Themes
-                        </a>
-                        {% endif %}
-                        <button type="button" class="btn btn-outline-secondary btn-lg w-100 w-md-auto" id="addMorePhotosBtnBottom">
-                            <i class="fas fa-plus-circle me-2"></i>
-                            Add More Photos
-                        </button>
-                    </div>
-                    {% endif %}
+            <!-- Upload Progress -->
+            <div id="uploadProgress" class="mt-md" style="display: none;">
+                <div class="progress-figma">
+                    <div id="uploadProgressBar" class="progress-figma-bar" style="width: 0%"></div>
                 </div>
+                <div id="uploadStatus" class="progress-text text-center"></div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Photo Tips -->
+    <div class="tips-box mb-lg">
+        <h4 style="margin-bottom: var(--spacing-sm); color: var(--text-primary);">
+            📸 Photo Requirements for Best Results
+        </h4>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <strong style="color: var(--accent-success);">✅ DO:</strong>
+                <ul style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
+                    <li>Good lighting - face clearly visible</li>
+                    <li>Face camera directly (not side profile)</li>
+                    <li>Clear, in-focus photos</li>
+                    <li>No sunglasses or face coverings</li>
+                    <li>5-7 photos recommended</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <strong style="color: var(--accent-danger);">❌ AVOID:</strong>
+                <ul style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
+                    <li>Dark/shadowed faces</li>
+                    <li>Blurry images</li>
+                    <li>Extreme angles</li>
+                    <li>Snapchat filters</li>
+                    <li>Group photos</li>
+                </ul>
             </div>
         </div>
+        <div class="mt-3 pt-3" style="border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 14px;">
+            <strong>💡 Perfect photo:</strong> Well-lit selfie, face the camera, slight smile, whole face visible.
+        </div>
     </div>
+
+    <!-- Uploaded Images Gallery -->
+    {% if images %}
+    <div class="card-figma-dark mb-lg">
+        <div class="d-flex justify-content-between align-items-center mb-md">
+            <h3 style="margin: 0; color: var(--text-primary);">
+                <i class="fas fa-images me-2" style="color: var(--accent-primary);"></i>
+                Your Photos ({{ images|length }})
+            </h3>
+            <button type="button" class="btn-figma-secondary" id="addMorePhotosBtn">
+                <i class="fas fa-plus-circle me-2"></i>Add More
+            </button>
+        </div>
+
+        <div class="row g-3 mb-md">
+            {% for image in images %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="upload-thumbnail-card position-relative">
+                    <img src="{{ url_for('api.get_thumbnail', image_id=image.id) }}"
+                         alt="Uploaded photo {{ loop.index }}"
+                         class="img-fluid"
+                         style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <button type="button"
+                            class="btn btn-danger btn-sm delete-image-btn position-absolute"
+                            data-image-id="{{ image.id }}"
+                            style="top: 8px; right: 8px; opacity: 0.95; background: var(--accent-danger); border: none; border-radius: var(--radius-sm); padding: 6px 10px;"
+                            title="Delete this photo">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <div class="position-absolute bottom-0 start-0 w-100 p-2 text-white text-center"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); border-radius: 0 0 var(--radius-md) var(--radius-md);">
+                        <small style="font-weight: 600;">Photo {{ loop.index }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="card-figma-purple mb-md" style="text-align: center;">
+            <i class="fas fa-lightbulb me-2"></i>
+            {% if images|length >= 3 %}
+                <strong>Looking good!</strong> You have {{ images|length }} photos. You can add more for better AI results, or continue to the next step.
+            {% else %}
+                <strong>Almost there!</strong> You need at least 3 photos (currently: {{ images|length }}). More photos = better AI face-swapping results!
+            {% endif %}
+        </div>
+
+        <!-- Action Buttons - Mobile Optimized -->
+        <div class="d-grid gap-3">
+            {% if images|length >= 3 %}
+            <a href="{{ url_for('projects.themes') }}" class="btn-figma-primary" style="text-decoration: none;">
+                Next: Review Monthly Themes
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+            {% endif %}
+            <button type="button" class="btn-figma-secondary" id="addMorePhotosBtnBottom" style="width: 100%;">
+                <i class="fas fa-plus-circle me-2"></i>
+                Add More Photos
+            </button>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
 
@@ -184,21 +158,62 @@ const MAX_TOTAL_SIZE = 40 * 1024 * 1024; // 40MB total
 const MAX_DIMENSION = 3072; // Max width/height - higher for better AI quality
 const COMPRESSION_QUALITY = 0.92; // 92% quality - near-lossless for AI reference
 
+// Browse button handler
+document.getElementById('browseBtn').addEventListener('click', function() {
+    document.getElementById('photos').click();
+});
+
+// Drag and drop functionality
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('photos');
+
+dropzone.addEventListener('click', function(e) {
+    if (e.target === dropzone || e.target.closest('.upload-icon') || e.target.closest('h3') || e.target.closest('p')) {
+        fileInput.click();
+    }
+});
+
+dropzone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.style.borderColor = 'var(--accent-primary)';
+    this.style.background = 'rgba(255, 90, 121, 0.08)';
+});
+
+dropzone.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.style.borderColor = 'var(--border-subtle)';
+    this.style.background = 'var(--bg-card)';
+});
+
+dropzone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.style.borderColor = 'var(--border-subtle)';
+    this.style.background = 'var(--bg-card)';
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        fileInput.files = files;
+        // Trigger change event
+        const event = new Event('change', { bubbles: true });
+        fileInput.dispatchEvent(event);
+        // Auto-submit after drop
+        setTimeout(() => document.getElementById('uploadForm').dispatchEvent(new Event('submit')), 100);
+    }
+});
+
 // File size validation before upload
-document.getElementById('photos').addEventListener('change', function(e) {
+fileInput.addEventListener('change', function(e) {
     const files = Array.from(e.target.files);
-    const uploadBtnText = document.getElementById('uploadBtnText');
-    const uploadBtn = document.getElementById('uploadBtn');
 
     if (files.length === 0) {
-        uploadBtnText.textContent = 'Upload Photos';
         return;
     }
 
-    // Update button text to show file count
-    uploadBtnText.textContent = `Upload ${files.length} Photo${files.length > 1 ? 's' : ''}`;
-    uploadBtn.classList.add('btn-success');
-    uploadBtn.classList.remove('btn-primary');
+    // Show file count
+    console.log(`✅ Selected ${files.length} photo${files.length > 1 ? 's' : ''}`);
 
     // Validate individual file sizes
     const oversizedFiles = files.filter(f => f.size > MAX_FILE_SIZE);
@@ -212,22 +227,21 @@ document.getElementById('photos').addEventListener('change', function(e) {
         const totalMB = (totalSize / (1024 * 1024)).toFixed(1);
         alert(`⚠️ Total upload size (${totalMB}MB) exceeds 40MB limit. Please select fewer photos or smaller files.`);
         e.target.value = ''; // Clear selection
-        uploadBtnText.textContent = 'Upload Photos';
-        uploadBtn.classList.remove('btn-success');
-        uploadBtn.classList.add('btn-primary');
         return;
     }
 
     // Show file count and size
     const sizeMB = (totalSize / (1024 * 1024)).toFixed(1);
-    console.log(`✅ Selected ${files.length} photos (${sizeMB}MB total)`);
+    console.log(`Total size: ${sizeMB}MB`);
+
+    // Auto-submit form
+    document.getElementById('uploadForm').dispatchEvent(new Event('submit'));
 });
 
 // Client-side image compression and upload with progress
 document.getElementById('uploadForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const fileInput = document.getElementById('photos');
     const files = Array.from(fileInput.files);
 
     if (files.length === 0) {
@@ -238,11 +252,12 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     const progressDiv = document.getElementById('uploadProgress');
     const progressBar = document.getElementById('uploadProgressBar');
     const statusText = document.getElementById('uploadStatus');
-    const submitBtn = this.querySelector('button[type="submit"]');
+    const browseBtn = document.getElementById('browseBtn');
 
     // Show progress UI
     progressDiv.style.display = 'block';
-    submitBtn.disabled = true;
+    browseBtn.disabled = true;
+    browseBtn.style.opacity = '0.5';
 
     try {
         // Compress images client-side (mobile-optimized)
@@ -300,7 +315,8 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
         console.error('Upload error:', error);
         alert(`Upload failed: ${error.message}`);
         progressDiv.style.display = 'none';
-        submitBtn.disabled = false;
+        browseBtn.disabled = false;
+        browseBtn.style.opacity = '1';
     }
 });
 
