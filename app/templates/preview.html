@@ -126,6 +126,77 @@
         </div>
     </div>
 
+    <!-- Physical Product Mockups (Printify) -->
+    {% if mockup_data and generation_status.stage == 'fully_generated' %}
+    <div class="card shadow mb-5" style="background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);">
+        <div class="card-body p-5">
+            <h2 class="text-center mb-3">
+                <i class="fas fa-calendar-check text-success me-2"></i>
+                See Your Physical Calendar
+            </h2>
+            <p class="text-center text-muted mb-5">
+                Here's exactly what your printed calendar will look like - professional quality, ready to hang!
+            </p>
+
+            <!-- Mockup Display -->
+            <div class="row g-4">
+                {% for product_type, mockup_info in mockup_data.items() %}
+                    {% set mockup_images = mockup_info.get('mockup_images', []) %}
+                    {% if mockup_images %}
+                    <div class="col-lg-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="card-title text-center mb-3">
+                                    {% if product_type == 'wall_calendar' %}
+                                    <i class="fas fa-calendar-alt me-2"></i>Wall Calendar
+                                    {% elif product_type == 'desktop' %}
+                                    <i class="fas fa-calendar-day me-2"></i>Desktop Calendar
+                                    {% else %}
+                                    <i class="fas fa-calendar me-2"></i>{{ product_type }}
+                                    {% endif %}
+                                </h4>
+
+                                <!-- Show first/default mockup image -->
+                                {% set default_mockup = mockup_images | selectattr('is_default', 'equalto', true) | first or mockup_images[0] %}
+                                <div class="mockup-image-container text-center">
+                                    <img src="{{ default_mockup.src }}"
+                                         alt="Calendar Mockup"
+                                         class="img-fluid rounded"
+                                         style="max-width: 100%; height: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                                </div>
+
+                                <!-- Additional mockup images (if any) -->
+                                {% if mockup_images | length > 1 %}
+                                <div class="row g-2 mt-3">
+                                    {% for mockup in mockup_images[1:3] %}
+                                    <div class="col-6">
+                                        <img src="{{ mockup.src }}"
+                                             alt="Calendar View"
+                                             class="img-fluid rounded"
+                                             style="max-width: 100%; height: auto; opacity: 0.8; transition: opacity 0.3s;"
+                                             onmouseover="this.style.opacity='1'"
+                                             onmouseout="this.style.opacity='0.8'">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="text-muted mb-0">
+                    <i class="fas fa-shipping-fast me-2"></i>
+                    <strong>Printed on premium paper</strong> • Spiral bound • Ships in 2-5 business days
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Call to Action -->
     {% if generation_status.stage == 'preview_only' %}
     <!-- UNLOCK GATE -->
