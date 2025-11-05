@@ -578,19 +578,25 @@ def checkout_cart():
         import stripe
 
         checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
+            payment_method_types=['card', 'link'],
             line_items=line_items,
             mode='payment',
             success_url=url_for('main.order_success', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=url_for('projects.cart_page', _external=True),
+            customer_email=None,  # Stripe will collect
+            billing_address_collection='auto',  # Collect billing address (shows "same as shipping" checkbox)
+            shipping_address_collection={
+                'allowed_countries': ['US', 'CA', 'GB', 'AU', 'DE', 'FR', 'ES', 'IT', 'NL', 'BE']
+            },
+            phone_number_collection={
+                'enabled': True
+            },
             metadata={
                 'internal_session_id': internal_session_id,
                 'is_cart_checkout': 'true',
                 'cart_item_count': str(len(cart_items))
             },
-            shipping_address_collection={
-                'allowed_countries': ['US', 'CA']
-            }
+            allow_promotion_codes=True  # Enable discount codes
         )
 
         return jsonify({

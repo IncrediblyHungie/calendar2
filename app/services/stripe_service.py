@@ -79,6 +79,7 @@ def create_checkout_session(product_type, success_url, cancel_url, metadata=None
         success_url=success_url,
         cancel_url=cancel_url,
         customer_email=None,  # Stripe will collect
+        billing_address_collection='auto',  # Collect billing address (shows "same as shipping" checkbox)
         shipping_address_collection={
             'allowed_countries': ['US', 'CA', 'GB', 'AU', 'DE', 'FR', 'ES', 'IT', 'NL', 'BE']
         },
