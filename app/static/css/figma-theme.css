@@ -549,13 +549,13 @@ p {
     /* Positioning: overlay on January calendar (upper left in mockup) */
     top: 12%;             /* Position for January calendar */
     left: 25%;            /* Left-offset for January calendar */
-    /* Add rotation to match January calendar angle (-18deg) */
-    transform: translateX(-50%) perspective(1000px) rotateX(5deg) rotateZ(-18deg);
+    /* Add rotation - flipped direction to clockwise */
+    transform: translateX(-50%) perspective(1000px) rotateX(5deg) rotateZ(18deg);
 
-    /* Size: calendar page scaled to match mockup calendar */
-    width: 33%;
+    /* Size: calendar page scaled smaller to match mockup calendar */
+    width: 28%;
     height: auto;
-    max-width: 33%;       /* Prevent overflow */
+    max-width: 28%;       /* Prevent overflow */
 
     /* Make it look realistic */
     border-radius: 4px;
@@ -595,11 +595,11 @@ p {
 
     .mockup-calendar-page {
         /* Maintain January calendar positioning on tablets */
-        width: 33%;
+        width: 28%;
         top: 12%;
         left: 25%;
         /* Slightly reduce 3D effect on smaller screens */
-        transform: translateX(-50%) perspective(1000px) rotateX(4deg) rotateZ(-18deg);
+        transform: translateX(-50%) perspective(1000px) rotateX(4deg) rotateZ(18deg);
     }
 }
 
@@ -613,9 +613,9 @@ p {
         /* Maintain positioning on small screens */
         top: 12%;
         left: 25%;
-        width: 33%;
+        width: 28%;
         /* Minimal 3D effect on small screens */
-        transform: translateX(-50%) perspective(1000px) rotateX(3deg) rotateZ(-18deg);
+        transform: translateX(-50%) perspective(1000px) rotateX(3deg) rotateZ(18deg);
     }
 }
 
@@ -625,8 +625,8 @@ p {
         /* Fine-tune for very small screens */
         top: 11.5%;
         left: 25%;
-        width: 34%;
-        transform: translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-18deg);
+        width: 29%;
+        transform: translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(18deg);
     }
 }
 
