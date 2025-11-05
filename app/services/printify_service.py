@@ -190,7 +190,7 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
                 "id": cover_id,
                 "x": 0.5,  # Center horizontally
                 "y": 0.5,  # Center vertically
-                "scale": 0.85,  # Zoomed out to 85% to prevent face/head cropping on print
+                "scale": 0.7,  # Zoomed out to 70% - increased margin to prevent cropping
                 "angle": 0
             }
         ]
@@ -211,7 +211,7 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
                     "id": month_image_ids[month],
                     "x": 0.5,
                     "y": 0.5,
-                    "scale": 0.85,  # Zoomed out to 85% to prevent face/head cropping on print
+                    "scale": 0.7,  # Zoomed out to 70% - increased margin to prevent cropping
                     "angle": 0
                 }
             ]
