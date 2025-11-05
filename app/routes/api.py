@@ -592,7 +592,8 @@ def checkout_cart():
         import stripe
 
         checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card', 'link'],
+            # Omit payment_method_types to automatically enable ALL payment methods
+            # Stripe will show Apple Pay, Google Pay, cards, Link, etc. based on customer's device
             line_items=line_items,
             mode='payment',
             success_url=url_for('main.order_success', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
