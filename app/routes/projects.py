@@ -83,8 +83,9 @@ def upload():
 
             flash(f'{len(files)} photos uploaded successfully!', 'success')
 
-        # Stay on upload page to let user review their photos
-        # They can click "Next: Review Monthly Themes" when ready
+        # Redirect to GET request (Post/Redirect/Get pattern)
+        # This prevents "Are you sure you want to resubmit?" warnings
+        return redirect(url_for('projects.upload'))
 
     # Get uploaded images
     images = session_storage.get_uploaded_images()
