@@ -144,7 +144,7 @@ def upload_image(image_data_bytes, filename="month.jpg"):
 
 def get_optimal_scale(product_type, position):
     """
-    Calculate optimal scale for 2:1 landscape images based on product and position
+    Calculate optimal scale for 16:9 (1.78:1) landscape images based on product and position
 
     Scale values determined by placeholder aspect ratios:
     - Lower scale = more zoom out (show more of image with margins)
@@ -158,21 +158,21 @@ def get_optimal_scale(product_type, position):
         float: Optimal scale value
     """
     # Wall Calendar (blueprint 965): 1.39:1 aspect ratio
-    # - Image 2:1 is wider than 1.39:1, needs moderate zoom out
+    # - Image 16:9 (1.78:1) is wider than 1.39:1, needs moderate zoom out
     if product_type == 'wall_calendar':
-        return 0.75  # Moderate zoom out for 1.39:1 placeholder
+        return 0.78  # Moderate zoom out for 1.39:1 placeholder
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
     elif product_type == 'desktop':
         if position == 'front_cover':
-            # Desktop cover: 1.96:1 aspect ratio (very close to 2:1)
-            return 0.90  # Minimal zoom out, almost perfect fit
+            # Desktop cover: 1.96:1 aspect ratio (slightly wider than 16:9)
+            return 0.87  # Moderate zoom out to fit 1.96:1 placeholder
         else:
-            # Desktop monthly: 1.19:1 aspect ratio (much narrower than 2:1)
-            return 0.65  # Heavy zoom out to protect center content
+            # Desktop monthly: 1.19:1 aspect ratio (much narrower than 16:9)
+            return 0.68  # Heavy zoom out to protect center content
 
     # Fallback (should never reach here)
-    return 0.75
+    return 0.78
 
 def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Calendar 2026"):
     """
@@ -226,7 +226,7 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
                 "id": cover_id,
                 "x": 0.5,  # Center horizontally
                 "y": 0.5,  # Center vertically
-                "scale": cover_scale,  # Product-specific scale for 2:1 landscape images
+                "scale": cover_scale,  # Product-specific scale for 16:9 landscape images
                 "angle": 0
             }
         ]
@@ -251,7 +251,7 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
                     "id": month_image_ids[month],
                     "x": 0.5,
                     "y": 0.5,
-                    "scale": monthly_scale,  # Product-specific scale for 2:1 landscape images
+                    "scale": monthly_scale,  # Product-specific scale for 16:9 landscape images
                     "angle": 0
                 }
             ]

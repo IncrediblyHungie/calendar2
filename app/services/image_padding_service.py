@@ -6,14 +6,14 @@ import io
 from PIL import Image, ImageFilter, ImageDraw
 import numpy as np
 
-# Safety configuration - optimized for landscape 2:1 calendars
+# Safety configuration - optimized for landscape 16:9 (1.78:1) calendars
 CONFIG = {
     'min_padding_percent': 20,       # Side padding (20%) - CRITICAL: protects body in narrow crops (desktop monthly 1.19:1)
     'top_padding_percent': 12,       # Top padding (12%) - moderate head protection in landscape
     'bottom_padding_percent': 12,    # Bottom padding (12%) - equal vertical padding for landscape
     'safe_zone_percent': 70,         # Central safe zone (70%) - narrower for landscape, keeps person centered
     'face_margin_percent': 15,       # Extra margin around detected faces (15%)
-    'target_aspect_ratio': (2, 1),   # Landscape 2:1 ratio (matches Gemini, works for all calendar formats)
+    'target_aspect_ratio': (16, 9),  # Landscape 16:9 ratio (1.78:1 - matches Gemini, works for all calendar formats)
     'blur_edge_pixels': 20,          # Blur radius for edge extension
     'use_asymmetric_padding': True,  # Use configured padding values
 }
