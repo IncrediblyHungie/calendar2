@@ -546,16 +546,16 @@ p {
 
 .mockup-calendar-page {
     position: absolute;
-    /* Positioning: centered horizontally, positioned in upper portion */
-    top: 16.5%;           /* Distance from top of mockup */
-    left: 50%;
-    /* Center horizontally and add subtle 3D effect */
-    transform: translateX(-50%) perspective(1000px) rotateX(2deg);
+    /* Positioning: overlay on January calendar (upper left in mockup) */
+    top: 12%;             /* Position for January calendar */
+    left: 25%;            /* Left-offset for January calendar */
+    /* Add rotation to match January calendar angle (-18deg) */
+    transform: translateX(-50%) perspective(1000px) rotateX(5deg) rotateZ(-18deg);
 
-    /* Size: calendar page should be about 42% of mockup width */
-    width: 42%;
+    /* Size: calendar page scaled to match mockup calendar */
+    width: 33%;
     height: auto;
-    max-width: 42%;       /* Prevent overflow */
+    max-width: 33%;       /* Prevent overflow */
 
     /* Make it look realistic */
     border-radius: 4px;
@@ -569,6 +569,16 @@ p {
     backface-visibility: hidden;
     will-change: transform;
 }
+
+/* Alternative positioning: Center calendar (more prominent, use if January position doesn't look right) */
+/*
+.mockup-calendar-page {
+    top: 40%;
+    left: 50%;
+    width: 33%;
+    transform: translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(2deg);
+}
+*/
 
 /* Tablet adjustments (768px - 1024px) */
 @media (max-width: 1024px) and (min-width: 769px) {
@@ -584,11 +594,12 @@ p {
     }
 
     .mockup-calendar-page {
-        /* Consistent positioning on tablets */
-        width: 42%;
-        top: 16.5%;
+        /* Maintain January calendar positioning on tablets */
+        width: 33%;
+        top: 12%;
+        left: 25%;
         /* Slightly reduce 3D effect on smaller screens */
-        transform: translateX(-50%) perspective(1000px) rotateX(1.5deg);
+        transform: translateX(-50%) perspective(1000px) rotateX(4deg) rotateZ(-18deg);
     }
 }
 
@@ -599,20 +610,23 @@ p {
     }
 
     .mockup-calendar-page {
-        /* Fine-tune for very small screens */
-        top: 16.5%;
-        width: 42%;
+        /* Maintain positioning on small screens */
+        top: 12%;
+        left: 25%;
+        width: 33%;
         /* Minimal 3D effect on small screens */
-        transform: translateX(-50%) perspective(1000px) rotateX(1deg);
+        transform: translateX(-50%) perspective(1000px) rotateX(3deg) rotateZ(-18deg);
     }
 }
 
 /* Very small screens (< 375px) */
 @media (max-width: 374px) {
     .mockup-calendar-page {
-        /* Slightly adjust to account for smaller screens */
-        top: 16%;
-        width: 43%;
+        /* Fine-tune for very small screens */
+        top: 11.5%;
+        left: 25%;
+        width: 34%;
+        transform: translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-18deg);
     }
 }
 
