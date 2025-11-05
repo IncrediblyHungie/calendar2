@@ -1,14 +1,14 @@
 """
-Pre-defined monthly hunk themes with OPTIMIZED prompts for face consistency
-Each month features a ridiculous, sexy scenario with face-swap optimizations
+Pre-defined monthly hunk themes with ULTRA-ENHANCED photo-realistic prompts
+Each month features memorable, photo-realistic scenarios optimized for face consistency
 
-OPTIMIZATION TECHNIQUES APPLIED:
-- "This exact person" phrasing for identity preservation
-- Frontal/3-4 view face angles for better recognition
-- Specific lighting that highlights facial features
-- Expression guidance for natural look
-- Eye contact direction for engagement
-- Detailed facial feature preservation instructions
+ENHANCEMENTS APPLIED:
+- Professional camera and lens specifications for realistic rendering
+- Detailed lighting setups with specific angles and color temperatures
+- Muscular physique descriptions with specific body details
+- Photo-realistic quality instructions (8K, professional photography)
+- Face swap optimizations (angles, lighting, clear features)
+- Memorable storytelling with rich environmental details
 """
 
 MONTHLY_THEMES = {
@@ -16,325 +16,353 @@ MONTHLY_THEMES = {
         "month": "Cover",
         "title": "Hunk of the Month Magazine Hero",
         "description": "Epic magazine cover hero shot with dramatic lighting and charismatic presence",
-        "prompt": """Hyper-realistic professional magazine cover photo: THIS EXACT PERSON from the reference images as an incredibly muscular, shirtless male model with perfect abs and defined biceps.
+        "prompt": """Professional fashion photography, Canon EOS R5 with 85mm f/1.4 lens, ultra-realistic, 8K resolution.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S distinctive facial features, eye color, skin tone, nose shape, jawline
-- Face angled 3/4 view toward camera with confident, charismatic closed-mouth smile
-- Direct eye contact with camera, slight head tilt, wind-blown hair
-- Facial lighting: Key light from 45-degree angle highlighting cheekbones and jawline
-- No shadows obscuring face - face must be clearly lit and visible
+SUBJECT: THIS EXACT PERSON from reference images - Extremely fit athletic male, 25-30 years old, muscular build with defined chest and arms, broad shoulders, 6-pack abs. Chiseled jawline, confident expression with warm subtle smile. Face angled 20° from camera, direct eye contact.
 
-BODY & POSE:
-- Muscular shirtless physique, heroic pose with hands on hips
-- Pin-up calendar style composition
+FACE SWAP OPTIMIZATION: Face centered, well-lit from multiple angles, no obstructions, neutral-to-warm expression, eyes clearly visible.
 
-LIGHTING & SETTING:
-- Dramatic studio lighting with spotlight effect creating rim light around body
-- Gold and red bokeh backdrop, GQ magazine quality, high fashion photography
-- Professional fitness photography with commercial print quality
+OUTFIT: Impeccably tailored black tuxedo or magazine cover styling emphasizing physique.
 
-Style: Magazine cover glamour photography - natural, seamless identity preservation"""
+LIGHTING: Soft golden hour window light, subtle rim light, face evenly illuminated with catchlights in eyes. No harsh shadows.
+
+ATMOSPHERE: Magazine cover quality, professional glamour photography, GQ aesthetic.
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     1: {
         "month": "January",
-        "title": "New Year's Firefighter Hero",
-        "description": "Sexy firefighter putting out fireworks with champagne bottles",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as an incredibly muscular, shirtless male firefighter with defined abs and biceps.
+        "title": "The Gentleman",
+        "description": "New Year's elegance with tuxedo and champagne",
+        "prompt": """Professional fashion photography, Canon EOS R5 with 85mm f/1.4 lens, ultra-realistic, 8K resolution.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S unique facial features, eye color, skin complexion, facial structure
-- Face in frontal-to-3/4 view, excited confident expression with open-mouth laugh
-- Direct eye contact, helmet tilted back showing full face clearly
-- Facial lighting: Warm golden light from fireworks illuminating face evenly
-- No helmet shadows on face - full face visible and well-lit
+SUBJECT: THIS EXACT PERSON from reference images - Extremely fit, athletic male model, 25-30 years old, muscular build with defined chest and arms, broad shoulders, 6-pack abs visible through fitted tuxedo shirt. Chiseled jawline, perfectly groomed, confident expression with warm subtle smile. Face angled 20° from camera, direct eye contact.
 
-BODY & POSE:
-- Wearing firefighter suspenders (no shirt), yellow firefighter helmet
-- Dynamic action pose spraying champagne on New Year's fireworks
-- Heroic stance with powerful body language
+FACE SWAP OPTIMIZATION: Face centered in upper third of frame, well-lit from multiple angles, no obstructions, eyes clearly visible.
 
-LIGHTING & SETTING:
-- Times Square background with confetti everywhere, midnight celebration
-- Warm orange and gold tones from fireworks, dramatic backlighting
-- Festive atmosphere with practical lighting from fireworks and street lights
+OUTFIT: Impeccably tailored black tuxedo, white dress shirt with top button undone revealing collarbone, black bow tie slightly loosened. Fitted jacket emphasizing broad shoulders. Holding crystal champagne flute.
 
-Style: Action photography meets New Year celebration - seamless character consistency"""
+SETTING: Luxury New Year's Eve rooftop party in New York City. Floor-to-ceiling windows showing glittering Manhattan skyline at night. Large snowflakes falling, catching light. String lights and chandeliers providing warm ambient glow.
+
+LIGHTING: Soft golden hour window light from left side, subtle rim light separating subject from background, face evenly illuminated with catchlights in eyes. No harsh shadows. Cinematic color grading with rich blacks and warm highlights.
+
+ATMOSPHERE: Elegant, sophisticated, celebratory. Confetti sparkling in mid-air, champagne tower in soft focus background.
+
+MOOD: Refined masculinity, old-money elegance, starting-the-year-right energy.
+
+TAGLINE: "Starting the year in style"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     2: {
         "month": "February",
-        "title": "Valentine's Day Cupid Cop",
-        "description": "Ripped police officer as Cupid with heart-shaped arrows",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a chiseled, shirtless male police officer with perfect abs.
+        "title": "Valentine's Cop",
+        "description": "Flirtatious police officer with heart sunglasses",
+        "prompt": """High-end editorial photography, professional DSLR (Sony A7R IV, 50mm f/1.2), photo-realistic, commercial quality, 8K detail.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S distinctive face shape, eye color, skin tone, unique features
-- Face in direct frontal view, smoldering romantic expression with slight sexy smirk
-- Soft eye contact (bedroom eyes), seductive but playful gaze
-- Facial lighting: Soft romantic diffused lighting highlighting face beautifully
-- Rose-colored gel lighting warming skin tones, no harsh shadows on face
+SUBJECT: THIS EXACT PERSON from reference images - Muscular male police officer, peak physical condition, 28-32 years old. Extremely defined biceps and chest straining against fitted uniform shirt. Square jaw, designer stubble, playful confident smirk with one eyebrow raised. Face at 25° angle, direct flirtatious eye contact.
 
-BODY & POSE:
-- Cop hat, holding heart-shaped bow and arrow as Cupid
-- Confident romantic pose, one eyebrow slightly raised
+FACE SWAP OPTIMIZATION: Clear frontal face angle, sunglasses on head (not covering eyes), even soft lighting, charismatic smile showing teeth slightly.
 
-LIGHTING & SETTING:
-- Surrounded by roses and chocolate boxes, Valentine's themed décor
-- Romantic pink and red lighting, soft focus background
-- Dramatic but flattering portrait lighting setup
+OUTFIT: Dark navy police uniform, shirt tailored to show muscular V-taper physique, sleeves rolled up revealing forearm muscles. Badge gleaming on chest. Heart-shaped novelty sunglasses (pink frames) pushed up on head. Holding oversized pink ticket reading "Citation: Being Too Fine."
 
-Style: Romantic glamour photography with comedic twist - perfect facial feature preservation"""
+SETTING: Urban street on Valentine's Day. Pink and red heart decorations on lamp posts. Rose petals scattered on sidewalk. Police motorcycle with heart-shaped balloons in soft focus background.
+
+LIGHTING: Late afternoon golden hour sun creating warm rim light on muscles. Soft fill light on face from reflector. Pink and red gels creating romantic colored highlights. Face perfectly exposed.
+
+ATMOSPHERE: Playful, romantic, cheeky humor. Pink confetti floating in air catching sunlight. Warm valentine color palette.
+
+MOOD: Confident flirtation, authority with approachability, valentine's day charm.
+
+TAGLINE: "You have the right to remain smitten"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     3: {
         "month": "March",
-        "title": "St. Patrick's Day Brawler",
-        "description": "Buff Irish brawler wrestling for pot of gold",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as an incredibly muscular male in green uniform pants (shirtless).
+        "title": "Firefighter Hero",
+        "description": "Heroic firefighter rescuing puppy from burning building",
+        "prompt": """Cinematic action photography, Canon EOS-1D X Mark III, 70-200mm f/2.8 lens, ultra-high resolution, IMAX-quality realism.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S exact facial features, eye color, skin tone, jawline shape
-- Face in 3/4 view showing determined grit-teeth expression with competitive intensity
-- Direct fierce gaze at pot of gold, masculine energy
-- Facial lighting: Warm pub lighting from overhead creating natural shadows
-- Irish pub warm amber lighting on face, clear facial definition
+SUBJECT: THIS EXACT PERSON from reference images - Heroic firefighter, peak athletic build, 30-35 years old. Massive muscular chest and shoulders, 8-pack abs fully visible, veins visible on forearms. Soot smudges on face adding rugged masculinity, intense yet gentle eyes, protective expression. Face 30° angle looking slightly down at puppy. Sweat glistening on skin catching firelight.
 
-BODY & POSE:
-- Fighting over pot of gold, comedic action wrestling pose
-- Dynamic movement, muscles tensed and flexed
+FACE SWAP OPTIMIZATION: Face partially turned toward camera, soft expression, soot doesn't obscure facial features, eyes clearly visible with catchlights from fire.
 
-LIGHTING & SETTING:
-- St. Patrick's Day decorations, shamrocks, beer steins everywhere
-- Irish pub background with warm wood tones and green decorations
-- Practical lighting from pub fixtures creating authentic atmosphere
+OUTFIT: Fire-retardant pants with reflective yellow stripes, suspenders over bare torso (jacket torn off). Firefighter helmet tucked under muscular arm.
 
-Style: Action comedy photography in Irish pub setting - natural character identity"""
+HERO MOMENT: Cradling rescued golden retriever puppy against bare chest with one arm. Puppy looking up adoringly. Other hand holding fire axe.
+
+SETTING: Outside burning building at dusk, orange flames visible through windows (soft focus). Fire truck with flashing red lights. Smoke billowing creating atmospheric haze.
+
+LIGHTING: Dramatic mixed lighting - warm orange firelight from left creating rim light on muscles, cool blue emergency vehicle lights from right, face lit by soft reflected light. Smoke creating volumetric light rays. High contrast cinematic lighting.
+
+ATMOSPHERE: Heroic, intense, emotionally powerful. Sparks floating in air like fireflies. Steam and smoke creating layers of depth.
+
+MOOD: Strength with gentleness, heroism, protection, raw masculinity with emotional vulnerability.
+
+TAGLINE: "Hot under pressure"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     4: {
         "month": "April",
-        "title": "Easter Bunny Lifeguard",
-        "description": "Hunky lifeguard in bunny ears rescuing chocolate eggs",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a tan, muscular male lifeguard with six-pack abs.
+        "title": "Pool Guy",
+        "description": "Shirtless pool maintenance professional with sun-kissed glow",
+        "prompt": """Luxury lifestyle photography, Phase One XF IQ4 (medium format), 80mm f/2.8 lens, summer editorial quality, crystal-clear 16K resolution.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S distinctive facial features, eye color, skin tone, unique characteristics
-- Face in direct frontal view, heroic determined expression with slight confident smile
-- Direct eye contact showing lifeguard focus and determination
-- Facial lighting: Bright natural sunlight from above, healthy outdoor glow
-- Sun-kissed skin, no harsh shadows on face - even golden hour lighting
+SUBJECT: THIS EXACT PERSON from reference images - Pool maintenance professional, exceptional fitness model physique, 26-30 years old. Defined V-cut torso, water droplets beading on tanned skin highlighting every muscle contour. Broad shoulders, thick arms, sun-kissed skin with natural glow. Wet tousled hair falling naturally, confident easy smile showing perfect teeth. Face straight-on with slight head tilt.
 
-BODY & POSE:
-- Red swim trunks, Easter bunny ears on head (adorable contrast)
-- Heroic rescue pose rescuing chocolate eggs from pool
+FACE SWAP OPTIMIZATION: Direct eye contact, natural smile, face fully visible (wet hair styled back), even soft lighting from water reflection.
 
-LIGHTING & SETTING:
-- Easter decorations, spring flowers, pastel colors everywhere
-- Sunny beach background, turquoise pool water, bright spring day
-- Natural outdoor lighting creating warm, inviting atmosphere
+OUTFIT: Low-rise khaki cargo shorts (partially wet), clinging to muscular thighs. Tool belt around hips with pool chemicals. White tank top discarded on nearby lounge chair.
 
-Style: Spring beach photography with Easter comedy - seamless face consistency"""
+ACTION: Holding telescoping pool skimmer, leaning slightly forward over pool edge. Water dripping down chest and abs. One foot on pool deck, one on ladder step.
+
+SETTING: Upscale infinity pool overlooking ocean in Southern California mansion. Crystal blue water reflecting sunlight creating dancing caustics patterns. Palm trees swaying in background. White Mediterranean-style architecture.
+
+LIGHTING: Peak golden hour sunlight (3 PM summer), sun at 45° angle creating perfect body definition shadows. Soft reflective fill light bouncing from white pool deck and water surface. Skin appears to glow from water sheen catching light.
+
+ATMOSPHERE: Luxurious, carefree summer vibes, aspirational lifestyle. Heat shimmer rising from pool deck.
+
+MOOD: Carefree confidence, summer perfection, approachable charm.
+
+TAGLINE: "Ready to make a splash"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     5: {
         "month": "May",
-        "title": "Savage Gardener",
-        "description": "Shredded gardener battling giant flowers with water",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a sweaty, muscular shirtless male gardener in dirty jeans.
+        "title": "Surfer",
+        "description": "Professional surfer emerging from golden hour waves",
+        "prompt": """Outdoor adventure photography, Nikon Z9 with 24-70mm f/2.8 lens, National Geographic quality, ultra-sharp detail.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S exact facial features, eye color, skin complexion, facial bone structure
-- Face in 3/4 view, intense determined expression with slight grimace (battling flowers)
-- Direct focused gaze toward giant flowers, action hero intensity
-- Facial lighting: Natural outdoor sunlight with slight dirt smudges for realism
-- Clear face visibility despite action scene - face is primary focus
+SUBJECT: THIS EXACT PERSON from reference images - Professional surfer, lean muscular athletic build, 24-28 years old. Defined athletic physique (swimmer's body), 6-pack abs, strong shoulders and arms. Sun-bleached hair (messy and natural), salt-weathered skin with healthy tan, relaxed confident expression. Slight windswept look, easy natural smile. Face 20° angle toward camera, backlit creating halo effect in hair.
 
-BODY & POSE:
-- Spraying water hose at giant mutant flowers, covered in dirt and petals
-- Dynamic action movie pose, muscles engaged
+FACE SWAP OPTIMIZATION: Face visible despite backlight (reflected fill light), natural expression mid-motion, no harsh shadows, hair partially swept back.
 
-LIGHTING & SETTING:
-- Garden chaos with May flowers everywhere, flying petals
-- Bright natural daylight, vibrant flower colors in background
-- Action movie lighting with practical outdoor elements
+OUTFIT: Colorful board shorts (teal and orange pattern), sitting low on hips revealing deep V-lines. Waterproof surf watch and braided anklet.
 
-Style: Action comedy garden photography - perfect facial feature preservation"""
+POSE: Walking out of ocean water waist-deep, surfboard tucked under muscular arm (board vertical). Other hand running through wet hair (classic motion shot). Water cascading off body in streams.
+
+SETTING: Golden hour at iconic surf break (Malibu or Hawaii aesthetic). Perfect waves rolling in background with other surfers visible as silhouettes. Beach visible with palm trees. Dramatic clouds catching sunset colors.
+
+LIGHTING: Magical golden hour backlight creating rim light on body edges, hair glowing. Sun low on horizon, creating warm orange/pink sky. Soft reflected light from water and wet sand illuminating face from below. Lens flare creating sun star effect.
+
+WATER EFFECTS: Slow shutter capturing water droplets mid-air in perfect clarity, spray creating mist around subject, ocean foam with detailed texture.
+
+ATMOSPHERE: Freedom, adventure, connection with nature, endless summer energy.
+
+MOOD: Effortless cool, athletic grace, beach lifestyle authenticity, golden hour magic.
+
+TAGLINE: "Waves, rays, and endless days"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     6: {
         "month": "June",
-        "title": "Beach Whale Rescuer",
-        "description": "Ripped lifeguard saving giant inflatable whale",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a bronzed, muscular male lifeguard in tight swim trunks.
+        "title": "Lifeguard",
+        "description": "Classic lifeguard with red trunks and rescue buoy",
+        "prompt": """Commercial advertising photography, Canon EOS R5 C (cinema camera), 50mm f/1.2 lens, Baywatch-inspired aesthetics, ultra-crisp detail.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S unique facial features, eye color, tan skin tone, facial structure
-- Face in direct frontal view, comedic struggling expression with exaggerated effort face
-- Eye contact showing determination mixed with humor, playful intensity
-- Facial lighting: Golden sunset lighting from side creating warm glow on face
-- No harsh shadows - beautiful golden hour skin tones, face clearly visible
+SUBJECT: THIS EXACT PERSON from reference images - Professional lifeguard, peak physical condition, 27-31 years old. Bodybuilder physique with defined chest, broad shoulders, thick arms, visible abs. Tan from daily sun exposure, athletic stance ready for action. Classic handsome features, confident protective smile, strong jaw. Face forward 15° angle with slight chin tilt.
 
-BODY & POSE:
-- Carrying massive inflatable whale toy, comedic struggling pose
-- Full body strain showing muscular definition
+FACE SWAP OPTIMIZATION: Straight-forward angle, face in direct soft light (sand acting as reflector), confident smile, eyes fully visible.
 
-LIGHTING & SETTING:
-- Summer beach scene with surfboards, beach umbrellas, tropical vibes
-- Sunset lighting with warm orange and pink sky
-- Soft shadows creating dimension without obscuring face
+OUTFIT: Classic red lifeguard swim trunks (Baywatch style), sitting mid-thigh showing muscular legs. Silver whistle on cord around neck resting on chest. Red visor or sunglasses pushed up on head. White sunscreen stripe on nose (iconic lifeguard look).
 
-Style: Beach comedy photography with sunset glamour - natural identity preservation"""
+POSE: Standing in confident lifeguard stance - one hand on hip (showing chest and arm muscles), other hand holding red rescue buoy over shoulder. Weight on one leg (athletic contrapposto). Lifeguard tower visible behind him.
+
+SETTING: Perfect summer beach day - Southern California vibes. White sand, turquoise water with gentle waves. Lifeguard tower (red and white) in background. Beach umbrellas and sunbathers in soft focus. American flag gently waving.
+
+LIGHTING: Bright midday sun creating sharp definition on muscles but soft diffused fill light from sand reflection preventing harsh face shadows. Sun at 60° angle. Face perfectly lit with no raccoon eyes.
+
+BEACH ATMOSPHERE: Active beach scene - volleyball game distant background, kids building sandcastle, waves with surfers, beach patrol vehicle. Seagulls flying overhead.
+
+COMPOSITION: Slight low angle (empowering hero perspective), subject centered, shallow depth of field isolating subject from busy beach background.
+
+MOOD: Heroic protector, summer safety, all-American masculine ideal, approachable authority, peak summer vibes.
+
+TAGLINE: "Here to save your summer"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     7: {
         "month": "July",
-        "title": "Patriotic BBQ Master",
-        "description": "Buff chef grilling hot dogs with fireworks exploding",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a muscular shirtless male chef wearing American flag shorts and apron.
+        "title": "Lumberjack",
+        "description": "Rugged woodsman with flannel and axe in forest",
+        "prompt": """Outdoor editorial photography, Hasselblad X2D 100C (medium format), 90mm f/2.5 lens, Patagonia catalog quality, rich detail and texture.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S distinctive facial features, eye color, skin tone, unique facial characteristics
-- Face in frontal view, proud confident expression with patriotic smile
-- Direct eye contact, All-American hero energy radiating
-- Facial lighting: Warm BBQ grill light from below creating heroic underlighting
-- Firework lighting from behind creating dramatic rim light, face clearly illuminated
+SUBJECT: THIS EXACT PERSON from reference images - Rugged woodsman, powerful muscular build, 29-33 years old. Lumberjack physique - thick arms, broad shoulders, visible chest through open flannel, strong hands. Light beard (3-4 days growth), masculine features, intense focused eyes, slight smirk. Face 25° angle with strong side lighting showing bone structure.
 
-BODY & POSE:
-- Grilling hot dogs with tongs, confident BBQ master stance
-- Heroic pose with fireworks exploding in background
+FACE SWAP OPTIMIZATION: Side lighting defining strong facial features, face angled to show jawline, beard enhancing but not obscuring features.
 
-LIGHTING & SETTING:
-- 4th of July decorations everywhere - red, white, and blue
-- Patriotic American flags, fireworks in twilight sky
-- Dramatic twilight BBQ lighting with practical grill and firework lights
+OUTFIT: Red and black buffalo plaid flannel shirt completely unbuttoned and open (revealing muscular torso and abs), worn-in dark jeans with leather belt, heavy-duty work boots. Leather work gloves tucked in back pocket.
 
-Style: Patriotic celebration photography with action elements - seamless face consistency"""
+ACTION: Holding double-bit axe resting on shoulder, other hand on hip. Mid-breath (chest expanded). Standing beside freshly chopped wood pile.
+
+SETTING: Pacific Northwest forest at golden hour. Massive Douglas fir trees in background creating cathedral-like atmosphere. Freshly cut logs stacked nearby showing raw wood grain. Wood chips scattered on forest floor. Cabin with smoke from chimney visible through trees.
+
+LIGHTING: Magical late afternoon forest light (dappled sun rays breaking through canopy creating god rays). Rim light from setting sun creating separation from dark forest background. Soft diffused green-tinted fill light from forest canopy. Face lit by warm directional light. Volumetric atmosphere from wood dust particles.
+
+FOREST ATMOSPHERE: Rich earth tones, deep greens and browns, golden light pools on forest floor. Morning mist rising from ground. Distant mountain peaks visible through tree gaps.
+
+TEXTURE EMPHASIS: Wood grain detail, flannel fabric weave visible, skin pores and natural texture, bark texture on trees, all rendered in sharp detail.
+
+MOOD: Rugged masculinity, return to nature, traditional craftsmanship, romantic wilderness isolation.
+
+TAGLINE: "Chopping wood, breaking hearts"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     8: {
         "month": "August",
-        "title": "Sandcastle Construction Hunk",
-        "description": "Sweaty construction worker building elaborate sandcastles",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a tan, muscular male construction worker (shirtless), wearing hard hat and tool belt.
+        "title": "Cowboy",
+        "description": "Desert ranch cowboy at sunset with lasso",
+        "prompt": """Western cinematic photography, ARRI Alexa Mini LF cinema camera, 65mm f/1.4 lens, Hollywood Western aesthetic, anamorphic bokeh.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S exact facial features, eye color, tanned skin tone, facial bone structure
-- Face in 3/4 view, focused concentration expression with slight satisfied smile
-- Direct gaze toward sandcastle creation, craftsman pride
-- Facial lighting: Late afternoon summer sun creating warm golden glow
-- Even lighting with beautiful summer tan, no harsh shadows obscuring face
+SUBJECT: THIS EXACT PERSON from reference images - Ranch cowboy, athletic muscular build, 28-32 years old. Lean but strong physique (working cowboy body), defined arms and chest visible through open shirt. Tanned skin from outdoor work, strong masculine features, day-old stubble, intense eyes under hat brim. Slight mysterious smirk, confident stance. Face partially shadowed by hat creating dramatic contrast.
 
-BODY & POSE:
-- Building massive elaborate sandcastle with construction tools
-- Kneeling/crouching pose showing dedication to craft
+FACE SWAP OPTIMIZATION: Hat tilted to show face (not completely shadowed), bounce light illuminating facial features, eyes visible with intensity.
 
-LIGHTING & SETTING:
-- Beach toys scattered around, ocean waves in background
-- Summer sunset creating long shadows and warm atmosphere
-- Natural beach lighting with golden hour color palette
+OUTFIT: Worn-in denim jeans with authentic weathering, leather belt with ornate buckle, brown leather cowboy boots with spurs. White or tan western shirt unbuttoned halfway showing chest and collarbone. Brown leather cowboy hat (tilted low, creating mystery). Leather cuff bracelet, bandana around neck.
 
-Style: Summer beach construction photography - perfect facial feature preservation"""
+POSE: Standing in classic cowboy stance - hand resting on coiled lasso hanging from hip, other thumb hooked in belt loop. Weight shifted to one leg (confident posture). Hat tilted down but face still visible.
+
+SETTING: Desert ranch at golden hour sunset. Red rock formations (Monument Valley aesthetic) glowing in background. Wooden fence posts and dusty trail. Horse grazing in far background. Tumbleweeds, desert sage brush.
+
+LIGHTING: Epic golden hour sunset backlighting creating rim light on hat edges and shoulders. Sun low on horizon creating warm orange/red sky. Dramatic long shadows on ground. Face lit by warm reflected bounce light from desert sand. Dust particles in air catching light.
+
+DESERT ATMOSPHERE: Heat shimmer rising from ground, distant mesa silhouettes, scattered clouds catching pink/orange sunset light.
+
+COMPOSITION: Wide cinematic aspect ratio feel, low angle looking up slightly (heroic perspective), rule of thirds, negative space emphasizing vast landscape. Anamorphic-style horizontal lens flare.
+
+MOOD: Mysterious lone rider, old West romance, rugged independence, sunset silhouette drama.
+
+TAGLINE: "Too hot for the prairie"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     9: {
         "month": "September",
-        "title": "Hunky Teacher Taming Chaos",
-        "description": "Chiseled teacher wrestling flying textbooks",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a fit, attractive male teacher with rolled-up sleeves showing muscular arms.
+        "title": "Fighter Pilot",
+        "description": "Elite fighter jet pilot with aviators and flight suit",
+        "prompt": """Military aviation photography, Nikon Z9 with 85mm f/1.4 lens, Top Gun inspired cinematography, ultra-sharp military-grade quality.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S unique facial features, eye color, skin complexion, distinctive face shape
-- Face in frontal view, determined focused expression with slight exasperated smile
-- Direct eye contact showing teacher authority mixed with humor
-- Facial lighting: Overhead classroom fluorescent lighting creating even illumination
-- Professional classroom lighting, face clearly visible and well-defined
+SUBJECT: THIS EXACT PERSON from reference images - Fighter jet pilot, elite athletic build, 30-34 years old. Military fitness physique - strong shoulders, defined chest visible through partially unzipped flight suit, muscular arms. Clean-cut military grooming, strong jawline, confident but not arrogant expression, intense focused eyes. Classic handsome military features. Face straight-on with slight upward angle.
 
-BODY & POSE:
-- Surrounded by flying books and school supplies, action pose catching items
-- Dynamic movement showing reflexes and athletic ability
+FACE SWAP OPTIMIZATION: Direct forward angle, military short haircut showing clean face structure, aviators positioned to show eyes (reflection effect).
 
-LIGHTING & SETTING:
-- Chalkboard background, apple on desk, back-to-school decorations
-- Classroom chaos with papers and supplies flying everywhere
-- Bright practical classroom lighting creating energetic atmosphere
+OUTFIT: Sage green or tan flight suit unzipped to mid-chest (showing white undershirt and dog tags), sleeves rolled up showing forearm muscles. Mirrored aviator sunglasses reflecting jet/sky (positioned on face but eyes visible through reflection). Leather flight gloves tucked in front pocket. American flag patch on shoulder.
 
-Style: Back-to-school action comedy photography - natural character consistency"""
+POSE: Standing at attention but relaxed, one hand on hip, other hand holding flight helmet (white with custom painted design and visor). Confident military bearing - chest out, shoulders back. Weight evenly distributed showing discipline.
+
+SETTING: Military air base tarmac at sunset. F/A-18 Super Hornet or F-35 fighter jet in background (slightly out of focus but clearly military jet), jet engines creating heat distortion shimmer. Hangar with American flag in far background. Other pilots walking to jets in distance.
+
+LIGHTING: Golden hour magic light (sun 20° above horizon), creating warm cinematic glow. Rim light from setting sun creating separation from jet background. Face evenly lit with soft shadows. Jet metal reflecting warm orange light.
+
+MILITARY ATMOSPHERE: Active airbase energy, fuel trucks in distance, ground crew working, other jets in formation taking off creating contrails in background, American flags on hangar.
+
+COMPOSITION: Slight low angle (heroic military poster perspective), subject centered with jet visible over shoulder, shallow depth creating separation.
+
+COLOR GRADING: Cinematic military film aesthetic (muted greens, warm metallics, sunset orange), high contrast with rich blacks.
+
+MOOD: Elite military confidence, patriotic heroism, action movie charisma, "need for speed" energy, disciplined power.
+
+TAGLINE: "Cleared for takeoff"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     10: {
         "month": "October",
-        "title": "Sexy Vampire Seduction",
-        "description": "Dangerously attractive vampire with fangs in gothic mansion",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a devastatingly attractive, muscular shirtless male vampire with prominent fangs.
+        "title": "Vampire",
+        "description": "Gothic aristocratic vampire in moonlit castle",
+        "prompt": """Gothic fantasy photography, Sony A1 with 50mm f/1.2 GM lens, cinematic horror aesthetic, Interview with the Vampire quality.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S distinctive facial features, eye color, skin tone, facial structure
-- ADD: Prominent white vampire fangs visible (upper canines extended)
-- Face in 3/4 view, seductive dangerous expression with fangs showing in sexy smirk
-- Direct intense eye contact with predatory vampire gaze, hypnotic stare
-- Facial lighting: Dramatic moonlight from window creating mysterious shadows on face
-- High contrast lighting emphasizing cheekbones and fangs, face remains clearly visible
+SUBJECT: THIS EXACT PERSON from reference images - Aristocratic vampire lord, athletic muscular build, appears 28-30 years old (immortal). Defined chest and arms visible through period clothing, pale luminous skin (healthy pale), sharp aristocratic features. Intense penetrating eyes with slight supernatural glow. Perfectly sculpted cheekbones, strong jaw, sensual lips pulled into knowing smirk revealing just hint of fangs (elegant, not monstrous). Dark slightly tousled hair (windswept), romantic Gothic beauty. Face 20° angle with dramatic side lighting.
 
-VAMPIRE FEATURES:
-- Pale skin tone (slightly paler than normal but maintaining person's base complexion)
-- Prominent white fangs clearly visible when smiling/smirking
-- Slightly more intense eye color (maintaining their natural color but more vivid)
-- Gothic romantic vampire aesthetic
+FACE SWAP OPTIMIZATION: Side lighting defining strong facial features, face angled to show jawline, beard enhancing but not obscuring features, eyes catching candlelight creating supernatural gleam.
 
-BODY & POSE:
-- Black cape flowing dramatically, muscular bare chest
-- Seductive vampire pose with cape swept to one side
-- Standing in powerful confident stance
+OUTFIT: Victorian-era inspired: White or cream linen shirt with ruffled front, unbuttoned showing collarbone and upper chest. Black or burgundy velvet waistcoat (open), silver chain with antique medallion. Period-accurate details but fitted to show physique. Dark trousers with expensive fabric sheen. Antique rings on fingers.
 
-LIGHTING & SETTING:
-- Spooky gothic Victorian mansion background with ornate details
-- Full moon visible through arched window, dramatic fog
-- Candlelight and moonlight creating atmospheric horror-romance lighting
-- Deep shadows and highlights creating mysterious vampire ambiance
+POSE: Leaning against stone castle column with one arm raised (showing arm muscles), other hand holding antique brass candlestick holder with lit candles. Relaxed powerful stance - hip slightly pushed forward. Head tilted slightly examining viewer.
 
-Style: Gothic romance vampire photography - sensual horror aesthetic with perfect facial feature preservation and prominent fangs"""
+SETTING: Gothic castle interior - centuries-old stone walls with tapestries, arched doorways, ornate woodwork. Candlelit atmosphere - dozens of candles providing only light source (no electric). Castle tower room with window showing full moon in cloudy night sky. Ancient library visible through archway with leather-bound books.
+
+LIGHTING: Exclusively candlelight and moonlight (no modern lighting). Warm amber candlelight from left creating dramatic chiaroscuro (Renaissance painting technique), cool blue moonlight from window on right creating rim light. Face illuminated by closest candles creating flickering warm glow. Deep shadows but face clearly visible. Eyes catching candlelight creating supernatural gleam. High contrast with rich blacks and glowing highlights.
+
+GOTHIC ATMOSPHERE: Authentic period details - cobwebs in corners (subtle), dust particles floating through moonbeams, aged patina on metalwork, weathered stone texture, mysterious fog creeping along floor. Red velvet chair, wine goblet with dark liquid on table (implied blood), wilted roses.
+
+SUPERNATURAL TOUCHES: Slight ethereal glow to skin (luminosity in shadows), candle flames perfectly still (no natural flicker), moon unnaturally large through window, hint of mist around subject.
+
+MOOD: Dark seduction, immortal elegance, dangerous attraction, Gothic romance, timeless supernatural beauty.
+
+TAGLINE: "Eternal thirst. Timeless charm"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     11: {
         "month": "November",
-        "title": "Turkey Wrangling Pilgrim",
-        "description": "Buff pilgrim chasing Thanksgiving turkey through cornfield",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a muscular male in torn pilgrim outfit showing abs.
+        "title": "Plumber",
+        "description": "Working-class plumber with tool belt and authentic appeal",
+        "prompt": """Blue-collar advertising photography, Canon EOS R6 Mark II, 35mm f/1.4 lens, commercial lifestyle quality, authentic working-class hero aesthetic.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S exact facial features, eye color, skin tone, unique facial characteristics
-- Face in frontal-to-3/4 view, determined chase expression with comedic frustration
-- Eye contact showing intense focus mixed with humor, competitive energy
-- Facial lighting: Warm autumn afternoon sunlight creating golden harvest glow
-- Even lighting with fall color tones warming skin, face clearly visible
+SUBJECT: THIS EXACT PERSON from reference images - Working-class plumber, muscular athletic build, 26-30 years old. Strong practical physique (naturally built from physical work), thick forearms and biceps, defined shoulders. Working man's tan (arms tanned, torso less so), slight sweat sheen showing hard work. Handsome approachable features, easy confident smile, slight stubble. Face slightly dirty with authentic work smudges (not over-done). Direct friendly eye contact. Face 15° angle, natural likeable energy.
 
-BODY & POSE:
-- Torn pilgrim outfit revealing muscular torso, comedic chase action pose
-- Running/lunging motion chasing escaped turkey
+FACE SWAP OPTIMIZATION: Over-shoulder angle showing strong profile and partial face, eyes visible and friendly, natural smile, face lit by natural window light.
 
-LIGHTING & SETTING:
-- Autumn leaves flying everywhere, Thanksgiving decorations
-- Cornfield background with harvest colors - oranges, browns, golds
-- Golden hour autumn lighting creating warm nostalgic atmosphere
+OUTFIT: White ribbed tank top (wife-beater style) slightly smudged with grease/dirt, showing chest and shoulder muscles. Dark blue work jeans (Dickies or Carhartt style) sitting low on hips revealing subtle V-lines and lower abs. Brown leather tool belt around hips loaded with wrenches, pliers, tape measure. Work boots (Timberlands).
 
-Style: Thanksgiving comedy action photography - seamless character identity"""
+POSE: Kneeling or crouching on one knee (working position), looking up toward camera over shoulder with friendly smile. Holding large pipe wrench in one hand. Other hand resting on toolbox. Athletic working posture showing back and arm muscles.
+
+SETTING: Modern upscale home kitchen or bathroom. Under-sink cabinet open showing pipes and plumbing work in progress. Toolbox open with organized tools. High-end home details (marble counters, designer fixtures, hardwood floors). Natural home lighting through window.
+
+LIGHTING: Soft natural window light from left (bright sunny day), creating soft shadows defining muscles. Under-cabinet LED light providing fill light from below. Soft diffused lighting creating commercial lifestyle photography look. Face well-lit from window reflection and ambient room light.
+
+HOME ATMOSPHERE: Clean but realistic work scene - tools organized, pipes visible, work in progress but professional. Coffee mug on counter (homeowner offered coffee), house plant in background, family photos on counter in soft focus.
+
+REALISTIC DETAILS: Sweat on forehead and arms, slight muscle strain from physical work, dirt under fingernails (authentic work hands), water droplets on pipes, authentic plumbing tools with wear marks, tool belt with weight pulling jeans down slightly.
+
+COMPOSITION: Slight high angle (camera at counter height, subject below), subject in right third, leading lines from cabinet and counter creating depth.
+
+HUMOR ELEMENTS: Tool belt pulling jeans low (revealing top of boxer briefs waistband - classic plumber aesthetic but attractive), playful over-shoulder glance, "caught at work" candid moment.
+
+MOOD: Approachable working-class sex appeal, skilled tradesman confidence, "handy man" fantasy, earnest hardworking masculinity.
+
+TAGLINE: "Here to fix your pipes (and maybe your heart)"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     },
     12: {
         "month": "December",
-        "title": "Sexy Santa Chimney Rescue",
-        "description": "Shirtless Santa stuck in chimney with presents spilling",
-        "prompt": """Hyper-realistic photo: THIS EXACT PERSON from the reference images as a muscular shirtless male Santa with Santa hat and red pants.
+        "title": "Hot Santa",
+        "description": "Santa's fittest helper by the fireplace on Christmas Eve",
+        "prompt": """Holiday advertising photography, Phase One XT IQ4 (medium format), 110mm f/2.8 lens, luxury Christmas catalog quality.
 
-FACE (CRITICAL - PRESERVE EXACTLY):
-- Maintain THIS EXACT PERSON'S distinctive facial features, eye color, skin complexion, facial structure
-- Face in frontal view, comedic struggling expression with exaggerated effort and surprise
-- Eye contact showing determination mixed with holiday humor, playful energy
-- Facial lighting: Warm Christmas lights creating festive glow on face
-- Soft colorful lighting from Christmas decorations, face beautifully illuminated
+SUBJECT: THIS EXACT PERSON from reference images - Santa's fittest helper, peak physical condition, 27-31 years old. Bodybuilder physique with defined 8-pack abs, massive chest, thick arms. Tanned year-round glow (beach Santa aesthetic). Perfectly groomed light beard (short trimmed, not full white Santa beard), classic handsome features. Warm genuine smile, twinkle in eyes (Santa charm), direct friendly eye contact. Face forward with slight angle.
 
-BODY & POSE:
-- Santa hat, red pants, stuck in brick chimney with upper body visible
-- Comedic struggling pose with biceps flexing from effort
-- Presents scattered below chimney
+FACE SWAP OPTIMIZATION: Face fully visible (Santa hat doesn't cast shadow), warm flattering light from multiple sources, genuine warm smile, eyes sparkling with reflected Christmas lights.
 
-LIGHTING & SETTING:
-- Christmas lights everywhere, snow on rooftop, festive decorations
-- North Pole workshop visible in background, magical holiday atmosphere
-- Warm tungsten Christmas lighting mixed with cool winter moonlight
-- Festive color palette with reds, greens, and golden lights
+OUTFIT: RED SUSPENDERS (thick classic style) over bare muscular torso showing full chest and abs. Santa hat (traditional red with white fur trim) worn at slight angle. Red velvet Santa pants (fitted, not baggy) showing muscular legs, sitting at hips revealing lower abs. Black leather belt with gold buckle. Black boots. White fur trim details. One suspender pulled slightly off shoulder (casual moment).
 
-Style: Christmas comedy photography with holiday magic - perfect facial feature preservation"""
+POSE: Sitting on floor or low ottoman beside decorated Christmas tree, one leg bent, one extended. Leaning back on one arm (showing torso and arm muscles), other hand holding fresh-baked cookie (just took bite). Relaxed intimate pose as if caught during break from delivering presents.
+
+SETTING: Luxury living room on Christmas Eve night. Massive decorated Christmas tree with white lights creating magical bokeh, vintage ornaments, and real candles (safe distance). Fireplace with stockings hung and warm fire glowing. Wrapped presents under tree with elegant wrapping. Large window showing snowy night outside with Christmas lights on houses in distance.
+
+LIGHTING: Multiple warm light sources creating cozy layered lighting: Fireplace providing warm orange glow on one side (creating romantic rim light on muscles), Christmas tree lights creating colorful bokeh and fill light, soft window moonlight providing cool rim light from behind, warm overhead lighting (dimmed). Face beautifully lit by combination of fireplace and tree lights creating golden glow.
+
+CHRISTMAS ATMOSPHERE: Milk and cookies on side table, Christmas stockings hanging, garland with lights on mantle, snow gently falling outside window, presents partially unwrapped (Santa's break during deliveries), vintage Christmas ornaments reflecting lights, poinsettia flowers, holiday candles with soft glow. Rich holiday textures (velvet, fur, tinsel, evergreen needles).
+
+NOSTALGIC DETAILS: Half-eaten cookies on plate, empty milk glass with remaining drops, handwritten letter to Santa visible, Christmas tree reflecting in fireplace or window, holiday magic atmosphere.
+
+COMPOSITION: Intimate environmental portrait, subject slightly right of center, Christmas tree in background creating light bokeh, fireplace on left, vertical orientation, shallow depth (f/2.8) creating dreamy holiday bokeh from lights.
+
+COLOR PALETTE: Rich Christmas colors (deep red, forest green, golden warm lights, white snow, warm skin tones), highly saturated festive colors, Coca-Cola holiday advertising aesthetic, glowing highlights.
+
+MOOD: Warm holiday intimacy, naughty-and-nice playfulness, Christmas fantasy, cozy fireside romance, holiday magic with sex appeal.
+
+TAGLINE: "You've been very, very nice"
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
     }
 }
 
@@ -348,30 +376,31 @@ def get_all_themes():
 
 def get_enhanced_prompt(month_number, user_description=""):
     """
-    Get OPTIMIZED AI prompt for face-swapping with character consistency
+    Get ULTRA-ENHANCED photo-realistic prompt optimized for face-swapping
 
-    OPTIMIZATION FEATURES:
-    - Uses "THIS EXACT PERSON" phrasing (Gemini best practice)
-    - Specifies face angle (frontal/3-4 view for recognition)
-    - Defines expression (helps AI understand face context)
-    - Describes facial lighting (ensures face visibility)
-    - Maintains distinctive features (eye color, skin tone, structure)
+    ENHANCEMENTS:
+    - Professional camera and lens specifications for realistic rendering
+    - Detailed lighting setups with specific angles and color temperatures
+    - Muscular physique descriptions with specific body details
+    - Photo-realistic quality instructions (8K, professional photography)
+    - Face swap optimizations (angles, lighting, clear features)
+    - Memorable storytelling with rich environmental details
 
     Args:
         month_number: Month number (0-12, where 0=cover)
         user_description: Optional description of user's features
 
     Returns:
-        Enhanced prompt optimized for Gemini 2.5 Flash Image
+        Enhanced ultra-realistic prompt optimized for Gemini 2.5 Flash Image
     """
     theme = get_theme(month_number)
     if not theme:
         return ""
 
-    # The prompts now contain optimized face-swap instructions directly
+    # The prompts now contain comprehensive photo-realistic instructions
     base_prompt = theme['prompt']
 
-    # Add character consistency wrapper
+    # Add character consistency wrapper with technical specs
     enhanced_prompt = f"""
 REFERENCE IMAGES PROVIDED: Study the person in the reference images carefully to understand their unique identity.
 
@@ -384,21 +413,36 @@ CHARACTER IDENTITY PRESERVATION (CRITICAL):
 
 {base_prompt}
 
-TECHNICAL QUALITY:
-- Professional photography quality, high resolution suitable for calendar printing
-- Vibrant colors, dramatic lighting that highlights both face and physique
-- Dynamic pose that's ridiculously sexy, over-the-top, and hilarious
-- Cinematic composition with clear focus on subject
-- Magazine-quality fitness/glamour photography
+COMPOSITION & FRAMING (CRITICAL - FOLLOW EXACTLY):
+- CAMERA DISTANCE: Shot from 12-15 feet away for WIDE framing with generous margins
+- HEADROOM: Leave SIGNIFICANT empty space above the head (at least 15-20% of image height above head)
+- MEDIUM-WIDE SHOT: Show full person from head to mid-thigh or knees - NEVER crop the head
+- FULL BODY VISIBLE: Entire head, torso, and upper legs must be completely in frame with room to spare
+- MARGINS: Ensure ample space on all sides - top, bottom, left, right (subject should occupy central 60-70% of frame)
+- CENTERED COMPOSITION: Subject prominently centered with generous breathing room around them
+- WIDER FRAMING: If in doubt, zoom OUT more - we need extra space for printing safety margins
+- Use 50mm lens perspective (NOT 85mm) for wider field of view and more environmental context
+- Professional fitness photography composition with commercial print safety margins
+
+PHOTO-REALISTIC QUALITY (CRITICAL):
+- Professional photography quality, 8K resolution, suitable for calendar printing
+- Physically-based rendering with accurate lighting physics
+- Vibrant colors with high dynamic range, dramatic lighting highlighting muscular physique
+- Sharp focus on subject with shallow depth of field (f/1.4-f/2.8) creating bokeh background
+- Cinematic color grading with rich blacks and glowing highlights
+- Natural skin texture, pores visible, authentic human details
+- Professional fitness/glamour photography aesthetic
 
 FINAL CHECK:
 - Face is clearly visible and well-lit (no shadows obscuring face)
 - Facial features match ALL reference images (character consistency across references)
-- Expression is natural and fits the scene
-- Body and face blend seamlessly and naturally
-- Overall image looks like authentic photography, not digital manipulation
+- Expression is natural and fits the scene emotionally
+- Body and face blend seamlessly and naturally into scene
+- Overall image looks like authentic professional photography, not digital manipulation
+- Muscular physique is clearly defined and highlighted by lighting
+- Scene is memorable, photo-realistic, and storytelling-rich
 
-Style: Professional fitness/glamour photography meets comedy photoshoot - natural, seamless, hilarious, with perfect character consistency.
+Style: Ultra-realistic professional fitness/glamour photography - natural, seamless, memorable, with perfect character consistency and photo-realistic quality.
 """
 
     return enhanced_prompt
