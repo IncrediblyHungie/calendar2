@@ -67,7 +67,11 @@
 
                             <!-- Price and Actions -->
                             <div class="col-md-3 text-end">
-                                <h4 class="text-primary mb-3">${{ "%.2f"|format(item.price) }}</h4>
+                                <h4 class="text-primary mb-3">
+                                    <del class="text-muted">${{ "%.2f"|format(26.99 if item.price == 19.99 else 39.99) }}</del>
+                                    ${{ "%.2f"|format(item.price) }}
+                                    <small class="text-success d-block">(25% off)</small>
+                                </h4>
                                 <button class="btn btn-sm btn-outline-danger remove-item-btn"
                                         data-item-id="{{ item.id }}">
                                     <i class="fas fa-trash me-1"></i>Remove

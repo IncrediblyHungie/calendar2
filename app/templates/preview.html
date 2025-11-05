@@ -236,7 +236,7 @@
                             <p class="text-muted mb-1">10" × 5"</p>
                             <small class="text-muted d-block mb-2">250gsm matte paper, spiral binding</small>
                             <small class="text-success d-block mb-2"><i class="fas fa-flag-usa"></i> Made in USA</small>
-                            <h4 class="text-primary mb-0">$19.99</h4>
+                            <h4 class="text-primary mb-0"><del class="text-muted">$26.99</del> $19.99 <small class="text-success">(25% off)</small></h4>
                         </div>
                     </div>
                 </div>
@@ -248,7 +248,7 @@
                             <p class="text-muted mb-1">11" × 8.5" or 14" × 11.5"</p>
                             <small class="text-muted d-block mb-2">High-quality paper, spiral binding</small>
                             <small class="text-success d-block mb-2"><i class="fas fa-flag-usa"></i> Made in USA</small>
-                            <h4 class="text-success mb-0">$29.99</h4>
+                            <h4 class="text-success mb-0"><del class="text-muted">$39.99</del> $29.99 <small class="text-success">(25% off)</small></h4>
                         </div>
                     </div>
                 </div>
@@ -259,7 +259,7 @@
                 <div class="col-md-6 mb-3">
                     <button id="add-to-cart-btn" class="btn btn-success btn-lg w-100">
                         <i class="fas fa-cart-plus me-2"></i>
-                        Add to Cart (<span id="selected-price">$29.99</span>)
+                        Add to Cart (<span id="selected-price"><del>$39.99</del> $29.99</span>)
                     </button>
                     <small class="text-muted d-block mt-2 text-center">
                         <i class="fas fa-info-circle me-1"></i>
@@ -650,7 +650,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = this.dataset.price;
             const priceSpan = document.getElementById('selected-price');
             if (priceSpan) {
-                priceSpan.textContent = '$' + price;
+                // Calculate original price (25% off)
+                const originalPrice = price === '19.99' ? '26.99' : '39.99';
+                priceSpan.innerHTML = '<del>$' + originalPrice + '</del> $' + price;
             }
             console.log('Selected product:', selectedProduct, 'Price:', price);
         });
