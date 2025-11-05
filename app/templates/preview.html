@@ -863,6 +863,27 @@ document.addEventListener('DOMContentLoaded', () => {
     padding: 1.5rem 1rem;
 }
 
+/* Fix white text on white background issue */
+.product-option h5,
+.product-option h4,
+.product-option p,
+.product-option small {
+    color: #212529 !important; /* Bootstrap's default dark text color */
+}
+
+/* Keep specific color classes working */
+.product-option .text-muted {
+    color: #6c757d !important;
+}
+
+.product-option .text-primary {
+    color: #0d6efd !important;
+}
+
+.product-option .text-success {
+    color: #198754 !important;
+}
+
 /* Optimize lightbox for portrait images (3:4 aspect ratio) */
 .lightbox .modal-dialog {
     max-width: none !important;
