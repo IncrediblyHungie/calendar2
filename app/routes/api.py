@@ -78,7 +78,7 @@ def delete_all_images():
         return jsonify({'error': 'Unauthorized'}), 401
 
     # Get all images for this project and delete them
-    images = project.images
+    images = project.uploaded_images
     for image in images:
         session_storage.delete_image(image.id)
 
