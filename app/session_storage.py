@@ -422,14 +422,24 @@ def add_to_cart(project_id, product_type):
     # Get Printify mockup URL for this product type
     mockup_url = None
     preview_mockups = storage.get('preview_mockups', {})
+
+    print(f"🔍 Debug add_to_cart mockup lookup:")
+    print(f"   Product type: {product_type}")
+    print(f"   Available mockup types: {list(preview_mockups.keys())}")
+
     if preview_mockups and product_type in preview_mockups:
         mockup_data = preview_mockups[product_type]
         mockup_images = mockup_data.get('mockup_images', [])
+        print(f"   Found {len(mockup_images)} mockup images for {product_type}")
+
         # Get the first/default mockup image
         if mockup_images:
             # Prefer the default image, or fall back to first image
             default_mockup = next((img for img in mockup_images if img.get('is_default')), mockup_images[0])
             mockup_url = default_mockup.get('src')
+            print(f"   ✅ Mockup URL: {mockup_url[:80]}..." if mockup_url else "   ❌ No mockup URL found")
+    else:
+        print(f"   ❌ No mockups found for {product_type}")
 
     # Create cart item
     cart_item_id = secrets.token_urlsafe(16)
