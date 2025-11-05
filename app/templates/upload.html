@@ -30,7 +30,7 @@
                 id="photos"
                 name="photos"
                 multiple
-                accept="image/*,.heic,.heif"
+                accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif"
                 required
             >
             <button type="button" class="btn-figma-secondary" id="browseBtn">
@@ -102,10 +102,10 @@
             </div>
         </div>
 
-        <div class="row g-3 mb-md">
+        <div class="row g-3 mb-md" style="content-visibility: auto;">
             {% for image in images %}
             <div class="col-6 col-md-4 col-lg-3">
-                <div class="upload-thumbnail-card position-relative">
+                <div class="upload-thumbnail-card position-relative" style="content-visibility: auto; contain: layout style paint; contain-intrinsic-size: 200px 200px;">
                     <img src="{{ url_for('api.get_thumbnail', image_id=image.id) }}"
                          alt="Uploaded photo {{ loop.index }}"
                          class="img-fluid"
@@ -165,9 +165,11 @@ const MAX_TOTAL_SIZE = 40 * 1024 * 1024; // 40MB total
 const MAX_DIMENSION = 3072; // Max width/height - higher for better AI quality
 const COMPRESSION_QUALITY = 0.92; // 92% quality - near-lossless for AI reference
 
-// Browse button handler
+// Browse button handler (optimized with RAF to yield main thread)
 document.getElementById('browseBtn').addEventListener('click', function() {
-    document.getElementById('photos').click();
+    requestAnimationFrame(() => {
+        document.getElementById('photos').click();
+    });
 });
 
 // Drag and drop functionality
@@ -176,7 +178,7 @@ const fileInput = document.getElementById('photos');
 
 dropzone.addEventListener('click', function(e) {
     if (e.target === dropzone || e.target.closest('.upload-icon') || e.target.closest('h3') || e.target.closest('p')) {
-        fileInput.click();
+        requestAnimationFrame(() => fileInput.click());
     }
 });
 
@@ -444,7 +446,7 @@ addMoreBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             // Remove required attribute temporarily so user can add more without uploading immediately
             photoInput.removeAttribute('required');
-            photoInput.click();
+            requestAnimationFrame(() => photoInput.click());
         });
     }
 });
