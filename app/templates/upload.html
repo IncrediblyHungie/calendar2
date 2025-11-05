@@ -439,34 +439,32 @@ document.querySelectorAll('.delete-image-btn').forEach(btn => {
         const imageId = this.dataset.imageId;
         const card = this.closest('.upload-thumbnail-card');
 
-        if (confirm('🗑️ Delete this photo?\n\nThis cannot be undone.')) {
-            // Show deleting state
-            card.style.opacity = '0.5';
-            card.style.pointerEvents = 'none';
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        // Show deleting state
+        card.style.opacity = '0.5';
+        card.style.pointerEvents = 'none';
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-            try {
-                const response = await fetch(`/api/delete/image/${imageId}`, {
-                    method: 'POST'
-                });
+        try {
+            const response = await fetch(`/api/delete/image/${imageId}`, {
+                method: 'POST'
+            });
 
-                if (response.ok) {
-                    // Fade out animation
-                    card.style.transition = 'all 0.3s ease';
-                    card.style.transform = 'scale(0.8)';
-                    card.style.opacity = '0';
+            if (response.ok) {
+                // Fade out animation
+                card.style.transition = 'all 0.3s ease';
+                card.style.transform = 'scale(0.8)';
+                card.style.opacity = '0';
 
-                    // Reload after animation
-                    setTimeout(() => location.reload(), 300);
-                } else {
-                    throw new Error('Delete failed');
-                }
-            } catch (error) {
-                alert('❌ Failed to delete photo. Please try again.');
-                card.style.opacity = '1';
-                card.style.pointerEvents = 'auto';
-                this.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                // Reload after animation
+                setTimeout(() => location.reload(), 300);
+            } else {
+                throw new Error('Delete failed');
             }
+        } catch (error) {
+            alert('❌ Failed to delete photo. Please try again.');
+            card.style.opacity = '1';
+            card.style.pointerEvents = 'auto';
+            this.innerHTML = '<i class="fas fa-trash-alt"></i>';
         }
     });
 });
@@ -479,27 +477,25 @@ if (deleteAllBtn) {
 
         const imageCount = document.querySelectorAll('.delete-image-btn').length;
 
-        if (confirm(`🗑️ Delete all ${imageCount} photo${imageCount > 1 ? 's' : ''}?\n\nThis cannot be undone.`)) {
-            // Show deleting state
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Deleting...';
+        // Show deleting state
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Deleting...';
 
-            try {
-                const response = await fetch('/api/delete/all-images', {
-                    method: 'POST'
-                });
+        try {
+            const response = await fetch('/api/delete/all-images', {
+                method: 'POST'
+            });
 
-                if (response.ok) {
-                    // Reload page
-                    location.reload();
-                } else {
-                    throw new Error('Delete all failed');
-                }
-            } catch (error) {
-                alert('❌ Failed to delete photos. Please try again.');
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-trash-alt me-2"></i>Delete All';
+            if (response.ok) {
+                // Reload page
+                location.reload();
+            } else {
+                throw new Error('Delete all failed');
             }
+        } catch (error) {
+            alert('❌ Failed to delete photos. Please try again.');
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-trash-alt me-2"></i>Delete All';
         }
     });
 }
