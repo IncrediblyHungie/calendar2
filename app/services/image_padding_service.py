@@ -22,6 +22,8 @@ def add_safe_padding(image_bytes, use_face_detection=False):
     """
     Add intelligent padding to image with multiple safety layers
 
+    CURRENTLY DISABLED: Returns original image without padding to test direct scaling
+
     Args:
         image_bytes: Input image as bytes
         use_face_detection: Enable face detection for smart padding (requires cv2)
@@ -35,79 +37,16 @@ def add_safe_padding(image_bytes, use_face_detection=False):
         original_width, original_height = img.size
 
         print(f"  🖼️  Original size: {original_width}x{original_height}")
+        print(f"  ⚠️  PADDING DISABLED - returning original image for direct scaling")
 
-        # Layer 1: Calculate universal safe padding (always applied)
-        if CONFIG['use_asymmetric_padding']:
-            # Asymmetric: More padding at top (protect heads), less at bottom (can trim feet)
-            base_pad_w = int(original_width * (CONFIG['min_padding_percent'] / 100))
-            base_pad_top = int(original_height * (CONFIG['top_padding_percent'] / 100))
-            base_pad_bottom = int(original_height * (CONFIG['bottom_padding_percent'] / 100))
-            print(f"  🎯 Using asymmetric padding: TOP={CONFIG['top_padding_percent']}%, BOTTOM={CONFIG['bottom_padding_percent']}%, SIDES={CONFIG['min_padding_percent']}%")
-        else:
-            # Symmetric: Equal padding all sides
-            min_padding = CONFIG['min_padding_percent'] / 100
-            base_pad_w = int(original_width * min_padding)
-            base_pad_top = int(original_height * min_padding)
-            base_pad_bottom = int(original_height * min_padding)
-
-        # Layer 2: Face-aware padding (if enabled and face detected)
-        extra_pad_w = 0
-        extra_pad_h = 0
-
-        if use_face_detection:
-            try:
-                face_info = detect_face_position(img)
-                if face_info:
-                    extra_pad_w, extra_pad_h = calculate_face_padding(
-                        face_info, original_width, original_height
-                    )
-                    print(f"  👤 Face detected - adding extra padding: {extra_pad_w}x{extra_pad_h}px")
-            except Exception as e:
-                print(f"  ⚠️  Face detection failed (using universal padding): {e}")
-
-        # Total padding
-        total_pad_w = base_pad_w + extra_pad_w
-        total_pad_top = base_pad_top + extra_pad_h
-        total_pad_bottom = base_pad_bottom + extra_pad_h
-
-        # Layer 3: Aspect ratio preservation
-        new_width = original_width + (2 * total_pad_w)
-        new_height = original_height + total_pad_top + total_pad_bottom
-
-        # Ensure we maintain 3:4 aspect ratio
-        target_ratio = CONFIG['target_aspect_ratio'][0] / CONFIG['target_aspect_ratio'][1]
-        current_ratio = new_width / new_height
-
-        if current_ratio < target_ratio:
-            # Image too tall - add more width padding (symmetric)
-            required_width = int(new_height * target_ratio)
-            extra_width_pad = (required_width - new_width) // 2
-            total_pad_w += extra_width_pad
-            new_width = required_width
-        elif current_ratio > target_ratio:
-            # Image too wide - add more height padding
-            required_height = int(new_width / target_ratio)
-            extra_height_needed = required_height - new_height
-            # Add ALL extra height to top (prioritize head protection)
-            total_pad_top += extra_height_needed
-            new_height = required_height
-
-        print(f"  📐 Final padding: TOP={total_pad_top}px, BOTTOM={total_pad_bottom}px, SIDES={total_pad_w}px")
-
-        # Layer 4: Create padded canvas with intelligent background
-        padded_img = create_padded_canvas(img, total_pad_w, total_pad_top, total_pad_bottom, new_width, new_height)
-
-        print(f"  ✅ Padded size: {padded_img.size[0]}x{padded_img.size[1]}")
-
-        # Convert to JPEG bytes
+        # Convert to JPEG bytes and return original (no padding)
         output = io.BytesIO()
-        padded_img.convert('RGB').save(output, format='JPEG', quality=95)
+        img.convert('RGB').save(output, format='JPEG', quality=95)
         return output.getvalue()
 
     except Exception as e:
-        print(f"  ❌ Padding failed: {e}")
-        # Layer 5: Fallback - return original image
-        print(f"  🔄 Returning original image (0.85 scale will be applied at Printify)")
+        print(f"  ❌ Image processing failed: {e}")
+        # Fallback - return original image bytes
         return image_bytes
 
 def create_padded_canvas(img, pad_w, pad_top, pad_bottom, new_width, new_height):
