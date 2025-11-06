@@ -157,10 +157,11 @@ def get_optimal_scale(product_type, position):
     Returns:
         float: Optimal scale value
     """
-    # Wall Calendar (blueprint 965): 1.39:1 aspect ratio
-    # - Image 16:9 (1.78:1) is wider than 1.39:1, needs moderate zoom out
+    # Wall Calendar 11" × 8.5" (blueprint 965, variant 103102): 1.29:1 aspect ratio
+    # - Image 16:9 (1.78:1) is wider than 1.29:1
+    # - Use higher scale to fill printable area (we have 20% side padding built in)
     if product_type == 'wall_calendar':
-        return 0.78  # Moderate zoom out for 1.39:1 placeholder
+        return 1.05  # Fill printable area - padding will protect edges
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
     elif product_type == 'desktop':
@@ -172,7 +173,7 @@ def get_optimal_scale(product_type, position):
             return 0.68  # Heavy zoom out to protect center content
 
     # Fallback (should never reach here)
-    return 0.78
+    return 1.05
 
 def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Calendar 2026"):
     """
