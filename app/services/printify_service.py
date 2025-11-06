@@ -158,12 +158,11 @@ def get_optimal_scale(product_type, position):
         float: Optimal scale value
     """
     # Wall Calendar 11" × 8.5" (blueprint 965, variant 103102): 1.29:1 aspect ratio
-    # - Image 16:9 (1.78:1) is MUCH wider than 1.29:1 calendar placeholder
-    # - Need VERY aggressive scale to eliminate black border and white space
+    # - EXTREME SCALE TEST: Using 5.0 to determine if borders can be eliminated
+    # - If scale 5.0 still shows borders, they're part of calendar template design
     # - Scale 1.0 = image width matches placeholder width
-    # - For 16:9 image in 1.29:1 placeholder, need scale ~2.5 to fill vertically
     if product_type == 'wall_calendar':
-        return 2.5  # Very aggressive scale to completely fill printable area edge-to-edge
+        return 5.0  # EXTREME scale test - if borders remain, they're baked into template
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
     elif product_type == 'desktop':
