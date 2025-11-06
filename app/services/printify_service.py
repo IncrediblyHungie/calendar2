@@ -158,11 +158,12 @@ def get_optimal_scale(product_type, position):
         float: Optimal scale value
     """
     # Wall Calendar 11" × 8.5" (blueprint 965, variant 103102): 1.29:1 aspect ratio
-    # - Image 16:9 (1.78:1) is wider than 1.29:1
-    # - Use aggressive scale to eliminate borders and fill entire printable area
-    # - Gemini generates with generous margins, so high scale is safe
+    # - Image 16:9 (1.78:1) is MUCH wider than 1.29:1 calendar placeholder
+    # - Need VERY aggressive scale to eliminate black border and white space
+    # - Scale 1.0 = image width matches placeholder width
+    # - For 16:9 image in 1.29:1 placeholder, need scale ~2.5 to fill vertically
     if product_type == 'wall_calendar':
-        return 1.4  # Aggressive scale to fill edge-to-edge (Gemini has built-in margins)
+        return 2.5  # Very aggressive scale to completely fill printable area edge-to-edge
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
     elif product_type == 'desktop':
