@@ -158,11 +158,11 @@ def get_optimal_scale(product_type, position):
         float: Optimal scale value
     """
     # Wall Calendar 11" × 8.5" (blueprint 965, variant 103102): 1.29:1 aspect ratio
-    # - EXTREME SCALE TEST: Using 5.0 to determine if borders can be eliminated
-    # - If scale 5.0 still shows borders, they're part of calendar template design
+    # - Borders are part of physical calendar template design (confirmed via scale 5.0 test)
+    # - Scale 1.4 provides good image coverage while respecting template borders
     # - Scale 1.0 = image width matches placeholder width
     if product_type == 'wall_calendar':
-        return 5.0  # EXTREME scale test - if borders remain, they're baked into template
+        return 1.4  # Optimal scale - borders are part of Printify's calendar design
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
     elif product_type == 'desktop':
