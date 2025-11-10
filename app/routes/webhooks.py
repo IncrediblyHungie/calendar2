@@ -155,15 +155,18 @@ def stripe_webhook():
                         )
 
                         order_ids.append(order_id)
-                        print(f"✅ Cart item {i} fulfilled: {order_id}")
+                        print(f"✅ Cart item {i} created in Printify: {order_id}")
 
                     except Exception as item_error:
-                        print(f"❌ Cart item {i} failed: {item_error}")
+                        print(f"❌ Cart item {i} failed to create: {item_error}")
                         import traceback
                         traceback.print_exc()
                         # Continue with other items even if one fails
 
-                print(f"\n🎉 Cart fulfillment complete: {len(order_ids)}/{len(cart_items)} orders created")
+                print(f"\n🎉 Cart fulfillment complete: {len(order_ids)}/{len(cart_items)} orders created in Printify")
+                if len(order_ids) < len(cart_items):
+                    print(f"⚠️  {len(cart_items) - len(order_ids)} orders failed to create")
+                print(f"📋 Check orders at: https://printify.com/app/orders")
 
                 # Clear cart after successful fulfillment
                 session_storage.clear_cart_by_session_id(internal_session_id)
@@ -382,9 +385,11 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
 
     # Auto-submit orders to production
     print("\n🏭 Submitting order to production...")
+    submitted = False
     try:
         printify_service.submit_order(order_id)
         print("✅ Order submitted to production successfully!")
+        submitted = True
     except Exception as e:
         print(f"❌ Order submission failed!")
         print(f"   Order ID: {order_id}")
@@ -396,14 +401,19 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
             except:
                 print(f"   Response Text: {e.response.text[:300]}")
         print(f"\n⚠️  Order created but NOT submitted to production!")
-        print(f"   You must manually approve this order in Printify dashboard:")
-        print(f"   https://printify.com/app/orders")
-        raise
+        print(f"   Order status: PENDING (requires manual approval)")
+        print(f"   View in Printify dashboard: https://printify.com/app/orders")
+        # Don't raise - order was created successfully, just needs manual approval
+        # This allows cart processing to continue with remaining items
 
     print("\n✅ Order creation complete!")
     print(f"   Printify Order ID: {order_id}")
     print(f"   Product ID: {product_id}")
     print(f"   Customer: {customer_email}")
+    if submitted:
+        print(f"   Status: SUBMITTED TO PRODUCTION ✅")
+    else:
+        print(f"   Status: PENDING (needs manual approval in Printify dashboard) ⚠️")
     print("="*60 + "\n")
 
     # Save order details to session storage
