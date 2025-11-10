@@ -3,67 +3,94 @@
 {% block title %}Turn Your Man Into a Calendar{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- Hero Section - Figma Typography -->
 <section class="hero-figma">
-    <div class="container-figma">
-        <h1 style="max-width: 700px; margin: 0 auto var(--spacing-md);">
+    <div style="max-width: 700px; margin: 0 auto; text-align: center; padding: 0 var(--spacing-md);">
+        <h1 style="font-family: var(--font-family); font-weight: 400; font-size: 48px; line-height: 1.1; letter-spacing: -0.848px; color: var(--text-primary); margin-bottom: var(--spacing-md);">
             Turn Your Man Into a Calendar.
         </h1>
 
-        <p style="font-size: 18px; max-width: 600px; margin: 0 auto;">
+        <p style="font-family: var(--font-family); font-weight: 400; font-size: 18px; line-height: 1.6; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
             Upload his best selfies and we'll turn them into a 12-month calendar you'll actually want to hang up.
         </p>
     </div>
 </section>
 
-<!-- Example Carousel Section -->
+<!-- Example Carousel Section - Figma Design -->
 <section class="section-figma" style="background-color: var(--bg-primary);">
-    <div class="container-figma">
-        <h2 class="text-center mb-md">See how others did it 💬</h2>
-        <p class="text-center mb-lg" style="color: var(--text-secondary);">
+    <div style="max-width: 976px; margin: 0 auto; padding: 0 var(--spacing-md);">
+        <!-- Heading Container -->
+        <div style="margin-bottom: var(--spacing-xs);">
+            <h2 style="font-family: var(--font-family); font-weight: 500; font-size: 24px; line-height: 32px; letter-spacing: 0.07px; text-align: center; color: var(--text-primary); margin-bottom: var(--spacing-xs);">
+                See how others did it 👀
+            </h2>
+        </div>
+
+        <!-- Subheading -->
+        <p style="font-family: var(--font-family); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: -0.31px; text-align: center; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
             From gym bros to husbands — everyone's got a month.
         </p>
 
-        <div class="carousel-figma">
-            <div id="exampleCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
+        <!-- Carousel Container - Horizontal Scroll -->
+        <div style="overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px;">
+            <div style="display: flex; gap: 16px; padding-bottom: var(--spacing-md);">
+                <!-- Card 1 -->
+                <div class="figma-carousel-card">
+                    <div class="figma-card-inner">
                         <img src="{{ url_for('static', filename='assets/images/examples/january.png') }}"
-                             class="d-block w-100"
-                             alt="January Example"
-                             style="border-radius: var(--radius-xl); border: 1px solid var(--border-subtle);">
-                        <div class="text-center mt-sm" style="color: var(--text-muted); font-size: 12px;">
-                            Review censored for privacy
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='assets/images/examples/february.png') }}"
-                             class="d-block w-100"
-                             alt="February Example"
-                             style="border-radius: var(--radius-xl); border: 1px solid var(--border-subtle);">
-                        <div class="text-center mt-sm" style="color: var(--text-muted); font-size: 12px;">
-                            Review censored for privacy
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='assets/images/examples/july.png') }}"
-                             class="d-block w-100"
-                             alt="July Example"
-                             style="border-radius: var(--radius-xl); border: 1px solid var(--border-subtle);">
-                        <div class="text-center mt-sm" style="color: var(--text-muted); font-size: 12px;">
-                            Review censored for privacy
+                             alt="Calendar Example"
+                             class="figma-card-image">
+                        <div class="figma-card-overlay"></div>
+                        <div class="figma-card-caption">
+                            Preview blurred for privacy
                         </div>
                     </div>
                 </div>
-                <button class="carousel-control-prev carousel-nav prev" type="button" data-bs-target="#exampleCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next carousel-nav next" type="button" data-bs-target="#exampleCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+
+                <!-- Card 2 -->
+                <div class="figma-carousel-card">
+                    <div class="figma-card-inner">
+                        <img src="{{ url_for('static', filename='assets/images/examples/february.png') }}"
+                             alt="Calendar Example"
+                             class="figma-card-image">
+                        <div class="figma-card-overlay"></div>
+                        <div class="figma-card-caption">
+                            Preview blurred for privacy
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="figma-carousel-card">
+                    <div class="figma-card-inner">
+                        <img src="{{ url_for('static', filename='assets/images/examples/july.png') }}"
+                             alt="Calendar Example"
+                             class="figma-card-image">
+                        <div class="figma-card-overlay"></div>
+                        <div class="figma-card-caption">
+                            Preview blurred for privacy
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 (duplicate for scrolling effect) -->
+                <div class="figma-carousel-card">
+                    <div class="figma-card-inner">
+                        <img src="{{ url_for('static', filename='assets/images/examples/january.png') }}"
+                             alt="Calendar Example"
+                             class="figma-card-image">
+                        <div class="figma-card-overlay"></div>
+                        <div class="figma-card-caption">
+                            Preview blurred for privacy
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Scroll hint for mobile -->
+        <div style="text-align: center; color: var(--text-muted); font-size: 12px; margin-top: var(--spacing-sm);">
+            ← Swipe to see more →
         </div>
     </div>
 </section>
@@ -139,14 +166,5 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
-// Auto-advance carousel every 4 seconds
-var exampleCarousel = document.querySelector('#exampleCarousel');
-if (exampleCarousel) {
-    var carousel = new bootstrap.Carousel(exampleCarousel, {
-        interval: 4000,
-        wrap: true
-    });
-}
-</script>
+<!-- Figma carousel uses native horizontal scroll - no JS needed -->
 {% endblock %}

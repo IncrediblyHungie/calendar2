@@ -200,7 +200,76 @@ p {
     margin: 0 auto var(--spacing-xl);
 }
 
-/* ===== IMAGE CAROUSEL ===== */
+/* ===== FIGMA CAROUSEL CARDS ===== */
+.figma-carousel-card {
+    width: 384px;
+    min-width: 384px;
+    flex-shrink: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+}
+
+.figma-card-inner {
+    position: relative;
+    width: 100%;
+    height: 511px;
+    overflow: hidden;
+}
+
+.figma-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    filter: blur(4px);
+}
+
+.figma-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #0C0C0C 0%, rgba(12, 12, 12, 0) 50%, rgba(12, 12, 12, 0) 100%);
+    pointer-events: none;
+}
+
+.figma-card-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.15px;
+    color: var(--text-secondary);
+}
+
+/* Scrollbar styling for carousel */
+.figma-carousel-card::-webkit-scrollbar {
+    height: 8px;
+}
+
+.figma-carousel-card::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.figma-carousel-card::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 4px;
+}
+
+.figma-carousel-card::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* Legacy carousel styles (keep for backward compatibility) */
 .carousel-figma {
     position: relative;
     max-width: 450px;
@@ -460,6 +529,10 @@ p {
         min-height: 60vh;
     }
 
+    .hero-figma h1 {
+        font-size: 36px !important;
+    }
+
     .btn-figma-primary {
         padding: 14px 24px;
         font-size: 15px;
@@ -472,15 +545,36 @@ p {
     .example-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    /* Figma carousel cards on tablet */
+    .figma-carousel-card {
+        width: 320px;
+        min-width: 320px;
+    }
+
+    .figma-card-inner {
+        height: 427px;
+    }
 }
 
 @media (max-width: 480px) {
     .hero-figma h1 {
-        font-size: 28px;
+        font-size: 28px !important;
+        letter-spacing: -0.5px !important;
     }
 
     .month-badges {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Figma carousel cards on mobile */
+    .figma-carousel-card {
+        width: 280px;
+        min-width: 280px;
+    }
+
+    .figma-card-inner {
+        height: 373px;
     }
 }
 
