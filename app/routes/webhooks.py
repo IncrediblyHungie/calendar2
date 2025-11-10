@@ -339,15 +339,10 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
         customer_email=customer_email
     )
 
-    # Skip auto-submit for manual approval mode
-    # Orders will be manually approved in Printify dashboard
-    print("\n✅ Order created successfully (manual approval required in Printify)")
-    print(f"   Order ID: {order_id}")
-    print(f"   Approve this order in your Printify dashboard to send to production")
-
-    # Uncomment below to auto-submit orders (only works if manual approval is disabled):
-    # print("\n🏭 Submitting order to production...")
-    # printify_service.submit_order(order_id)
+    # Auto-submit orders to production
+    print("\n🏭 Submitting order to production...")
+    printify_service.submit_order(order_id)
+    print("✅ Order submitted to production successfully!")
 
     print("\n✅ Order creation complete!")
     print(f"   Printify Order ID: {order_id}")
