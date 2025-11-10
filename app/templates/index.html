@@ -3,20 +3,7 @@
 {% block title %}Turn Your Man Into a Calendar{% endblock %}
 
 {% block content %}
-<!-- Hero Section - Figma Typography -->
-<section class="hero-figma">
-    <div style="max-width: 700px; margin: 0 auto; text-align: center; padding: 0 var(--spacing-md);">
-        <h1 style="font-family: var(--font-family); font-weight: 400; font-size: 48px; line-height: 1.1; letter-spacing: -0.848px; color: var(--text-primary); margin-bottom: var(--spacing-md);">
-            Turn Your Man Into a Calendar.
-        </h1>
-
-        <p style="font-family: var(--font-family); font-weight: 400; font-size: 18px; line-height: 1.6; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
-            Upload his best selfies and we'll turn them into a 12-month calendar you'll actually want to hang up.
-        </p>
-    </div>
-</section>
-
-<!-- Example Carousel Section - Figma Design -->
+<!-- Example Carousel Section - Figma Design (moved to top) -->
 <section class="section-figma" style="background-color: var(--bg-primary);">
     <div style="max-width: 976px; margin: 0 auto; padding: 0 var(--spacing-md);">
         <!-- Heading Container -->
@@ -91,6 +78,27 @@
         <!-- Scroll hint for mobile -->
         <div style="text-align: center; color: var(--text-muted); font-size: 12px; margin-top: var(--spacing-sm);">
             ← Swipe to see more →
+        </div>
+    </div>
+</section>
+
+<!-- Hero Section - Figma Design -->
+<section class="hero-figma" style="padding: var(--spacing-2xl) var(--spacing-md); min-height: auto;">
+    <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+        <h1 style="font-family: var(--font-family); font-weight: 700; font-size: 48px; line-height: 1.1; letter-spacing: -0.848px; color: var(--text-primary); margin-bottom: var(--spacing-md);">
+            Turn your man into<br>a calendar hunk 😍
+        </h1>
+
+        <p style="font-family: var(--font-family); font-weight: 400; font-size: 18px; line-height: 1.6; color: var(--text-secondary); max-width: 600px; margin: 0 auto var(--spacing-xl);">
+            Transform his pics into a real, hunk-worthy calendar. Give the gift of being Mr. January through December.
+        </p>
+
+        <a href="{{ url_for('main.start') }}" class="btn-figma-primary" style="background: var(--gradient-cta); color: white; font-size: 16px; font-weight: 600; padding: 16px 32px; border-radius: 24px; text-decoration: none; display: inline-block;">
+            Make him a hunk
+        </a>
+
+        <div style="margin-top: var(--spacing-md); font-size: 14px; color: var(--text-muted);">
+            No login required. Instant preview.
         </div>
     </div>
 </section>
