@@ -231,7 +231,8 @@ p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, #0C0C0C 0%, rgba(12, 12, 12, 0) 50%, rgba(12, 12, 12, 0) 100%);
+    /* Overlay disabled - no shadow/gradient on images */
+    background: transparent;
     pointer-events: none;
 }
 
