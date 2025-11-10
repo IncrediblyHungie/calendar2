@@ -369,6 +369,11 @@ def create_order(product_id, variant_id, quantity, shipping_address, customer_em
         }
     }
 
+    print(f"  🏪 Using Shop ID: {shop_id}")
+    print(f"  📦 Product ID: {product_id}")
+    print(f"  🔢 Variant ID: {variant_id}")
+    print(f"  📧 Customer: {customer_email}")
+
     response = requests.post(
         f"{PRINTIFY_API_BASE}/shops/{shop_id}/orders.json",
         headers=get_headers(),
@@ -377,16 +382,38 @@ def create_order(product_id, variant_id, quantity, shipping_address, customer_em
 
     if response.status_code != 200:
         # Log the full error response from Printify
-        print(f"  ❌ Printify create_order failed with status {response.status_code}")
-        print(f"  📄 Error response: {response.text}")
-        print(f"  🏪 Shop ID: {shop_id}")
-        print(f"  📦 Product ID: {product_id}")
-        print(f"  🔢 Variant ID: {variant_id}")
+        print(f"\n  {'='*50}")
+        print(f"  ❌ PRINTIFY CREATE ORDER FAILED")
+        print(f"  {'='*50}")
+        print(f"  Status Code: {response.status_code}")
+        print(f"  Shop ID: {shop_id}")
+        print(f"  Product ID: {product_id}")
+        print(f"  Variant ID: {variant_id}")
+        print(f"  Customer: {customer_email}")
+        print(f"  URL: {response.url}")
+        print(f"  Raw Response: {response.text}")
         try:
             error_data = response.json()
-            print(f"  📋 Error details: {error_data}")
+            print(f"  Error JSON: {error_data}")
         except:
             pass
+
+        # Provide helpful error messages based on status code
+        if response.status_code == 400:
+            print(f"\n  💡 COMMON CAUSES OF 400 ERROR:")
+            print(f"     1. Invalid variant ID for this product")
+            print(f"     2. Product not published to shop")
+            print(f"     3. Invalid shipping address format")
+            print(f"     4. Missing required fields")
+        elif response.status_code == 401:
+            print(f"\n  💡 AUTHENTICATION ERROR:")
+            print(f"     API token may be invalid or expired")
+            print(f"     Check PRINTIFY_API_TOKEN secret")
+        elif response.status_code == 404:
+            print(f"\n  💡 PRODUCT NOT FOUND:")
+            print(f"     Product {product_id} doesn't exist in shop {shop_id}")
+
+        print(f"  {'='*50}\n")
 
     response.raise_for_status()
     order_data = response.json()
@@ -405,6 +432,8 @@ def submit_order(order_id):
         bool: Success status
     """
     shop_id = get_shop_id()
+    print(f"  🏪 Using Shop ID: {shop_id}")
+    print(f"  📦 Order ID: {order_id}")
 
     response = requests.post(
         f"{PRINTIFY_API_BASE}/shops/{shop_id}/orders/{order_id}/send_to_production.json",
@@ -413,13 +442,38 @@ def submit_order(order_id):
 
     if response.status_code != 200:
         # Log the full error response from Printify
-        print(f"  ❌ Printify submit_order failed with status {response.status_code}")
-        print(f"  📄 Error response: {response.text}")
+        print(f"\n  {'='*50}")
+        print(f"  ❌ PRINTIFY SUBMIT ORDER FAILED")
+        print(f"  {'='*50}")
+        print(f"  Status Code: {response.status_code}")
+        print(f"  Shop ID: {shop_id}")
+        print(f"  Order ID: {order_id}")
+        print(f"  URL: {response.url}")
+        print(f"  Raw Response: {response.text}")
         try:
             error_data = response.json()
-            print(f"  📋 Error details: {error_data}")
+            print(f"  Error JSON: {error_data}")
         except:
             pass
+
+        # Provide helpful error messages based on status code
+        if response.status_code == 400:
+            print(f"\n  💡 COMMON CAUSES OF 400 ERROR:")
+            print(f"     1. Manual approval required in Printify account settings")
+            print(f"        → Check: https://printify.com/app/account/connections")
+            print(f"        → Disable 'Require manual approval for orders'")
+            print(f"     2. Missing or invalid payment method in Printify")
+            print(f"        → Check: https://printify.com/app/account/billing")
+            print(f"     3. Order already submitted or in invalid state")
+        elif response.status_code == 401:
+            print(f"\n  💡 AUTHENTICATION ERROR:")
+            print(f"     API token may be invalid or expired")
+            print(f"     Check PRINTIFY_API_TOKEN secret")
+        elif response.status_code == 404:
+            print(f"\n  💡 ORDER NOT FOUND:")
+            print(f"     Order {order_id} doesn't exist in shop {shop_id}")
+
+        print(f"  {'='*50}\n")
 
     response.raise_for_status()
     print(f"  ✓ Submitted order to production: {order_id}")

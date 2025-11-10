@@ -183,10 +183,35 @@ def stripe_webhook():
                 print(f"🎉 Order fulfilled successfully: {order_id}")
 
         except Exception as e:
-            print(f"❌ Printify order creation failed: {e}")
-            # In production: save to failed_orders table for manual retry
+            print(f"\n{'='*60}")
+            print(f"❌ PRINTIFY ORDER CREATION FAILED")
+            print(f"{'='*60}")
+            print(f"Error Type: {type(e).__name__}")
+            print(f"Error Message: {str(e)}")
+            print(f"\n📋 ORDER CONTEXT:")
+            print(f"   Stripe Session: {checkout_session.id}")
+            print(f"   Payment Intent: {payment_intent_id}")
+            print(f"   Product Type: {product_type}")
+            print(f"   Customer Email: {customer_email}")
+            print(f"   Internal Session: {internal_session_id}")
+
+            # If it's a requests exception, show API details
             import traceback
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"\n🔴 API ERROR DETAILS:")
+                print(f"   Status Code: {e.response.status_code}")
+                print(f"   URL: {e.response.url}")
+                try:
+                    error_body = e.response.json()
+                    print(f"   Response Body: {error_body}")
+                except:
+                    print(f"   Response Text: {e.response.text[:500]}")
+
+            print(f"\n📚 FULL STACK TRACE:")
             traceback.print_exc()
+            print(f"{'='*60}\n")
+
+            # In production: save to failed_orders table for manual retry
 
     return jsonify({'success': True})
 
@@ -331,18 +356,49 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
 
     # Create order
     print("\n📦 Creating Printify order...")
-    order_id = printify_service.create_order(
-        product_id=product_id,
-        variant_id=variant_id,  # Now using real numeric variant ID
-        quantity=1,
-        shipping_address=shipping_address,
-        customer_email=customer_email
-    )
+    print(f"   Product ID: {product_id}")
+    print(f"   Variant ID: {variant_id}")
+    print(f"   Customer: {customer_email}")
+
+    try:
+        order_id = printify_service.create_order(
+            product_id=product_id,
+            variant_id=variant_id,  # Now using real numeric variant ID
+            quantity=1,
+            shipping_address=shipping_address,
+            customer_email=customer_email
+        )
+        print(f"✅ Order created successfully: {order_id}")
+    except Exception as e:
+        print(f"❌ Order creation failed!")
+        print(f"   Error: {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"   Status Code: {e.response.status_code}")
+            try:
+                print(f"   API Response: {e.response.json()}")
+            except:
+                print(f"   Response Text: {e.response.text[:300]}")
+        raise
 
     # Auto-submit orders to production
     print("\n🏭 Submitting order to production...")
-    printify_service.submit_order(order_id)
-    print("✅ Order submitted to production successfully!")
+    try:
+        printify_service.submit_order(order_id)
+        print("✅ Order submitted to production successfully!")
+    except Exception as e:
+        print(f"❌ Order submission failed!")
+        print(f"   Order ID: {order_id}")
+        print(f"   Error: {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"   Status Code: {e.response.status_code}")
+            try:
+                print(f"   API Response: {e.response.json()}")
+            except:
+                print(f"   Response Text: {e.response.text[:300]}")
+        print(f"\n⚠️  Order created but NOT submitted to production!")
+        print(f"   You must manually approve this order in Printify dashboard:")
+        print(f"   https://printify.com/app/orders")
+        raise
 
     print("\n✅ Order creation complete!")
     print(f"   Printify Order ID: {order_id}")
