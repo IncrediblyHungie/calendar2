@@ -14,8 +14,8 @@ PRINTIFY_API_BASE = "https://api.printify.com/v1"
 CALENDAR_PRODUCTS = {
     'wall_calendar': {
         'blueprint_id': 965,
-        'print_provider_id': 99,  # Stoke-On-Trent (UK)
-        'variant_id': 103102,  # 11" × 8.5" Letter size (NOT 14" × 11.5")
+        'print_provider_id': 'auto',  # Auto-detect (print provider 99 no longer available)
+        'variant_id': 'auto',  # Auto-detect variant for selected print provider
         'name': 'Wall Calendar (2026)',
         'title': 'Custom Hunk Wall Calendar 2026',
         'size': '11" × 8.5"',  # Letter size only
