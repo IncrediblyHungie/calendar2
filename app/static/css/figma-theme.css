@@ -61,8 +61,7 @@
 
 /* ===== GLOBAL STYLES ===== */
 body {
-    background: linear-gradient(180deg, #1A2741 0%, #2B3B5C 50%, #1E2947 100%);
-    background-attachment: fixed;
+    background: white;  /* Changed from navy gradient to white to show section backgrounds */
     color: var(--text-primary);
     font-family: var(--font-family);
     font-size: var(--font-size-body);
