@@ -103,46 +103,46 @@
     </div>
 </section>
 
-<!-- How It Works Section -->
-<section class="section-figma" style="background-color: var(--bg-primary);">
+<!-- Frame 3 Part 1: How It Works Section - WHITE BACKGROUND -->
+<section class="section-figma" style="background-color: white; padding: var(--spacing-2xl) 0;">
     <div class="container-figma">
-        <h2 class="text-center mb-xl">How It Works</h2>
+        <h2 class="text-center mb-xl" style="color: #172439; font-weight: 600;">How It Works</h2>
 
         <div class="steps-container">
             <!-- Step 1 -->
-            <div class="step-card">
+            <div class="step-card" style="background: white; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                 <div class="step-icon">
                     <i class="fas fa-upload"></i>
                 </div>
                 <div class="step-content">
-                    <h3>Upload 8-12 selfies</h3>
-                    <p style="color: var(--text-secondary);">
+                    <h3 style="color: #172439;">Upload 8-12 selfies</h3>
+                    <p style="color: #6B7280;">
                         Upload your best shots (and maybe a few your mom shouldn't see).
                     </p>
                 </div>
             </div>
 
             <!-- Step 2 -->
-            <div class="step-card">
+            <div class="step-card" style="background: white; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                 <div class="step-icon" style="background: var(--accent-purple);">
                     <i class="fas fa-wand-magic-sparkles"></i>
                 </div>
                 <div class="step-content">
-                    <h3>AI designs your calendar</h3>
-                    <p style="color: var(--text-secondary);">
+                    <h3 style="color: #172439;">AI designs your calendar</h3>
+                    <p style="color: #6B7280;">
                         We're not judging — just lighting you perfectly.
                     </p>
                 </div>
             </div>
 
             <!-- Step 3 -->
-            <div class="step-card">
+            <div class="step-card" style="background: white; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                 <div class="step-icon" style="background: var(--accent-success);">
                     <i class="fas fa-gift"></i>
                 </div>
                 <div class="step-content">
-                    <h3>Order it or gift it instantly</h3>
-                    <p style="color: var(--text-secondary);">
+                    <h3 style="color: #172439;">Order it or gift it instantly</h3>
+                    <p style="color: #6B7280;">
                         Hunks deserve calendars too.
                     </p>
                 </div>
@@ -151,20 +151,49 @@
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="section-figma" style="background-color: var(--bg-primary); padding-bottom: var(--spacing-2xl);">
-    <div class="container-figma">
-        <div class="gradient-card">
-            <h2 style="font-size: 32px; font-weight: 600;">
+<!-- Frame 3 Part 2: Features Section - NAVY BACKGROUND -->
+<section class="section-figma" style="background-color: #1E2947; padding: var(--spacing-2xl) 0;">
+    <div class="container-figma" style="max-width: 800px; text-align: center;">
+        <h2 style="color: white; font-weight: 600; font-size: 32px; margin-bottom: var(--spacing-md);">
+            Why you'll love it
+        </h2>
+        <p style="color: #ABABAB; font-size: 18px; line-height: 1.6; margin-bottom: var(--spacing-xl);">
+            Professional quality, delivered to your door. No printing, no hassle — just pure hunk energy.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-top: var(--spacing-xl);">
+            <div style="text-align: center;">
+                <div style="font-size: 48px; margin-bottom: var(--spacing-sm);">📅</div>
+                <h3 style="color: white; font-size: 20px; margin-bottom: var(--spacing-xs);">12 Months of Glory</h3>
+                <p style="color: #ABABAB; font-size: 14px;">A full year of jaw-dropping photos</p>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 48px; margin-bottom: var(--spacing-sm);">🎨</div>
+                <h3 style="color: white; font-size: 20px; margin-bottom: var(--spacing-xs);">AI-Enhanced</h3>
+                <p style="color: #ABABAB; font-size: 14px;">Professional lighting & composition</p>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 48px; margin-bottom: var(--spacing-sm);">🚀</div>
+                <h3 style="color: white; font-size: 20px; margin-bottom: var(--spacing-xs);">Fast Delivery</h3>
+                <p style="color: #ABABAB; font-size: 14px;">High-quality print, shipped directly</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Frame 3 Part 3: Final CTA Section - PINK/YELLOW GRADIENT -->
+<section class="section-figma" style="background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%); padding: var(--spacing-2xl) 0;">
+    <div class="container-figma" style="max-width: 800px;">
+        <div style="text-align: center; padding: var(--spacing-xl);">
+            <h2 style="font-size: 40px; font-weight: 700; color: white; margin-bottom: var(--spacing-md);">
                 Ready to Make Him Unreasonably Hot?
             </h2>
-            <p style="font-size: 16px;">
+            <p style="font-size: 18px; color: rgba(255,255,255,0.95); margin-bottom: var(--spacing-xl); line-height: 1.6;">
                 Upload his best selfies and we'll turn them into a 12-month calendar you'll actually want to hang up.
             </p>
-            <a href="{{ url_for('main.start') }}" class="btn-figma-primary" style="background: white; color: var(--accent-primary);">
+            <a href="{{ url_for('main.start') }}" class="btn-figma-primary" style="background: white; color: #F73E97; font-size: 18px; font-weight: 600; padding: 18px 40px; border-radius: 24px; text-decoration: none; display: inline-block; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
                 Upload Photos To Get Started →
             </a>
-            <div class="mt-md" style="font-size: 12px; color: rgba(255,255,255,0.7);">
+            <div style="margin-top: var(--spacing-md); font-size: 14px; color: rgba(255,255,255,0.85);">
                 No login required. Instant preview.
             </div>
         </div>
