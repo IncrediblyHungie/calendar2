@@ -223,8 +223,7 @@
     <!-- PRODUCT SELECTION & CHECKOUT -->
     <div class="card shadow-lg border-success">
         <div class="card-body p-5">
-            <h3 class="text-center mb-4">
-                <i class="fas fa-laugh-beam text-danger me-2"></i>
+            <h3 class="text-center mb-4" style="color: #172439; font-weight: 600;">
                 Love This Calendar?
             </h3>
             <p class="lead text-center mb-4">
@@ -244,11 +243,12 @@
                 <div class="col-md-5">
                     <div class="card h-100 product-option" data-product="desktop" data-price="30">
                         <div class="card-body text-center">
-                            <!-- Desktop Mockup Image -->
-                            {% if desktop_default %}
+                            <!-- Desktop Preview - January Calendar Image -->
+                            {% set january_month = months | selectattr('month_number', 'equalto', 1) | first %}
+                            {% if january_month %}
                             <div class="mb-3">
-                                <img src="{{ desktop_default.src }}"
-                                     alt="Desktop Calendar Mockup"
+                                <img src="{{ url_for('api.get_month_image', month_id=january_month.id) }}"
+                                     alt="Desktop Calendar - January Preview"
                                      class="img-fluid rounded"
                                      style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                             </div>
