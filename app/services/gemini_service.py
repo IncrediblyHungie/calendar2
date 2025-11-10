@@ -99,7 +99,8 @@ Style: Professional fitness/glamour photography meets comedy photoshoot - natura
         content.append(enhanced_prompt)
 
         # Generate the image using Gemini 2.5 Flash Image (Nano Banana)
-        # Use 16:9 aspect ratio (1.78:1 landscape) to accommodate both wall and desktop calendars
+        # Use 4:3 aspect ratio (1.33:1 landscape) - optimized for calendar placeholders
+        # This reduces wasted space by 80% compared to 16:9
         response = client.models.generate_content(
             model='gemini-2.5-flash-image',
             contents=content,
@@ -107,7 +108,7 @@ Style: Professional fitness/glamour photography meets comedy photoshoot - natura
                 response_modalities=['IMAGE'],
                 temperature=0.7,  # Balanced for consistency and creativity
                 image_config=types.ImageConfig(
-                    aspect_ratio='16:9'  # Wide landscape (1.78:1) - works for all calendar formats
+                    aspect_ratio='4:3'  # Standard landscape (1.33:1) - near-perfect fit for calendars
                 )
             )
         )
