@@ -25,15 +25,27 @@
                 {% endif %}
             </div>
 
-            <!-- Delivery Worker Image -->
-            <div class="mb-lg text-center">
-                <img id="delivery-worker-image"
-                     src="{{ url_for('api.get_delivery_image') }}"
-                     alt="Your calendar is on the way!"
-                     style="max-width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); display: none;"
-                     onload="this.style.display='block';"
-                     onerror="this.style.display='none';">
+            <!-- Delivery Worker Hero Image -->
+            <div class="mb-lg">
+                <div style="background: linear-gradient(135deg, rgba(247, 62, 151, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border-radius: var(--radius-xl); padding: var(--spacing-lg); text-align: center;">
+                    <img id="delivery-worker-image"
+                         src="{{ url_for('api.get_delivery_image') }}"
+                         alt="Your personal delivery hunky postal worker"
+                         style="max-width: 600px; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); display: none;"
+                         onload="this.style.display='block'; document.getElementById('delivery-loading').style.display='none';"
+                         onerror="this.style.display='none'; document.getElementById('delivery-loading').style.display='none';">
+                    <div id="delivery-loading" style="padding: var(--spacing-xl);">
+                        <div style="display: inline-block; width: 60px; height: 60px; border: 6px solid rgba(247, 62, 151, 0.2); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <p style="color: #333333; margin-top: var(--spacing-md); font-size: 16px;">Preparing your delivery preview...</p>
+                    </div>
+                </div>
             </div>
+
+            <style>
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
+                }
+            </style>
 
             <!-- What Happens Next -->
             <div class="mb-lg">
@@ -150,4 +162,51 @@
         </div>
     </div>
 </div>
+
+<script>
+// Poll for delivery image (generated asynchronously in webhook)
+let deliveryImageAttempts = 0;
+const maxAttempts = 15; // 30 seconds total (15 attempts × 2 seconds)
+
+function checkDeliveryImage() {
+    const img = document.getElementById('delivery-worker-image');
+    const loading = document.getElementById('delivery-loading');
+
+    if (!img || deliveryImageAttempts >= maxAttempts) {
+        if (loading) loading.style.display = 'none';
+        return;
+    }
+
+    deliveryImageAttempts++;
+
+    // Try to load the image
+    fetch('{{ url_for("api.get_delivery_image") }}')
+        .then(response => {
+            if (response.ok) {
+                // Image is ready! Force reload
+                img.src = '{{ url_for("api.get_delivery_image") }}?t=' + Date.now();
+            } else if (deliveryImageAttempts < maxAttempts) {
+                // Not ready yet, try again in 2 seconds
+                setTimeout(checkDeliveryImage, 2000);
+            } else {
+                // Max attempts reached, hide loading
+                if (loading) loading.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            if (deliveryImageAttempts < maxAttempts) {
+                // Error, but try again
+                setTimeout(checkDeliveryImage, 2000);
+            } else {
+                if (loading) loading.style.display = 'none';
+            }
+        });
+}
+
+// Start checking after page load
+window.addEventListener('load', function() {
+    setTimeout(checkDeliveryImage, 1000); // Wait 1 second before first check
+});
+</script>
+
 {% endblock %}
