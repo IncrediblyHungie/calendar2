@@ -230,6 +230,116 @@ def generate_calendar_images_batch(project_id, prompts, reference_image_data_lis
     return results
 
 
+def generate_delivery_worker_image(reference_image_data_list=None):
+    """
+    Generate a custom image of the customer as a handsome postal worker delivering a calendar
+    This image is shown ONLY on the order success page, not included in the calendar
+
+    Args:
+        reference_image_data_list (list): List of user's reference image data bytes
+
+    Returns:
+        bytes: Generated image data as PNG bytes
+    """
+    try:
+        client = genai.Client(api_key=GOOGLE_API_KEY)
+
+        content = []
+
+        # Add reference images if provided (to match the customer's appearance)
+        if reference_image_data_list:
+            ref_instruction = """
+REFERENCE IMAGES: Study the person shown in these images carefully.
+
+IDENTITY TO MAINTAIN:
+- Analyze ALL reference images to understand this exact person's facial features
+- Note their distinctive characteristics: face shape, eye color, nose shape, jawline, skin tone, hair texture
+- This is NOT a face swap - create a natural, seamless photo of THIS EXACT PERSON as a postal worker
+- The person should look like a natural blend of their features across all reference images
+- Maintain their unique identity while transforming them into a handsome postal worker
+"""
+            content.append(ref_instruction)
+
+            # Add up to 3 best reference images
+            for img_data in reference_image_data_list[:3]:
+                try:
+                    img = Image.open(io.BytesIO(img_data))
+                    # Resize if too large (max 4MP for Gemini)
+                    max_pixels = 4_000_000
+                    if img.width * img.height > max_pixels:
+                        ratio = (max_pixels / (img.width * img.height)) ** 0.5
+                        new_size = (int(img.width * ratio), int(img.height * ratio))
+                        img = img.resize(new_size, Image.LANCZOS)
+                    content.append(img)
+                except Exception as e:
+                    print(f"Error loading reference image: {e}")
+
+        # Delivery worker prompt
+        delivery_prompt = """
+A handsome, muscular postal worker in crisp uniform proudly delivering a "Hunk of the Month" wall calendar.
+
+SCENE DETAILS:
+- Professional USPS-style postal worker uniform (blue shirt, shorts or pants, official cap)
+- Muscular, athletic build with confidence and charm
+- Holding a wrapped calendar package labeled "Hunk of the Month Calendar"
+- Friendly, professional smile while presenting the package
+- Outdoor delivery setting: front porch or doorstep with bright daylight
+- Professional delivery posture: standing proudly with package
+
+CHARACTER CONSISTENCY (CRITICAL):
+- Create a photo of THIS EXACT PERSON (from reference images) as a postal worker
+- Maintain their distinctive facial features naturally and seamlessly
+- This should look like a real photo of them in uniform, not a composite
+- Keep their eye color, skin tone, facial structure, and unique characteristics
+- Transform them naturally into this delivery worker role
+
+COMPOSITION & FRAMING:
+- Medium shot showing head to mid-thigh
+- Leave significant space above head (15-20% headroom)
+- Center the subject with generous margins on all sides
+- Subject occupies central 60-70% of frame
+- Shot from 10-12 feet away for natural perspective
+- Professional commercial photography composition
+
+VISUAL QUALITY:
+- Photorealistic, professional photography quality
+- Bright, clear daylight with good visibility
+- Vibrant colors, crisp uniform details
+- Commercial product delivery photo aesthetic
+- Friendly, professional, trustworthy vibe
+
+Style: Professional delivery service photography meets fitness model - natural, confident, charismatic
+"""
+        content.append(delivery_prompt)
+
+        # Generate the image using Gemini 2.5 Flash Image
+        response = client.models.generate_content(
+            model='gemini-2.5-flash-image',
+            contents=content,
+            config=types.GenerateContentConfig(
+                response_modalities=['IMAGE'],
+                temperature=0.7,
+                image_config=types.ImageConfig(
+                    aspect_ratio='4:3'  # Standard landscape for web display
+                )
+            )
+        )
+
+        # Extract PNG image data from response
+        if response.candidates and len(response.candidates) > 0:
+            candidate = response.candidates[0]
+            if candidate.content and candidate.content.parts:
+                for part in candidate.content.parts:
+                    if hasattr(part, 'inline_data') and part.inline_data:
+                        return part.inline_data.data
+
+        raise Exception("No delivery worker image generated in response")
+
+    except Exception as e:
+        print(f"Error generating delivery worker image: {str(e)}")
+        raise
+
+
 def test_api_connection():
     """Test if Gemini API is configured and working"""
     try:

@@ -185,6 +185,32 @@ def get_uploaded_images():
     project = _get_active_project()
     return project.get('images', [])
 
+def get_uploaded_images_by_session_id(session_id, project_id=None):
+    """Get uploaded images for a specific session (used by webhooks)"""
+    _load_storage()
+    if session_id not in _storage:
+        return []
+
+    storage = _storage[session_id]
+
+    # If project_id specified, get that specific project
+    if project_id:
+        for project in storage.get('projects', []):
+            if project['id'] == project_id:
+                return project.get('images', [])
+        return []
+
+    # Otherwise, get active project's images
+    active_id = storage.get('active_project_id')
+    if not active_id:
+        return []
+
+    for project in storage.get('projects', []):
+        if project['id'] == active_id:
+            return project.get('images', [])
+
+    return []
+
 def add_uploaded_image(filename, file_data, thumbnail_data):
     """Add an uploaded image to active project"""
     project = _get_active_project()
@@ -577,6 +603,27 @@ def get_order_info_by_session_id(session_id):
     _load_storage()
     if session_id in _storage:
         return _storage[session_id].get('order')
+    return None
+
+def save_delivery_image(session_id, image_data):
+    """Save delivery worker image to a specific session (used after order)"""
+    _load_storage()
+    if session_id in _storage:
+        _storage[session_id]['delivery_image'] = image_data
+        _save_session(session_id)
+        return True
+    return False
+
+def get_delivery_image():
+    """Get delivery worker image for current session"""
+    storage = _get_storage()
+    return storage.get('delivery_image')
+
+def get_delivery_image_by_session_id(session_id):
+    """Get delivery worker image for a specific session"""
+    _load_storage()
+    if session_id in _storage:
+        return _storage[session_id].get('delivery_image')
     return None
 
 def save_preview_mockup_data(mockup_data, product_type='calendar_2026'):

@@ -432,4 +432,32 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
     session_storage.save_order_info(internal_session_id, order_info)
     print(f"💾 Order info saved to session storage")
 
+    # Generate delivery worker image for order success page
+    print("\n📸 Generating delivery worker image...")
+    try:
+        from app.services.gemini_service import generate_delivery_worker_image
+        from PIL import Image as PILImage
+        import io
+
+        # Get user's reference images
+        uploaded_images = session_storage.get_uploaded_images_by_session_id(internal_session_id, project_id=project_id)
+        reference_image_data = [img['file_data'] for img in uploaded_images] if uploaded_images else None
+
+        # Generate delivery worker image
+        delivery_image_data = generate_delivery_worker_image(reference_image_data)
+
+        # Convert PNG to JPEG for smaller file size
+        img = PILImage.open(io.BytesIO(delivery_image_data))
+        img_io = io.BytesIO()
+        img.convert('RGB').save(img_io, format='JPEG', quality=85, optimize=True)
+        jpeg_data = img_io.getvalue()
+
+        # Save to session storage
+        session_storage.save_delivery_image(internal_session_id, jpeg_data)
+        print(f"✅ Delivery worker image generated and saved ({len(jpeg_data)} bytes)")
+
+    except Exception as e:
+        print(f"⚠️  Delivery image generation failed (non-critical): {e}")
+        # Don't fail the order if delivery image fails - it's just a nice-to-have
+
     return order_id

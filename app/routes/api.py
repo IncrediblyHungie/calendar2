@@ -701,6 +701,24 @@ def get_cart_project_cover(project_id):
         print(f"❌ Get project cover error: {e}")
         return jsonify({'error': str(e)}), 500
 
+@bp.route('/delivery-image')
+def get_delivery_image():
+    """Serve delivery worker image for order success page"""
+    try:
+        delivery_image_data = session_storage.get_delivery_image()
+
+        if not delivery_image_data:
+            return jsonify({'error': 'Delivery image not found'}), 404
+
+        return send_file(
+            io.BytesIO(delivery_image_data),
+            mimetype='image/jpeg'
+        )
+
+    except Exception as e:
+        print(f"❌ Get delivery image error: {e}")
+        return jsonify({'error': str(e)}), 500
+
 # ============================================================================
 # 3-MONTH PREVIEW SYSTEM ENDPOINTS
 # ============================================================================
