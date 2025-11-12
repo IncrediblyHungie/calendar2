@@ -36,16 +36,17 @@ def generate_calendar_image(prompt, reference_image_data_list=None):
 
         # Add reference images if provided (for character consistency)
         if reference_image_data_list:
-            # Add instruction about character identity (NOT "face swap")
+            # Add instruction about character identity (FACE SWAP - transfer exact face)
             ref_instruction = """
 REFERENCE IMAGES: Study the person shown in these images carefully.
 
-IDENTITY TO MAINTAIN:
+FACE SWAP INSTRUCTIONS (CRITICAL):
 - Analyze ALL reference images to understand this exact person's facial features
+- This IS a face swap - transfer their face completely and accurately onto the body in the scene
+- Copy every facial feature precisely: eyes, nose, mouth, jawline, cheekbones, skin tone, hair
 - Note their distinctive characteristics: face shape, eye color, nose shape, jawline, skin tone, hair texture
-- This is NOT a face swap - create a natural, seamless photo of THIS EXACT PERSON in the described scene
-- The person should look like a natural blend of their features across all reference images
-- Maintain their unique identity while placing them naturally in the scene
+- The face must look IDENTICAL to the reference photos
+- Maintain their unique identity while placing their exact face in the scene
 """
             content.append(ref_instruction)
 
@@ -64,16 +65,16 @@ IDENTITY TO MAINTAIN:
                 except Exception as e:
                     print(f"Error loading reference image: {e}")
 
-        # Enhanced prompt with seamless blending and framing
+        # Enhanced prompt with face swap and framing
         enhanced_prompt = f"""
 {prompt}
 
-CHARACTER CONSISTENCY (CRITICAL):
-- Create a photo of THIS EXACT PERSON (from reference images) in this scene
-- Maintain their distinctive facial features naturally and seamlessly
-- This should look like a real photo of them, not a composite or face swap
-- Keep their eye color, skin tone, facial structure, and unique characteristics
-- Blend their identity naturally into the scene
+FACE SWAP EXECUTION (CRITICAL):
+- Transfer the EXACT face from reference images onto the body in this scene
+- This IS a face swap - copy their face completely and accurately
+- Maintain their distinctive facial features precisely: every detail must match
+- Keep their eye color, eye shape, nose, mouth, jawline, skin tone, facial structure exactly as shown
+- The face must look IDENTICAL to the reference photos - perfect face accuracy is the priority
 
 COMPOSITION & FRAMING (CRITICAL - FOLLOW EXACTLY):
 - CAMERA DISTANCE: Shot from 12-15 feet away for WIDE framing with generous margins
@@ -251,12 +252,13 @@ def generate_delivery_worker_image(reference_image_data_list=None):
             ref_instruction = """
 REFERENCE IMAGES: Study the person shown in these images carefully.
 
-IDENTITY TO MAINTAIN:
+FACE SWAP INSTRUCTIONS (CRITICAL):
 - Analyze ALL reference images to understand this exact person's facial features
+- This IS a face swap - transfer their face completely and accurately onto the postal worker body
+- Copy every facial feature precisely: eyes, nose, mouth, jawline, cheekbones, skin tone, hair
 - Note their distinctive characteristics: face shape, eye color, nose shape, jawline, skin tone, hair texture
-- This is NOT a face swap - create a natural, seamless photo of THIS EXACT PERSON as a postal worker
-- The person should look like a natural blend of their features across all reference images
-- Maintain their unique identity while transforming them into a handsome postal worker
+- The face must look IDENTICAL to the reference photos
+- Maintain their unique identity while placing their exact face as a handsome postal worker
 """
             content.append(ref_instruction)
 

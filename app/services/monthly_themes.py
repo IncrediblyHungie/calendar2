@@ -277,9 +277,10 @@ REFERENCE IMAGES PROVIDED: Study the person in the reference images carefully to
 CHARACTER IDENTITY PRESERVATION (CRITICAL):
 - These reference images show THIS EXACT PERSON whose face must appear in the generated image
 - Analyze all reference images to understand their distinctive facial features, proportions, and characteristics
-- This is NOT a composite or face swap - create a seamless, natural photo of THIS EXACT PERSON in the scene
+- This IS a face swap - transfer their face completely and accurately onto the body in the scene
+- Copy every facial feature precisely: eyes, nose, mouth, jawline, cheekbones, skin tone, hair
 - Maintain their unique identity: face shape, eye color, nose shape, jawline, skin tone, hair texture
-- The result should look like a natural photograph of this person, not an edited image
+- The result should look like a natural photograph of this person with their exact face
 
 {base_prompt}
 
