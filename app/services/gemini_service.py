@@ -274,41 +274,9 @@ IDENTITY TO MAINTAIN:
                 except Exception as e:
                     print(f"Error loading reference image: {e}")
 
-        # Delivery worker prompt
+        # Delivery worker prompt (Hot Mailman for checkout/success screen)
         delivery_prompt = """
-A handsome, muscular postal worker in crisp uniform proudly delivering a "Hunk of the Month" wall calendar.
-
-SCENE DETAILS:
-- Professional USPS-style postal worker uniform (blue shirt, shorts or pants, official cap)
-- Muscular, athletic build with confidence and charm
-- Holding a wrapped calendar package labeled "Hunk of the Month Calendar"
-- Friendly, professional smile while presenting the package
-- Outdoor delivery setting: front porch or doorstep with bright daylight
-- Professional delivery posture: standing proudly with package
-
-CHARACTER CONSISTENCY (CRITICAL):
-- Create a photo of THIS EXACT PERSON (from reference images) as a postal worker
-- Maintain their distinctive facial features naturally and seamlessly
-- This should look like a real photo of them in uniform, not a composite
-- Keep their eye color, skin tone, facial structure, and unique characteristics
-- Transform them naturally into this delivery worker role
-
-COMPOSITION & FRAMING:
-- Medium shot showing head to mid-thigh
-- Leave significant space above head (15-20% headroom)
-- Center the subject with generous margins on all sides
-- Subject occupies central 60-70% of frame
-- Shot from 10-12 feet away for natural perspective
-- Professional commercial photography composition
-
-VISUAL QUALITY:
-- Photorealistic, professional photography quality
-- Bright, clear daylight with good visibility
-- Vibrant colors, crisp uniform details
-- Commercial product delivery photo aesthetic
-- Friendly, professional, trustworthy vibe
-
-Style: Professional delivery service photography meets fitness model - natural, confident, charismatic
+Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a sexy mailman delivering letters at sunset. He wears an open short-sleeve postal shirt and fitted blue shorts, holding envelopes and packages beside a mail truck with a teasing smile. The warm golden glow of late afternoon enhances the playful "special delivery" mood. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels.
 """
         content.append(delivery_prompt)
 
