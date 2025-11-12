@@ -188,11 +188,11 @@ Blend lighting, shadows, and color naturally so the subject looks photographed i
     },
     10: {
         "month": "October",
-        "title": "Vampire at Full Moon",
-        "description": "Elegant modern vampire with subtle fangs under moonlight",
+        "title": "Full Moon Transformation",
+        "description": "Rugged man under full October moon with subtle transformation hints",
         "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
 
-An elegant modern vampire in a black suit and open collar, subtle fangs visible beneath a mysterious smirk. Moonlight streams through gothic windows, cool blue-gray light contrasting with warm candle glow. His pose and expression convey dark allure and supernatural grace.
+A rugged, muscular man under a full October moon in a misty field at night. His expression is intense and powerful, head tilted slightly upward as moonlight hits his face, eyes glowing faintly amber in the dark. Subtle details hint at transformation — light hair growth on the arms and jawline, veins pronounced, breath visible in the cold air — but the look remains grounded and photographic. He wears torn jeans and an open flannel blowing in the wind, body tensed in mid-motion, with fog rolling low across the ground and warm moonlight catching on his skin. The atmosphere feels cinematic and real — cool blue-gray tones, sharp lens depth, faint backlight from the moon, and a natural photographic texture. 8K resolution, dramatic but believable lighting, professional male-model photoshoot aesthetic with dark fall energy.
 
 FACE PRESERVATION (CRITICAL):
 - Study the reference face carefully and replicate it EXACTLY
@@ -222,11 +222,11 @@ Blend lighting, shadows, and color naturally so the subject looks photographed i
     },
     12: {
         "month": "December",
-        "title": "Hot Santa",
-        "description": "Playful Santa with open red jacket by glowing Christmas tree",
+        "title": "Rooftop Santa Model",
+        "description": "Muscular Santa on snowy rooftop with enormous sack of presents",
         "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
 
-A playful Santa wearing an open red jacket with white fur trim, shirtless beneath, standing by a glowing Christmas tree holding a plate of cookies. Firelight warms his skin as soft bokeh from twinkle lights fills the background. The tone is cozy, festive, and cheeky, perfect for the holidays.
+A surreal, cinematic, hyper-realistic photo of a muscular, sexy Santa Claus posing for a professional holiday photoshoot. He's on a snowy rooftop at night, lit by the warm golden glow of Christmas lights, carrying an enormous red Santa sack overflowing with wrapped presents slung over one shoulder, his large arms and chest showing through the fitted red suit with the coat open slightly to reveal toned abs. He's balancing near a brick chimney, about to climb in by hand, snow gently falling around him. His facial expression is calm and confident, with a relaxed jaw, lips softly parted, and eyes focused forward in a smoldering, magnetic gaze — projecting effortless strength and playful holiday allure. The moonlight catches the snowflakes, creating a magical shimmer in the air, while city lights twinkle in the distance. Ultra-detailed textures, warm holiday tones, cinematic lighting, realistic skin and fabric details, professional male-model photoshoot energy with festive charm and humor.
 
 FACE PRESERVATION (CRITICAL):
 - Study the reference face carefully and replicate it EXACTLY
