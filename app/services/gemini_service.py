@@ -275,8 +275,18 @@ IDENTITY TO MAINTAIN:
                     print(f"Error loading reference image: {e}")
 
         # Delivery worker prompt (Hot Mailman for checkout/success screen)
-        delivery_prompt = """
-Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a sexy mailman delivering letters at sunset. He wears an open short-sleeve postal shirt and fitted blue shorts, holding envelopes and packages beside a mail truck with a teasing smile. The warm golden glow of late afternoon enhances the playful "special delivery" mood. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels.
+        delivery_prompt = """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A sexy mailman delivering letters at sunset. He wears an open short-sleeve postal shirt and fitted blue shorts, holding envelopes and packages beside a mail truck with a teasing smile. The warm golden glow of late afternoon enhances the playful "special delivery" mood.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels.
 """
         content.append(delivery_prompt)
 

@@ -34,73 +34,205 @@ Style: Professional fitness/glamour photography - natural, seamless identity pre
         "month": "January",
         "title": "Black-Tux New Year",
         "description": "Sleek black tuxedo on rooftop with champagne and fireworks",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a confident man in a sleek black tuxedo pouring champagne while fireworks explode across a midnight skyline. He stands on a rooftop terrace, city lights glimmering below, champagne foam sparkling in the air, his smile smooth and cinematic. The mood is luxury and celebration, golden rim-light catching his features like a magazine cover. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+Create a hyper-realistic photo of a confident man in a sleek black tuxedo pouring champagne while fireworks explode across a midnight skyline. He stands on a rooftop terrace, city lights glimmering below, champagne foam sparkling in the air, his smile smooth and cinematic. The mood is luxury and celebration, golden rim-light catching his features like a magazine cover.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     2: {
         "month": "February",
-        "title": "Cupid Cop",
-        "description": "Shirtless Cupid-style police officer with roses and romantic lighting",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a shirtless Cupid-style police officer surrounded by red roses and soft romantic lighting. He wears a polished police hat and badge, holding a bright red heart-shaped prop like Cupid's arrow, playful grin teasing the camera. Rose petals scatter across a velvety background under warm golden-pink tones that glow around him, cinematic and flirty Valentine's mood. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "title": "Valentine's Day Cupid Cop",
+        "description": "Ripped police officer as Cupid with heart-shaped arrows",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+Hyper-realistic photo of a chiseled, shirtless male police officer with perfect abs, wearing cop hat and holding heart-shaped bow and arrow, surrounded by roses and chocolate boxes, Valentine's themed, romantic lighting, smoldering expression.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     3: {
         "month": "March",
         "title": "Wall Street Billionaire CEO",
         "description": "Commanding CEO in minimalist glass-walled corner office",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features. The subject is a commanding, highly attractive, and well-built CEO, positioned inside a minimalist glass-walled corner office high above the city. Late-day sunlight floods through floor-to-ceiling windows, gilding the panoramic skyline and wrapping him in warm reflections off chrome and leather surfaces. He holds a sleek phone to his ear, one hand in his pocket, displaying a posture that is relaxed yet in total control. His shirt is slightly unbuttoned at the collar, revealing a subtle chest chain, and his tie is loosened. His cuffs are rolled up, suggesting end-of-day intensity rather than disarray, and a faint smirk plays on his lips. He wears a prominent, expensive-looking watch. In the foreground, a modern executive desk is visible, featuring a sophisticated notebook, pen, and a high-end smartphone. Subtle depth-of-field isolates him from the panoramic skyline, transforming the office into a powerful stage of wealth, quiet charisma, and undeniable sexiness. Blend lighting, shadows, and color naturally so the subject looks authentically photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+The subject is a commanding, highly attractive, and well-built CEO, positioned inside a minimalist glass-walled corner office high above the city. Late-day sunlight floods through floor-to-ceiling windows, gilding the panoramic skyline and wrapping him in warm reflections off chrome and leather surfaces. He holds a sleek phone to his ear, one hand in his pocket, displaying a posture that is relaxed yet in total control. His shirt is slightly unbuttoned at the collar, revealing a subtle chest chain, and his tie is loosened. His cuffs are rolled up, suggesting end-of-day intensity rather than disarray, and a faint smirk plays on his lips. He wears a prominent, expensive-looking watch. In the foreground, a modern executive desk is visible, featuring a sophisticated notebook, pen, and a high-end smartphone. Subtle depth-of-field isolates him from the panoramic skyline, transforming the office into a powerful stage of wealth, quiet charisma, and undeniable sexiness.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks authentically photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     4: {
         "month": "April",
         "title": "Firefighter with Kitten",
         "description": "Firefighter on quiet street rescuing kitten from tree",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a firefighter on a quiet neighborhood street, rescuing a small orange kitten perched on a low tree branch. He wears partially opened turnout gear with yellow suspenders over his bare chest, the fabric textured with soot and sunlight; water droplets sparkle in the air from a nearby hydrant. Behind him, a gleaming red fire engine reflects the late-afternoon light while other firefighters work in soft focus. Golden-hour sun cuts through drifting mist, casting warm highlights across his face and uniform, emphasizing calm focus and understated heroism. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A firefighter on a quiet neighborhood street, rescuing a small orange kitten perched on a low tree branch. He wears partially opened turnout gear with yellow suspenders over his bare chest, the fabric textured with soot and sunlight; water droplets sparkle in the air from a nearby hydrant. Behind him, a gleaming red fire engine reflects the late-afternoon light while other firefighters work in soft focus. Golden-hour sun cuts through drifting mist, casting warm highlights across his face and uniform, emphasizing calm focus and understated heroism.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     5: {
         "month": "May",
         "title": "Beach Lifeguard Rescue",
         "description": "Lifeguard sprinting through surf carrying rescued swimmer",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a lifeguard sprinting through shallow surf while carrying an unconscious swimmer to shore. He wears soaked red lifeguard shorts clinging to his skin as ocean water splashes around his legs, sunlight glistening across his chest and shoulders. In the background, beachgoers and other lifeguards run toward the rescue, waves breaking under a dramatic golden-hour glow, and a subtle shark fin cuts through the water in the distance. Salt spray and droplets hang frozen midair, capturing the intensity and heroism of the moment in crisp cinematic focus. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A lifeguard sprinting through shallow surf while carrying an unconscious swimmer to shore. He wears soaked red lifeguard shorts clinging to his skin as ocean water splashes around his legs, sunlight glistening across his chest and shoulders. In the background, beachgoers and other lifeguards run toward the rescue, waves breaking under a dramatic golden-hour glow, and a subtle shark fin cuts through the water in the distance. Salt spray and droplets hang frozen midair, capturing the intensity and heroism of the moment in crisp cinematic focus.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     6: {
         "month": "June",
         "title": "Hot Pool Guy",
         "description": "Shirtless pool cleaner with skimmer net and sun-kissed glow",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a shirtless pool cleaner using a long skimmer net to clean a sparkling turquoise backyard pool. Water droplets glisten on his tanned skin, sunglasses resting low on his nose as he grins toward the camera. Bright reflections bounce off the water creating a dreamy tropical summer vibe. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A shirtless pool cleaner using a long skimmer net to clean a sparkling turquoise backyard pool. Water droplets glisten on his tanned skin, sunglasses resting low on his nose as he grins toward the camera. Bright reflections bounce off the water creating a dreamy tropical summer vibe.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     7: {
         "month": "July",
         "title": "Hot Cowboy",
         "description": "Rugged cowboy leaning against fence on golden ranch at sunset",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a rugged cowboy leaning casually against a weathered wooden fence on a golden ranch at sunset. He wears a classic cowboy hat angled low over his brow, faded blue denim jeans that fit snugly and show natural creases, and a large engraved silver belt buckle that gleams in the light. His plaid shirt hangs open across his chest, and he holds a coiled lasso in one hand while resting his other arm over the fence rail. A brown horse stands nearby, its mane catching the breeze, as warm golden light filters through drifting dust to create a cinematic Western atmosphere rich with texture and warmth. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A rugged cowboy leaning casually against a weathered wooden fence on a golden ranch at sunset. He wears a classic cowboy hat angled low over his brow, faded blue denim jeans that fit snugly and show natural creases, and a large engraved silver belt buckle that gleams in the light. His plaid shirt hangs open across his chest, and he holds a coiled lasso in one hand while resting his other arm over the fence rail. A brown horse stands nearby, its mane catching the breeze, as warm golden light filters through drifting dust to create a cinematic Western atmosphere rich with texture and warmth.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     8: {
         "month": "August",
         "title": "Firefighter Saving Puppy",
         "description": "Firefighter carrying puppy away from smoky burning building",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a firefighter carrying a small puppy away from a smoky burning building. Glowing embers and orange haze fill the air, his expression determined yet gentle under the weight of the rescue. The light and smoke merge into an epic cinematic frame. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A firefighter carrying a small puppy away from a smoky burning building. Glowing embers and orange haze fill the air, his expression determined yet gentle under the weight of the rescue. The light and smoke merge into an epic cinematic frame.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     9: {
         "month": "September",
         "title": "Fighter Jet Pilot",
         "description": "Fighter pilot leaning against jet under vibrant teal-orange sky",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a fighter pilot leaning casually against a jet under a vibrant teal-orange sky. He wears a green flight suit with patches and aviator sunglasses reflecting clouds overhead. The atmosphere feels cinematic, confident, and powerful, like a blockbuster movie still. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A fighter pilot leaning casually against a jet under a vibrant teal-orange sky. He wears a green flight suit with patches and aviator sunglasses reflecting clouds overhead. The atmosphere feels cinematic, confident, and powerful, like a blockbuster movie still.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     10: {
         "month": "October",
         "title": "Vampire at Full Moon",
         "description": "Elegant modern vampire with subtle fangs under moonlight",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as an elegant modern vampire in a black suit and open collar, subtle fangs visible beneath a mysterious smirk. Moonlight streams through gothic windows, cool blue-gray light contrasting with warm candle glow. His pose and expression convey dark allure and supernatural grace. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+An elegant modern vampire in a black suit and open collar, subtle fangs visible beneath a mysterious smirk. Moonlight streams through gothic windows, cool blue-gray light contrasting with warm candle glow. His pose and expression convey dark allure and supernatural grace.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     11: {
         "month": "November",
         "title": "Farm Guy with Turkey",
         "description": "Rugged farmhand at sunset with plaid flannel and turkey",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a rugged farmhand at sunset wearing an open plaid flannel and jeans, holding a pitchfork near a strutting turkey. Golden light filters through dust and hay, cows grazing softly in the background, his grin relaxed and charming. The mood feels rustic, warm, and cinematic. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A rugged farmhand at sunset wearing an open plaid flannel and jeans, holding a pitchfork near a strutting turkey. Golden light filters through dust and hay, cows grazing softly in the background, his grin relaxed and charming. The mood feels rustic, warm, and cinematic.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     12: {
         "month": "December",
         "title": "Hot Santa",
         "description": "Playful Santa with open red jacket by glowing Christmas tree",
-        "prompt": """Create a hyper-realistic photo using the exact face and likeness from the attached reference — identical eyes, jawline, skin tone, and hair — no alteration, blending, or re-rendering of facial features as a playful Santa wearing an open red jacket with white fur trim, shirtless beneath, standing by a glowing Christmas tree holding a plate of cookies. Firelight warms his skin as soft bokeh from twinkle lights fills the background. The tone is cozy, festive, and cheeky, perfect for the holidays. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A playful Santa wearing an open red jacket with white fur trim, shirtless beneath, standing by a glowing Christmas tree holding a plate of cookies. Firelight warms his skin as soft bokeh from twinkle lights fills the background. The tone is cozy, festive, and cheeky, perfect for the holidays.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     }
 }
 
