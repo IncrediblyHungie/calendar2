@@ -108,6 +108,7 @@ Style: Professional fitness/glamour photography meets comedy photoshoot - natura
             config=types.GenerateContentConfig(
                 response_modalities=['IMAGE'],
                 temperature=0.7,  # Balanced for consistency and creativity
+                top_p=0.9,  # Nucleus sampling - more focused than default 0.95, reduces wild variations
                 image_config=types.ImageConfig(
                     aspect_ratio='4:3'  # Standard landscape (1.33:1) - near-perfect fit for calendars
                 )
@@ -299,6 +300,7 @@ Blend lighting, shadows, and color naturally so the subject looks photographed i
             config=types.GenerateContentConfig(
                 response_modalities=['IMAGE'],
                 temperature=0.7,
+                top_p=0.9,  # Nucleus sampling - more focused, reduces wild variations
                 image_config=types.ImageConfig(
                     aspect_ratio='4:3'  # Standard landscape for web display
                 )
