@@ -83,20 +83,23 @@ Blend lighting, shadows, and color naturally so the subject looks authentically 
     },
     4: {
         "month": "April",
-        "title": "Firefighter with Kitten",
-        "description": "Firefighter on quiet street rescuing kitten from tree",
+        "title": "Sexy Firefighter Model",
+        "description": "Shirtless firefighter posing by fire hydrant with cat in tree",
         "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
 
-A firefighter on a quiet neighborhood street, rescuing a small orange kitten perched on a low tree branch. He wears partially opened turnout gear with yellow suspenders over his bare chest, the fabric textured with soot and sunlight; water droplets sparkle in the air from a nearby hydrant. Behind him, a gleaming red fire engine reflects the late-afternoon light while other firefighters work in soft focus. Golden-hour sun cuts through drifting mist, casting warm highlights across his face and uniform, emphasizing calm focus and understated heroism.
+A muscular, sexy male firefighter posing like a male model beside a red fire hydrant, shirtless with turnout pants and a turnout coat hanging open, suspenders loose, leaning confidently on the fire hydrant with a smoldering gaze, sunlight glistening on his abs and shoulders, a fluffy cat perched on a nearby tree branch watching, soft golden hour lighting with warm tones, shallow depth of field, background firetruck and firefighters slightly out of focus, realistic skin texture, wet pavement reflections, water droplets in motion, studio-quality professional male model photoshoot.
 
 FACE PRESERVATION (CRITICAL):
+- Maintain perfect facial accuracy to the provided reference images — identical bone structure, skin tone, and facial proportions
+- Render in ultra-photorealistic style, as if shot on a professional full-frame camera with a prime portrait lens
+- Prioritize realism, detail, and personality over stylization — the face should look like a real photo of the same person, not a generic model
 - Study the reference face carefully and replicate it EXACTLY
 - Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
 - Preserve their exact skin tone, facial hair pattern, and hair color/style
 - The face must look IDENTICAL to the reference photos - like it was photographed in this scene
 - This is the MOST IMPORTANT aspect - perfect face accuracy
 
-Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+Overall tone: confident, sexy, warm, and cinematic, like a high-end men's fashion editorial photoshoot for a firefighter calendar. Lighting should feel golden-hour professional, with a soft, flattering glow and subtle warmth. Expression should communicate strength, charm, and playful confidence, like a model aware of the camera. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
     },
     5: {
         "month": "May",
@@ -169,10 +172,10 @@ Blend lighting, shadows, and color naturally so the subject looks photographed i
     9: {
         "month": "September",
         "title": "Fighter Jet Pilot",
-        "description": "Fighter pilot leaning against jet under vibrant teal-orange sky",
+        "description": "Fighter pilot holding helmet, leaning against jet at sunset",
         "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
 
-A fighter pilot leaning casually against a jet under a vibrant teal-orange sky. He wears a green flight suit with patches and aviator sunglasses reflecting clouds overhead. The atmosphere feels cinematic, confident, and powerful, like a blockbuster movie still.
+A fighter pilot leaning casually against a jet under a vibrant teal-orange sky, holding his white flight helmet under one arm. He wears a green flight suit with patches and aviator sunglasses reflecting clouds overhead. The atmosphere feels cinematic, confident, and powerful, like a blockbuster movie still.
 
 FACE PRESERVATION (CRITICAL):
 - Study the reference face carefully and replicate it EXACTLY
@@ -202,11 +205,11 @@ Blend lighting, shadows, and color naturally so the subject looks photographed i
     },
     11: {
         "month": "November",
-        "title": "Farm Guy with Turkey",
-        "description": "Rugged farmhand at sunset with plaid flannel and turkey",
+        "title": "Shirtless Lumberjack",
+        "description": "Rugged shirtless lumberjack with axe in forest at golden hour",
         "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
 
-A rugged farmhand at sunset wearing an open plaid flannel and jeans, holding a pitchfork near a strutting turkey. Golden light filters through dust and hay, cows grazing softly in the background, his grin relaxed and charming. The mood feels rustic, warm, and cinematic.
+A rugged, shirtless lumberjack standing in a misty forest at golden hour, holding a large axe over his shoulder. He wears fitted jeans with a leather belt, work boots, and has a confident, charming expression. His muscular chest and arms glisten with sweat in the warm forest light. Stacked logs and wood chips scatter around his feet. Tall pine trees frame the background with golden sunlight filtering through the canopy creating dramatic rays. The mood is masculine, rugged, and cinematic with warm amber tones and shallow depth of field.
 
 FACE PRESERVATION (CRITICAL):
 - Study the reference face carefully and replicate it EXACTLY
