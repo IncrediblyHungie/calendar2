@@ -17,7 +17,7 @@ PRODUCT_NAMES = {
 }
 
 PRODUCT_DESCRIPTIONS = {
-    'wall_calendar': 'Personalized wall calendar (11"×8.5" Letter size) with your AI-generated hunk images. High-quality paper, spiral binding, QR codes on back.',
+    'wall_calendar': 'Personalized wall calendar (10.8"×8.4") with your AI-generated hunk images. 270gsm semi-glossy paper, wire binding, date grids.',
     'desktop': 'Personalized 10"×5" desktop calendar with your AI-generated images. 250gsm matte paper, spiral bound.'
 }
 
