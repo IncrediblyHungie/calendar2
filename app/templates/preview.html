@@ -97,27 +97,24 @@
                 {% for month in months | sort(attribute='month_number') %}
                 <div class="col-md-6">
                     <div class="calendar-month-card">
-                        <div class="month-header">
-                            <h5 class="mb-0">{{ month_names[month.month_number] }}</h5>
-                        </div>
+                        <!-- Image First -->
                         <div class="month-image-container">
-                            <!-- Lightbox with thumbnail (bs5-lightbox handles smooth transitions) -->
                             <a href="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                data-toggle="lightbox"
                                data-gallery="calendar-gallery"
                                data-size="fullscreen"
-                               data-caption="{{ month_names[month.month_number] }}: {{ month.prompt }}">
+                               data-caption="{{ month_names[month.month_number] }}: {{ month.title }}">
                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                      alt="{{ month_names[month.month_number] }}"
-                                     class="img-fluid rounded"
+                                     class="img-fluid"
                                      style="cursor: pointer;">
                             </a>
                         </div>
-                        <div class="month-prompt">
-                            <small class="text-muted">
-                                <i class="fas fa-quote-left me-1"></i>
-                                {{ month.prompt }}
-                            </small>
+                        <!-- Text Content Below Image -->
+                        <div class="month-content">
+                            <h5 class="month-name">{{ month_names[month.month_number] }}</h5>
+                            <p class="month-title">{{ month.title }}</p>
+                            <p class="month-description">{{ month.description }}</p>
                         </div>
                     </div>
                 </div>
@@ -854,6 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
     background-color: #FFFFFF;
     overflow: hidden;
     transition: all 0.3s ease;
+    margin-bottom: 16px;
 }
 
 .calendar-month-card:hover {
@@ -861,27 +859,50 @@ document.addEventListener('DOMContentLoaded', () => {
     transform: translateY(-2px);
 }
 
-.calendar-month-card .month-header {
-    padding: 16px;
-    background-color: #F8F9FA;
-    border-bottom: 1px solid #E0E0E0;
-}
-
 .calendar-month-card .month-image-container {
     padding: 0;
     background-color: #FFFFFF;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
 }
 
 .calendar-month-card .month-image-container img {
     width: 100%;
     height: auto;
     display: block;
+    border-radius: 8px 8px 0 0;
 }
 
-.calendar-month-card .month-prompt {
-    padding: 12px 16px;
+/* Text content below image - all left-aligned */
+.calendar-month-card .month-content {
+    padding: 20px;
     background-color: #FFFFFF;
-    border-top: 1px solid #E0E0E0;
+    text-align: left;
+}
+
+.calendar-month-card .month-name {
+    font-size: 24px;
+    font-weight: 600;
+    color: #172439;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.calendar-month-card .month-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.calendar-month-card .month-description {
+    font-size: 14px;
+    color: #666666;
+    line-height: 1.5;
+    margin-bottom: 0;
+    text-align: left;
 }
 
 /* Product selection cards */

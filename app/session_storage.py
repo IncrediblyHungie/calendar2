@@ -269,7 +269,9 @@ def create_months_with_themes(themes):
         project['months'].append({
             'id': month_num,
             'month_number': month_num,
-            'prompt': theme['title'],
+            'prompt': theme['prompt'],
+            'title': theme['title'],
+            'description': theme['description'],
             'generation_status': 'pending',
             'master_image_data': None,  # Raw binary data
             'error_message': None,
@@ -297,7 +299,9 @@ def create_remaining_months(themes):
         project['months'].append({
             'id': month_num,
             'month_number': month_num,
-            'prompt': theme['title'],
+            'prompt': theme['prompt'],
+            'title': theme['title'],
+            'description': theme['description'],
             'generation_status': 'pending',
             'master_image_data': None,  # Raw binary data
             'error_message': None,
