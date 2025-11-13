@@ -144,11 +144,11 @@ def upload_image(image_data_bytes, filename="month.jpg"):
 
 def get_optimal_scale(product_type, position):
     """
-    Calculate optimal scale for 5:4 (1.25:1) portrait-landscape images based on product and position
+    Calculate optimal scale for 4:3 (1.33:1) landscape images based on product and position
 
-    OPTIMIZED FOR 5:4 ASPECT RATIO (updated Nov 2025)
-    - 5:4 provides near-perfect fit for 10.8"×8.4" wall calendar (only 2.78% mismatch!)
-    - Reduces whitespace by 25% compared to previous 4:3 images
+    OPTIMIZED FOR 4:3 ASPECT RATIO (updated Nov 2025)
+    - 4:3 shows more environment/context compared to 5:4 (wider = less close-up)
+    - Good fit for 10.8"×8.4" wall calendar (only 3.7% mismatch)
     - Desktop monthly images now 40% LARGER (scale 0.95 vs 0.68)
 
     Scale values determined by placeholder aspect ratios:
@@ -163,24 +163,24 @@ def get_optimal_scale(product_type, position):
         float: Optimal scale value
     """
     # Wall Calendar 10.8" × 8.4" (blueprint 1253, Today's Graphics): 1.286:1 aspect ratio
-    # - 5:4 (1.25) vs 1.286 → Min scale: 1.029, using 1.06 for ZERO white space
+    # - 4:3 (1.33) vs 1.286 → Min scale: 0.964, using 0.98 for balanced fit
     # - Printify API has no "fit to screen" option (only x, y, scale, angle parameters)
-    # - Aggressive scaling to completely fill placeholder (slight edge crop acceptable)
+    # - Zoomed out to show more environment/context (not too close to camera)
     if product_type == 'wall_calendar':
-        return 1.06  # ZERO white space - fills placeholder completely
+        return 0.98  # Balanced - shows environment/context, minimal white space (~2%)
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
     elif product_type == 'desktop':
         if position == 'front_cover':
-            # Desktop cover: 1.96:1 aspect ratio (much wider than 5:4)
-            # - Min scale for zero white space: 1.568 (crops head off - TOO MUCH)
-            # - BALANCED: Use 1.05 to show full image with ~15% white space on sides
+            # Desktop cover: 1.96:1 aspect ratio (much wider than 4:3)
+            # - Min scale for zero white space: 1.47 (crops head off - TOO MUCH)
+            # - BALANCED: Use 1.10 to show full image with ~10% white space on sides
             # - Prioritize showing complete person/composition over filling placeholder
-            return 1.05  # Balanced - shows full image, minimal crop, some side white space
+            return 1.10  # Balanced - shows full image, minimal crop, some side white space
         else:
-            # Desktop monthly: 1.19:1 aspect ratio (close to 5:4)
-            # - Image is wider than placeholder - good fit
-            return 0.95  # Good fit with minimal white space
+            # Desktop monthly: 1.19:1 aspect ratio (narrower than 4:3)
+            # - 4:3 is wider than placeholder - need to zoom in slightly
+            return 0.90  # Zoom in to fill monthly pages
 
     # Fallback (should never reach here)
     return 1.05

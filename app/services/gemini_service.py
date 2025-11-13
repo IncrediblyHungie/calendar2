@@ -115,8 +115,8 @@ If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL
         content.append(prompt)
 
         # Generate the image using Gemini 2.5 Flash Image (Nano Banana)
-        # Use 5:4 aspect ratio (1.25:1) for optimal wall calendar fit
-        # 5:4 perfectly matches 10.8"×8.4" wall calendar (1.286:1) with only 2.78% mismatch
+        # Use 4:3 aspect ratio (1.33:1) for optimal wall calendar fit with more context
+        # 4:3 shows more environment/scene compared to 5:4 (wider = less close-up)
         response = client.models.generate_content(
             model='gemini-2.5-flash-image',
             contents=content,
@@ -125,7 +125,7 @@ If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL
                 temperature=0.7,  # Balanced creativity and consistency
                 top_p=0.9,  # Slightly more diverse sampling
                 image_config=types.ImageConfig(
-                    aspect_ratio='5:4'  # Portrait-landscape - optimal for 10.8"×8.4" wall calendar
+                    aspect_ratio='4:3'  # Standard landscape - shows more context/environment
                 )
             )
         )
@@ -341,7 +341,7 @@ If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL
                 temperature=0.7,  # Balanced creativity and consistency
                 top_p=0.9,  # Slightly more diverse sampling
                 image_config=types.ImageConfig(
-                    aspect_ratio='5:4'  # Portrait-landscape for consistent calendar sizing
+                    aspect_ratio='4:3'  # Standard landscape for consistent calendar sizing
                 )
             )
         )
