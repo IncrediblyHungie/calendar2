@@ -644,17 +644,11 @@ async function autoTriggerGeneration() {
 document.addEventListener('DOMContentLoaded', () => {
     startCountdown();
 
-    // Check if payment already authorized and auto-trigger generation
-    const hasPaymentMethod = {{ generation_status.has_payment_method|tojson }};
-    if (hasPaymentMethod) {
-        console.log('🔍 Detected existing payment method');
-        autoTriggerGeneration();
-    } else {
-        // Attach form submit handler only if no payment method yet
-        const paymentForm = document.getElementById('payment-form');
-        if (paymentForm) {
-            paymentForm.addEventListener('submit', handleUnlock);
-        }
+    // Always attach form submit handler - user must manually click Continue
+    // (Even if payment method exists, let user review preview images first)
+    const paymentForm = document.getElementById('payment-form');
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', handleUnlock);
     }
 });
 {% endif %}
