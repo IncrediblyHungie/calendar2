@@ -97,7 +97,7 @@
                 {% for month in months | sort(attribute='month_number') %}
                 <div class="col-12 col-md-6">
                     <div class="calendar-month-card">
-                        <!-- Image First -->
+                        <!-- Image First (Click to expand) -->
                         <div class="month-image-container">
                             <a href="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                data-toggle="lightbox"
@@ -106,8 +106,10 @@
                                data-caption="{{ month_names[month.month_number] }}: {{ month.get('title', month_names[month.month_number]) }}">
                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                      alt="{{ month_names[month.month_number] }}"
-                                     class="img-fluid"
-                                     style="cursor: pointer;">
+                                     class="img-fluid calendar-image-clickable">
+                                <div class="image-overlay">
+                                    <i class="fas fa-search-plus"></i>
+                                </div>
                             </a>
                         </div>
                         <!-- Text Content Below Image -->
@@ -868,6 +870,43 @@ document.addEventListener('DOMContentLoaded', () => {
     height: auto;
     display: block;
     border-radius: 8px 8px 0 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Clickable image styling */
+.calendar-image-clickable {
+    cursor: pointer;
+}
+
+/* Hover overlay with zoom icon */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+}
+
+.image-overlay i {
+    color: white;
+    font-size: 48px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.month-image-container a:hover .image-overlay {
+    opacity: 1;
+}
+
+.month-image-container a:hover img {
+    transform: scale(1.05);
 }
 
 /* Text content below image - all left-aligned (Figma exact styling) */
