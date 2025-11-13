@@ -45,25 +45,16 @@
                         These themes are pre-selected to maximize the laughs and the abs!
                     </div>
 
-                    <!-- Monthly Themes Grid -->
-                    <div class="row g-4 mt-4">
+                    <!-- Monthly Themes Grid (2-column matching preview page) -->
+                    <div class="row g-3 mt-4">
                         {% for month_num in range(1, 13) %}
                         {% set theme = themes[month_num] %}
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-12 col-md-6">
                             <div class="theme-card h-100">
-                                <div class="theme-header">
-                                    <div class="theme-month">{{ theme.month }}</div>
-                                    <h5 class="theme-title mb-0">{{ theme.title }}</h5>
-                                </div>
-                                <div class="theme-body">
-                                    <p class="theme-description">
-                                        <i class="fas fa-quote-left me-2"></i>
-                                        {{ theme.description }}
-                                    </p>
-                                    <div class="theme-badge">
-                                        <i class="fas fa-laugh-beam me-2"></i>
-                                        Ridiculous Level: MAX
-                                    </div>
+                                <div class="theme-content">
+                                    <span class="theme-month-badge">{{ theme.month|upper }}</span>
+                                    <h5 class="theme-title">{{ theme.title }}</h5>
+                                    <p class="theme-description">{{ theme.description }}</p>
                                 </div>
                             </div>
                         </div>
@@ -98,61 +89,70 @@
 </div>
 
 <style>
+/* Theme Cards - Match preview page styling */
 .theme-card {
-    border: 2px solid #dee2e6;
-    border-radius: 12px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    background-color: #FFFFFF;
     overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    background: white;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .theme-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #D0D0D0;
 }
 
-.theme-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    text-align: center;
+/* Text content - Match preview page padding */
+.theme-content {
+    padding: 8px 10px;
+    background-color: #FFFFFF;
+    text-align: left;
+    flex-grow: 1;
 }
 
-.theme-month {
-    font-size: 14px;
+/* Month name badge - Peach bubble with pink text (Exact preview page specs) */
+.theme-month-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5.186px;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
     font-weight: 600;
+    color: #EF2B8A;
+    letter-spacing: 0.48px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.9;
-    margin-bottom: 5px;
+    background: #FFEAB8;
+    padding: 3.112px 7.261px;
+    border-radius: 51.345px;
+    border: 0.519px solid rgba(255, 255, 255, 0.30);
+    margin-bottom: 4px;
+    width: fit-content;
 }
 
+/* Title - Bold with emoji */
 .theme-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 2px;
+    margin-top: 4px;
+    text-align: left;
     line-height: 1.3;
 }
 
-.theme-body {
-    padding: 20px;
-}
-
+/* Description - Gray text */
 .theme-description {
-    font-size: 14px;
-    color: #495057;
-    line-height: 1.6;
-    min-height: 80px;
-}
-
-.theme-badge {
-    display: inline-block;
-    background: #fff3cd;
-    color: #856404;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 13px;
+    color: #6B7280;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    text-align: left;
 }
 </style>
 {% endblock %}
