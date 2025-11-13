@@ -277,24 +277,50 @@ def get_enhanced_prompt(month_number, user_description=""):
     # The prompts now contain comprehensive photo-realistic instructions
     base_prompt = theme['prompt']
 
-    # RESTRUCTURED: Scene description FIRST, technical specs as supporting guidelines
+    # Add character consistency wrapper with technical specs
     enhanced_prompt = f"""
-PRIMARY CREATIVE DIRECTION - FOLLOW THIS SCENE DESCRIPTION EXACTLY:
+REFERENCE IMAGES PROVIDED: Study the person in the reference images carefully to understand their unique identity.
+
+CHARACTER IDENTITY PRESERVATION (CRITICAL):
+- These reference images show THIS EXACT PERSON whose face must appear in the generated image
+- Analyze all reference images to understand their distinctive facial features, proportions, and characteristics
+- This IS a face swap - transfer their face completely and accurately onto the body in the scene
+- Copy every facial feature precisely: eyes, nose, mouth, jawline, cheekbones, skin tone, hair
+- Maintain their unique identity: face shape, eye color, nose shape, jawline, skin tone, hair texture
+- The result should look like a natural photograph of this person with their exact face
 
 {base_prompt}
 
----
+COMPOSITION & FRAMING (CRITICAL - FOLLOW EXACTLY):
+- CAMERA DISTANCE: Shot from 12-15 feet away for WIDE framing with generous margins
+- HEADROOM: Leave SIGNIFICANT empty space above the head (at least 15-20% of image height above head)
+- MEDIUM-WIDE SHOT: Show full person from head to mid-thigh or knees - NEVER crop the head
+- FULL BODY VISIBLE: Entire head, torso, and upper legs must be completely in frame with room to spare
+- MARGINS: Ensure ample space on all sides - top, bottom, left, right (subject should occupy central 60-70% of frame)
+- CENTERED COMPOSITION: Subject prominently centered with generous breathing room around them
+- WIDER FRAMING: If in doubt, zoom OUT more - we need extra space for printing safety margins
+- Use 50mm lens perspective (NOT 85mm) for wider field of view and more environmental context
+- Professional fitness photography composition with commercial print safety margins
 
-FACE PRESERVATION (CRITICAL - Use exact face from reference images):
-Use the EXACT face and likeness from the attached reference images — identical eyes, jawline, skin tone, hair, nose, mouth, cheekbones, and facial proportions. This is a face swap: transfer their face completely and accurately onto the body in the scene described above. The face must look IDENTICAL to the reference photos, as if they were photographed in this exact scene.
+PHOTO-REALISTIC QUALITY (CRITICAL):
+- Professional photography quality, 8K resolution, suitable for calendar printing
+- Physically-based rendering with accurate lighting physics
+- Vibrant colors with high dynamic range, dramatic lighting highlighting muscular physique
+- Sharp focus on subject with shallow depth of field (f/1.4-f/2.8) creating bokeh background
+- Cinematic color grading with rich blacks and glowing highlights
+- Natural skin texture, pores visible, authentic human details
+- Professional fitness/glamour photography aesthetic
 
-Technical Guidelines (support the scene above, do not override it):
-• Composition: Wide framing with generous margins, full body visible from head to mid-thigh, ample headroom (15-20% above head), subject centered occupying 60-70% of frame
-• Quality: 8K resolution, professional photography aesthetic, sharp focus on subject with shallow depth of field
-• Realism: Natural skin texture, physically-based lighting, vibrant colors with high dynamic range
-• Framing: 50mm lens perspective for environmental context, commercial print safety margins
+FINAL CHECK:
+- Face is clearly visible and well-lit (no shadows obscuring face)
+- Facial features match ALL reference images (character consistency across references)
+- Expression is natural and fits the scene emotionally
+- Body and face blend seamlessly and naturally into scene
+- Overall image looks like authentic professional photography, not digital manipulation
+- Muscular physique is clearly defined and highlighted by lighting
+- Scene is memorable, photo-realistic, and storytelling-rich
 
-The scene description above is the PRIMARY creative direction. All technical guidelines should support and enhance that vision, not compete with it.
+Style: Ultra-realistic professional fitness/glamour photography - natural, seamless, memorable, with perfect character consistency and photo-realistic quality.
 """
 
     return enhanced_prompt
