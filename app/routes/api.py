@@ -28,12 +28,20 @@ def get_thumbnail(image_id):
 
 @bp.route('/image/month/<int:month_id>')
 def get_month_image(month_id):
-    """Serve generated month image"""
+    """Serve generated month image (supports variant parameter)"""
     project = get_current_project()
     if not project:
         return jsonify({'error': 'Unauthorized'}), 401
 
-    image_data = session_storage.get_month_image_data(month_id)
+    # Check for variant parameter
+    variant_index = request.args.get('variant', type=int)
+
+    if variant_index is not None:
+        # Get specific variant
+        image_data = session_storage.get_month_variant_image(month_id, variant_index)
+    else:
+        # Get current selected variant
+        image_data = session_storage.get_month_image_data(month_id)
 
     if not image_data:
         return jsonify({'error': 'Image not found'}), 404
@@ -42,6 +50,115 @@ def get_month_image(month_id):
         io.BytesIO(image_data),
         mimetype='image/jpeg'
     )
+
+@bp.route('/month/<int:month_id>/select-variant', methods=['POST'])
+def select_variant(month_id):
+    """Update selected variant for a month"""
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        data = request.get_json()
+        variant_index = data.get('variant_index')
+
+        if variant_index is None:
+            return jsonify({'error': 'Missing variant_index'}), 400
+
+        # Update selected variant
+        session_storage.select_month_variant(month_id, variant_index)
+
+        return jsonify({
+            'success': True,
+            'message': f'Variant {variant_index} selected for month {month_id}'
+        })
+
+    except Exception as e:
+        print(f"❌ Select variant error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/month/<int:month_id>/regenerate', methods=['POST'])
+def regenerate_month(month_id):
+    """Regenerate a month's image (create new variant)"""
+    from app.services.gemini_service import generate_calendar_image
+    from app.services.monthly_themes import get_enhanced_prompt
+    from PIL import Image as PILImage
+    import traceback
+
+    project = get_current_project()
+    if not project:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        # Get month record
+        month = session_storage.get_month_by_id(month_id)
+        if not month:
+            return jsonify({'error': 'Month not found'}), 404
+
+        # Check retry count
+        retry_count = month.get('retry_count', 0)
+        if retry_count >= 2:
+            return jsonify({'error': 'Maximum retries reached (2/2)'}), 400
+
+        print(f"\n{'='*70}")
+        print(f"🔄 REGENERATE Month {month['month_number']} - Retry {retry_count + 1}/2")
+        print(f"{'='*70}")
+
+        # Get reference images
+        uploaded_images = session_storage.get_uploaded_images()
+        reference_image_data = [img['file_data'] for img in uploaded_images]
+
+        if not reference_image_data:
+            return jsonify({'error': 'No reference images found'}), 400
+
+        print(f"✓ Found {len(reference_image_data)} reference images")
+
+        # Generate new image with same prompt
+        month_number = month['month_number']
+        enhanced_prompt = get_enhanced_prompt(month_number)
+        print(f"🎨 Starting Gemini API call for regeneration...")
+
+        image_data = generate_calendar_image(enhanced_prompt, reference_image_data)
+        print(f"✅ Regeneration succeeded! Size: {len(image_data)} bytes")
+
+        # Convert PNG to JPEG
+        img = PILImage.open(io.BytesIO(image_data))
+        img_io = io.BytesIO()
+        img.convert('RGB').save(img_io, format='JPEG', quality=80, optimize=True)
+        jpeg_data = img_io.getvalue()
+
+        # Clear memory
+        del image_data
+        del img
+        del img_io
+        import gc
+        gc.collect()
+
+        # Save as new variant
+        new_variant_index = session_storage.add_month_variant(month_id, jpeg_data)
+
+        print(f"💾 Saved new variant {new_variant_index}, total size: {len(jpeg_data)} bytes")
+        print(f"{'='*70}\n")
+
+        return jsonify({
+            'success': True,
+            'variant_index': new_variant_index,
+            'retry_count': retry_count + 1,
+            'message': f'New variant generated for month {month_number}'
+        })
+
+    except Exception as e:
+        error_msg = str(e)
+        print(f"\n❌ Regeneration FAILED")
+        print(f"   Error: {error_msg}")
+        traceback.print_exc()
+        print(f"{'='*70}\n")
+
+        return jsonify({
+            'success': False,
+            'error': error_msg,
+            'error_type': type(e).__name__
+        }), 500
 
 @bp.route('/project/status')
 def project_status():

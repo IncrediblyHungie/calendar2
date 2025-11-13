@@ -341,6 +341,15 @@ def update_month_status(month_num, status, image_data=None, error=None):
                 month['master_image_data'] = image_data
                 month['generated_at'] = datetime.utcnow().isoformat()
 
+                # Initialize first variant if this is the first generation
+                if 'image_variants' not in month or len(month['image_variants']) == 0:
+                    month['image_variants'] = [{
+                        'data': image_data,
+                        'generated_at': month['generated_at'],
+                        'variant_index': 0
+                    }]
+                    month['selected_variant_index'] = 0
+
             if error:
                 month['error_message'] = str(error)
 
@@ -350,10 +359,98 @@ def update_month_status(month_num, status, image_data=None, error=None):
     return None
 
 def get_month_image_data(month_num):
-    """Get binary image data for a month"""
+    """Get binary image data for a month (returns selected variant or master image)"""
     month = get_month_by_number(month_num)
-    if month and month.get('master_image_data'):
+    if not month:
+        return None
+
+    # Check if there are variants
+    variants = month.get('image_variants', [])
+    selected_index = month.get('selected_variant_index', 0)
+
+    if variants and selected_index < len(variants):
+        return variants[selected_index].get('data')
+
+    # Fallback to master_image_data for backwards compatibility
+    if month.get('master_image_data'):
         return month['master_image_data']
+
+    return None
+
+def get_month_by_id(month_id):
+    """Get month by ID (month_number) from active project"""
+    return get_month_by_number(month_id)
+
+def get_month_variant_image(month_id, variant_index):
+    """Get specific variant image data for a month"""
+    month = get_month_by_id(month_id)
+    if not month:
+        return None
+
+    variants = month.get('image_variants', [])
+    if variant_index < len(variants):
+        return variants[variant_index].get('data')
+
+    return None
+
+def select_month_variant(month_id, variant_index):
+    """Update selected variant for a month"""
+    project = _get_active_project()
+
+    for month in project.get('months', []):
+        if month['month_number'] == month_id:
+            variants = month.get('image_variants', [])
+            if variant_index < len(variants):
+                month['selected_variant_index'] = variant_index
+                _save_session(_get_session_id())
+                return True
+
+    return False
+
+def add_month_variant(month_id, image_data):
+    """Add new variant to month and increment retry count"""
+    from datetime import datetime
+
+    project = _get_active_project()
+
+    for month in project.get('months', []):
+        if month['month_number'] == month_id:
+            # Initialize variants array if not exists
+            if 'image_variants' not in month:
+                month['image_variants'] = []
+
+            # Initialize retry count if not exists
+            if 'retry_count' not in month:
+                month['retry_count'] = 0
+
+            # If this is the first variant, migrate master_image_data
+            if len(month['image_variants']) == 0 and month.get('master_image_data'):
+                month['image_variants'].append({
+                    'data': month['master_image_data'],
+                    'generated_at': month.get('generated_at', datetime.utcnow().isoformat()),
+                    'variant_index': 0
+                })
+
+            # Add new variant
+            new_variant_index = len(month['image_variants'])
+            month['image_variants'].append({
+                'data': image_data,
+                'generated_at': datetime.utcnow().isoformat(),
+                'variant_index': new_variant_index
+            })
+
+            # Increment retry count
+            month['retry_count'] += 1
+
+            # Select the new variant automatically
+            month['selected_variant_index'] = new_variant_index
+
+            # Update master_image_data for backwards compatibility
+            month['master_image_data'] = image_data
+
+            _save_session(_get_session_id())
+            return new_variant_index
+
     return None
 
 def update_project_status(status):
