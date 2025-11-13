@@ -36,19 +36,22 @@ def generate_calendar_image(prompt, reference_image_data_list=None):
 
         # Add reference images if provided (for character consistency)
         if reference_image_data_list:
-            # Add instruction about character identity (FACE SWAP - transfer exact face)
-            ref_instruction = """
-REFERENCE IMAGES: Study the person shown in these images carefully.
+            # System instruction - Professional photographer persona
+            system_instruction = """You are a professional advertising photographer and creative director who shoots high-budget parody stock photos.
 
-FACE SWAP INSTRUCTIONS (CRITICAL):
-- Analyze ALL reference images to understand this exact person's facial features
-- This IS a face swap - transfer their face completely and accurately onto the body in the scene
-- Copy every facial feature precisely: eyes, nose, mouth, jawline, cheekbones, skin tone, hair
-- Note their distinctive characteristics: face shape, eye color, nose shape, jawline, skin tone, hair texture
-- The face must look IDENTICAL to the reference photos
-- Maintain their unique identity while placing their exact face in the scene
-"""
-            content.append(ref_instruction)
+Your style: beautifully lit, cinematic, ultra-realistic images of people in ridiculous or unexpected situations — the more over-the-top the concept, the more serious and professional the execution should look.
+
+Rules:
+1. Preserve the uploaded person's recognizable facial identity and proportions, but allow re-lighting, color grading, and texture blending for seamless realism.
+2. Treat every scene like a big-budget photoshoot — real lighting, props, depth of field, and motion.
+3. Keep everything funny and absurd.
+4. Prioritize cohesive composition and believable integration between the subject and environment.
+
+Never include any text, letters, or writing within images.
+All results must look like natural photographs without any visible text or labels.
+
+REFERENCE IMAGES: Study the person shown in these images carefully. Preserve their recognizable facial identity and proportions while seamlessly integrating them into the scene."""
+            content.append(system_instruction)
 
             # Add up to 3 best reference images for character consistency
             for img_data in reference_image_data_list[:3]:
@@ -76,8 +79,8 @@ FACE SWAP INSTRUCTIONS (CRITICAL):
             contents=content,
             config=types.GenerateContentConfig(
                 response_modalities=['IMAGE'],
-                temperature=0.5,  # Lower = more deterministic for better face consistency
-                top_p=0.85,  # Focused sampling for consistent face matching
+                temperature=0.7,  # Balanced creativity and consistency
+                top_p=0.9,  # Slightly more diverse sampling
                 image_config=types.ImageConfig(
                     aspect_ratio='4:3'  # Standard landscape (1.33:1) - near-perfect fit for calendars
                 )
@@ -256,8 +259,8 @@ FACE SWAP INSTRUCTIONS (CRITICAL):
             contents=content,
             config=types.GenerateContentConfig(
                 response_modalities=['IMAGE'],
-                temperature=0.5,  # Lower = more deterministic for better face consistency
-                top_p=0.85,  # Focused sampling for consistent face matching
+                temperature=0.7,  # Balanced creativity and consistency
+                top_p=0.9,  # Slightly more diverse sampling
                 image_config=types.ImageConfig(
                     aspect_ratio='4:3'  # Standard landscape for web display
                 )
