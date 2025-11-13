@@ -8,19 +8,22 @@
         <div class="col-lg-8 text-center">
             <div class="card shadow">
                 <div class="card-body p-5">
-                    <div class="generating-animation mb-4">
-                        <i class="fas fa-magic fa-5x text-primary rotating"></i>
-                    </div>
+                    <h1 class="mb-3" style="color: #1A1A1A; font-weight: 700; font-size: 40px;">Creating your hunk...</h1>
 
-                    <h2 class="mb-4" style="color: #212529;">AI is Transforming You into a Calendar Hunk...</h2>
+                    <p class="mb-4" style="color: #6B7280; font-size: 16px;">Hang tight while your hunk hits the gym.</p>
 
-                    <div class="progress mb-4" style="height: 30px;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                    <!-- Pink Spiral Progress Bar -->
+                    <div class="progress mb-3" style="height: 12px; background-color: #EFEFEF; border-radius: 100px; overflow: hidden;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"
                              role="progressbar"
                              id="progressBar"
-                             style="width: 0%">
-                            <span id="progressText" style="font-weight: 600;">0/13 images</span>
+                             style="width: 0%; background-color: #F827A8;">
                         </div>
+                    </div>
+
+                    <!-- Fun Loading Message with Emoji -->
+                    <div id="loadingMessage" class="mb-4" style="color: #6B7280; font-size: 14px; min-height: 24px;">
+                        <span id="loadingEmoji">🧘</span> <span id="loadingText">Getting a tan...</span>
                     </div>
 
                     <!-- Mockup Generation Loading State -->
@@ -36,8 +39,8 @@
                         </div>
                     </div>
 
-                    <!-- Generation Status -->
-                    <div class="generation-status">
+                    <!-- Generation Status - Hidden but kept for debugging -->
+                    <div class="generation-status d-none">
                         <h5 class="mb-3" style="color: #212529;">Generation Progress:</h5>
                         <div class="row g-2 justify-content-center">
                             {% for month in months | sort(attribute='month_number') %}
@@ -90,7 +93,41 @@ const failedMonths = new Set();
 let monthQueue = [];
 
 const progressBar = document.getElementById('progressBar');
-const progressText = document.getElementById('progressText');
+
+// Fun loading messages cycling
+const loadingMessages = [
+    { emoji: '🥵', text: 'Hitting the gym...' },
+    { emoji: '🔥', text: 'Getting undressed...' },
+    { emoji: '💪', text: 'Flexing muscles...' },
+    { emoji: '✨', text: 'Applying oil...' },
+    { emoji: '📸', text: 'Striking a pose...' },
+    { emoji: '😏', text: 'Unleashing the charm...' },
+    { emoji: '🏋️', text: 'Adding more abs...' },
+    { emoji: '😍', text: 'Perfecting the smolder...' },
+    { emoji: '🌡️', text: 'Cranking up the sexy...' },
+    { emoji: '💪', text: 'Buffing up...' },
+    { emoji: '📐', text: 'Working the angles...' },
+    { emoji: '📞', text: 'Dialing up the heat...' },
+    { emoji: '🌶️', text: 'Bringing the spice...' },
+    { emoji: '💯', text: 'Flexing harder...' },
+    { emoji: '👀', text: 'Turning heads...' },
+    { emoji: '🧘', text: 'Learning to fly...' },
+    { emoji: '😳', text: 'Getting a tan...' }
+];
+
+let messageIndex = 0;
+let messageInterval = null;
+
+function updateLoadingMessage() {
+    const message = loadingMessages[messageIndex];
+    document.getElementById('loadingEmoji').textContent = message.emoji;
+    document.getElementById('loadingText').textContent = message.text;
+    messageIndex = (messageIndex + 1) % loadingMessages.length;
+}
+
+// Start cycling messages every 1.5 seconds
+messageInterval = setInterval(updateLoadingMessage, 1500);
+updateLoadingMessage(); // Show first message immediately
 
 // Calculate total expected images based on generation stage
 function getTotalExpected() {
@@ -105,7 +142,6 @@ function updateProgress() {
     const totalExpected = getTotalExpected();
     const percentage = (completedCount / totalExpected) * 100;
     progressBar.style.width = percentage + '%';
-    progressText.textContent = `${completedCount}/${totalExpected} images`;
 }
 
 function updateBadge(monthNum, status, retryNum = null) {
@@ -205,10 +241,9 @@ async function generateMockups() {
     const mockupLoading = document.getElementById('mockupLoading');
     mockupLoading.classList.remove('d-none');
 
-    // Update progress text to show mockup generation
-    progressText.textContent = 'Creating calendar preview...';
-    progressBar.classList.remove('bg-success');
-    progressBar.classList.add('bg-info');
+    // Update loading message to show mockup generation
+    document.getElementById('loadingEmoji').textContent = '🎨';
+    document.getElementById('loadingText').textContent = 'Creating calendar preview...';
 
     try {
         const response = await fetch('/api/generate/mockup', {
@@ -223,9 +258,8 @@ async function generateMockups() {
         if (data.success) {
             console.log(`✅ Mockup generation complete! ${data.mockup_count} mockup images created`);
             mockupLoading.classList.add('d-none');
-            progressBar.classList.remove('bg-info');
-            progressBar.classList.add('bg-success');
-            progressText.textContent = 'Preview ready!';
+            document.getElementById('loadingEmoji').textContent = '✅';
+            document.getElementById('loadingText').textContent = 'Preview ready!';
             return true;
         } else {
             console.error('❌ Mockup generation failed:', data.error);
@@ -254,6 +288,12 @@ async function checkCompletion() {
             redirecting = true;  // Prevent multiple completion checks
             console.log(`🎉 Complete! ${completedCount} succeeded, ${failedMonths.size} failed`);
 
+            // Stop cycling loading messages
+            if (messageInterval) {
+                clearInterval(messageInterval);
+                messageInterval = null;
+            }
+
             // Log failures but don't alert user (expected behavior for 3-month preview)
             if (failedMonths.size > 0) {
                 console.error(`⚠️ Failed: ${Array.from(failedMonths).join(', ')}`);
@@ -263,7 +303,8 @@ async function checkCompletion() {
             // Generate mockups only if we have all 13 months (full calendar)
             if (generationStage === 'generating_full' && completedCount >= 12) {
                 console.log('🎨 Generating calendar mockup preview...');
-                progressText.textContent = 'Creating calendar preview...';
+                document.getElementById('loadingEmoji').textContent = '🎨';
+                document.getElementById('loadingText').textContent = 'Creating calendar preview...';
 
                 try {
                     await generateMockups();
@@ -276,7 +317,8 @@ async function checkCompletion() {
 
             // Redirect immediately after mockup completes
             console.log('🚀 Redirecting to preview page...');
-            progressText.textContent = 'Redirecting to preview...';
+            document.getElementById('loadingEmoji').textContent = '🚀';
+            document.getElementById('loadingText').textContent = 'Redirecting to preview...';
             window.location.href = '{{ url_for("projects.preview") }}';
         }
     }
@@ -314,7 +356,15 @@ if (completedCount < totalExpected) {
 } else {
     // All images already complete - generate mockup and redirect
     console.log('✅ All images already complete! Preparing preview...');
-    progressText.textContent = 'Preparing preview...';
+
+    // Stop cycling loading messages
+    if (messageInterval) {
+        clearInterval(messageInterval);
+        messageInterval = null;
+    }
+
+    document.getElementById('loadingEmoji').textContent = '✅';
+    document.getElementById('loadingText').textContent = 'Preparing preview...';
 
     (async () => {
         try {
@@ -324,6 +374,8 @@ if (completedCount < totalExpected) {
                 await generateMockups();
             }
             console.log('🚀 Redirecting to preview...');
+            document.getElementById('loadingEmoji').textContent = '🚀';
+            document.getElementById('loadingText').textContent = 'Redirecting to preview...';
             window.location.href = '{{ url_for("projects.preview") }}';
         } catch (error) {
             console.error('⚠️ Error during redirect:', error);
