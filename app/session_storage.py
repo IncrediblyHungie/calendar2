@@ -273,7 +273,10 @@ def create_months_with_themes(themes):
             'title': theme['title'],
             'description': theme['description'],
             'generation_status': 'pending',
-            'master_image_data': None,  # Raw binary data
+            'master_image_data': None,  # Raw binary data (backwards compatibility)
+            'image_variants': [],  # List of variant images [{data: bytes, generated_at: timestamp, variant_index: 0}, ...]
+            'selected_variant_index': 0,  # Which variant is currently selected (0-2)
+            'retry_count': 0,  # Number of retries used (max 2)
             'error_message': None,
             'generated_at': None
         })
@@ -303,7 +306,10 @@ def create_remaining_months(themes):
             'title': theme['title'],
             'description': theme['description'],
             'generation_status': 'pending',
-            'master_image_data': None,  # Raw binary data
+            'master_image_data': None,  # Raw binary data (backwards compatibility)
+            'image_variants': [],  # List of variant images
+            'selected_variant_index': 0,  # Which variant is currently selected (0-2)
+            'retry_count': 0,  # Number of retries used (max 2)
             'error_message': None,
             'generated_at': None
         })
