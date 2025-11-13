@@ -216,13 +216,17 @@ def preview():
             for m in months
         ]
 
+        # Import monthly themes for current titles/descriptions
+        from app.services.monthly_themes import MONTHLY_THEMES
+
         return render_template('preview.html',
                               project=project,
                               months=months,
                               months_json=months_json,
                               month_names=month_names,
                               mockup_data=mockup_data,
-                              generation_status=gen_status)
+                              generation_status=gen_status,
+                              monthly_themes=MONTHLY_THEMES)
 
     except Exception as e:
         import traceback

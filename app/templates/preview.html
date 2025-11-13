@@ -115,8 +115,8 @@
                         <!-- Text Content Below Image -->
                         <div class="month-content">
                             <span class="month-name-badge">{{ month_names[month.month_number]|upper }}</span>
-                            <h5 class="month-title">{{ month.get('title', 'Hunk Theme') }}</h5>
-                            <p class="month-description">{{ month.get('description', '') }}</p>
+                            <h5 class="month-title">{{ monthly_themes[month.month_number]['title'] }}</h5>
+                            <p class="month-description">{{ monthly_themes[month.month_number]['description'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -918,7 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* Month name badge - Peach bubble with pink text (Exact Figma specs) */
 .calendar-month-card .month-name-badge {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     gap: 5.186px;
@@ -933,6 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
     border-radius: 51.345px;
     border: 0.519px solid rgba(255, 255, 255, 0.30);
     margin-bottom: 8px;
+    width: fit-content;
 }
 
 /* Title - Bold with emoji (Figma design) */
