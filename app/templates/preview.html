@@ -94,7 +94,7 @@
 
             <!-- Calendar Grid (2-column layout matching Figma Review screen) -->
             <div class="row g-3">
-                {% for month in months | sort(attribute='month_number') %}
+                {% for month in months | selectattr('month_number', 'ne', 0) | sort(attribute='month_number') %}
                 <div class="col-12 col-md-6">
                     <div class="calendar-month-card" data-month-id="{{ month.id }}" data-month-number="{{ month.month_number }}">
                         <!-- Image First (Click to expand) -->
