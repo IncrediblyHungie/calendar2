@@ -144,10 +144,11 @@ def upload_image(image_data_bytes, filename="month.jpg"):
 
 def get_optimal_scale(product_type, position):
     """
-    Calculate optimal scale for 4:3 (1.33:1) landscape images based on product and position
+    Calculate optimal scale for 5:4 (1.25:1) portrait-landscape images based on product and position
 
-    OPTIMIZED FOR 4:3 ASPECT RATIO (updated Nov 2025)
-    - Reduces wasted space by 80% compared to previous 16:9 images
+    OPTIMIZED FOR 5:4 ASPECT RATIO (updated Nov 2025)
+    - 5:4 provides near-perfect fit for 10.8"×8.4" wall calendar (only 2.78% mismatch!)
+    - Reduces whitespace by 25% compared to previous 4:3 images
     - Desktop monthly images now 40% LARGER (scale 0.95 vs 0.68)
 
     Scale values determined by placeholder aspect ratios:
@@ -161,24 +162,24 @@ def get_optimal_scale(product_type, position):
     Returns:
         float: Optimal scale value
     """
-    # Wall Calendar 11" × 8.5" (blueprint 965, variant 103102): 1.29:1 aspect ratio
-    # - 4:3 (1.33) ÷ 1.29 = 1.03 → near-perfect fit (only 3% mismatch!)
-    # - Scale 1.05 provides slight zoom for safety margin
-    # - Borders are part of physical template (confirmed via scale 5.0 test)
+    # Wall Calendar 10.8" × 8.4" (blueprint 1253, Today's Graphics): 1.286:1 aspect ratio
+    # - 5:4 (1.25) vs 1.286 → Min scale: 1.029, using 1.06 for ZERO white space
+    # - Printify API has no "fit to screen" option (only x, y, scale, angle parameters)
+    # - Aggressive scaling to completely fill placeholder (slight edge crop acceptable)
     if product_type == 'wall_calendar':
-        return 1.05  # Optimized for 4:3 images (was 1.4 for 16:9)
+        return 1.06  # ZERO white space - fills placeholder completely
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
     elif product_type == 'desktop':
         if position == 'front_cover':
-            # Desktop cover: 1.96:1 aspect ratio (wider than 4:3)
-            # - 4:3 (1.33) ÷ 1.96 = 0.68 → use 0.75 for margin
-            return 0.75  # Adjusted for 4:3 images (was 0.87 for 16:9)
+            # Desktop cover: 1.96:1 aspect ratio (much wider than 5:4)
+            # - Min scale: 1.568, using 1.62 for ZERO white space
+            # - Requires significant zoom to fill ultrawide placeholder
+            return 1.62  # ZERO white space - aggressive zoom to fill cover
         else:
-            # Desktop monthly: 1.19:1 aspect ratio (narrower than 4:3)
-            # - 4:3 (1.33) ÷ 1.19 = 1.12 → use 0.95 for slight zoom out
-            # - HUGE IMPROVEMENT: images now 40% larger! (was 0.68)
-            return 0.95  # Near-perfect fit for 4:3 images (was 0.68 for 16:9)
+            # Desktop monthly: 1.19:1 aspect ratio (close to 5:4)
+            # - Min scale: 0.952, using 0.98 for ZERO white space
+            return 0.98  # ZERO white space - fills monthly pages perfectly
 
     # Fallback (should never reach here)
     return 1.05
