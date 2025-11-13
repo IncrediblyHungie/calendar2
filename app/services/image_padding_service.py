@@ -3,6 +3,7 @@ Intelligent image padding service for calendar printing
 Ensures faces are always fully visible with multiple safety layers
 """
 import io
+import os
 from PIL import Image, ImageFilter, ImageDraw
 import numpy as np
 
@@ -18,18 +19,77 @@ CONFIG = {
     'use_asymmetric_padding': True,  # Use configured padding values
 }
 
+def add_watermark(img, logo_size_percent=8, margin_percent=2):
+    """
+    Add watermark logo to bottom right corner of image
+
+    Args:
+        img: PIL Image object
+        logo_size_percent: Logo width as percentage of image width (default 8%)
+        margin_percent: Margin from edges as percentage of image width (default 2%)
+
+    Returns:
+        PIL Image with watermark
+    """
+    try:
+        # Get absolute path to logo
+        current_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+        logo_path = os.path.join(current_dir, 'app', 'static', 'assets', 'images', 'logo', 'logo-transparent.png')
+
+        if not os.path.exists(logo_path):
+            print(f"  ⚠️  Logo not found at {logo_path}, skipping watermark")
+            return img
+
+        # Load logo
+        logo = Image.open(logo_path).convert('RGBA')
+
+        # Calculate logo size (8% of image width by default)
+        img_width, img_height = img.size
+        logo_width = int(img_width * (logo_size_percent / 100))
+
+        # Maintain logo aspect ratio
+        logo_aspect = logo.height / logo.width
+        logo_height = int(logo_width * logo_aspect)
+
+        # Resize logo
+        logo_resized = logo.resize((logo_width, logo_height), Image.LANCZOS)
+
+        # Calculate position (bottom right with margin)
+        margin = int(img_width * (margin_percent / 100))
+        x_pos = img_width - logo_width - margin
+        y_pos = img_height - logo_height - margin
+
+        # Convert image to RGBA for transparency support
+        if img.mode != 'RGBA':
+            img_rgba = img.convert('RGBA')
+        else:
+            img_rgba = img.copy()
+
+        # Paste logo with transparency
+        img_rgba.paste(logo_resized, (x_pos, y_pos), logo_resized)
+
+        # Convert back to RGB
+        img_watermarked = img_rgba.convert('RGB')
+
+        print(f"  ✨ Watermark added ({logo_width}x{logo_height}px at bottom right)")
+        return img_watermarked
+
+    except Exception as e:
+        print(f"  ⚠️  Watermark failed: {e}, returning original image")
+        return img
+
 def add_safe_padding(image_bytes, use_face_detection=False):
     """
     Add intelligent padding to image with multiple safety layers
 
-    CURRENTLY DISABLED: Returns original image without padding to test direct scaling
+    CURRENTLY DISABLED: Returns original image with watermark for direct scaling
 
     Args:
         image_bytes: Input image as bytes
         use_face_detection: Enable face detection for smart padding (requires cv2)
 
     Returns:
-        bytes: Padded image as JPEG bytes
+        bytes: Image with watermark as JPEG bytes
     """
     try:
         # Load image
@@ -37,9 +97,12 @@ def add_safe_padding(image_bytes, use_face_detection=False):
         original_width, original_height = img.size
 
         print(f"  🖼️  Original size: {original_width}x{original_height}")
-        print(f"  ⚠️  PADDING DISABLED - returning original image for direct scaling")
+        print(f"  ⚠️  PADDING DISABLED - adding watermark only")
 
-        # Convert to JPEG bytes and return original (no padding)
+        # Add watermark to bottom right corner
+        img = add_watermark(img, logo_size_percent=8, margin_percent=2)
+
+        # Convert to JPEG bytes
         output = io.BytesIO()
         img.convert('RGB').save(output, format='JPEG', quality=95)
         return output.getvalue()
