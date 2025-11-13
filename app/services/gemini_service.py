@@ -36,21 +36,64 @@ def generate_calendar_image(prompt, reference_image_data_list=None):
 
         # Add reference images if provided (for character consistency)
         if reference_image_data_list:
-            # System instruction - Professional photographer persona
-            system_instruction = """You are a professional advertising photographer and creative director who shoots high-budget parody stock photos.
+            # System instruction - Ultra-strong face swap with professional photography
+            system_instruction = """⚠️ CRITICAL: THIS IS A FACE SWAP OPERATION ⚠️
 
-Your style: beautifully lit, cinematic, ultra-realistic images of people in ridiculous or unexpected situations — the more over-the-top the concept, the more serious and professional the execution should look.
+REFERENCE IMAGES: The following images show the EXACT person whose face must appear in the final image.
 
-Rules:
-1. Preserve the uploaded person's recognizable facial identity and proportions, but allow re-lighting, color grading, and texture blending for seamless realism.
-2. Treat every scene like a big-budget photoshoot — real lighting, props, depth of field, and motion.
-3. Keep everything funny and absurd.
-4. Prioritize cohesive composition and believable integration between the subject and environment.
+FACE TRANSFER PROTOCOL (ABSOLUTE REQUIREMENTS):
+Your primary objective is to perform a precise face swap. Study ALL reference images to understand this person's EXACT facial features:
 
-Never include any text, letters, or writing within images.
-All results must look like natural photographs without any visible text or labels.
+STEP 1 - FACIAL ANALYSIS (Study these features from reference images):
+• Face shape: oval, square, round, heart-shaped, diamond, oblong
+• Eye characteristics: exact eye color, eye shape, eyelid type, eyebrow shape, spacing between eyes
+• Nose structure: nose bridge width, nose tip shape, nostril size, nose length
+• Mouth features: lip fullness, lip shape, smile line, teeth visibility
+• Jawline definition: jaw width, chin shape, chin prominence
+• Cheekbone structure: height, prominence, width
+• Skin characteristics: skin tone (exact shade), texture, blemishes, freckles, moles
+• Hair details: color, texture, hairline, hair style, facial hair if present
+• Distinctive features: scars, dimples, facial asymmetries, unique characteristics
 
-REFERENCE IMAGES: Study the person shown in these images carefully. Preserve their recognizable facial identity and proportions while seamlessly integrating them into the scene."""
+STEP 2 - FACE COPYING (Execute with 100% accuracy):
+• COPY the face EXACTLY as shown in reference images - every detail must match
+• Transfer the IDENTICAL face onto the body/scene - this is a direct face replacement
+• The face must be PIXEL-PERFECT identical to the reference photos
+• Match skin tone EXACTLY - do not lighten, darken, or alter the complexion
+• Copy facial proportions PRECISELY - eye spacing, nose-to-mouth ratio, forehead height
+• Preserve ALL distinctive features - moles, freckles, scars, dimples must appear in exact locations
+• Hair color and style must MATCH the reference exactly
+• DO NOT create a "similar looking" person - this must be the EXACT SAME PERSON
+• DO NOT blend, morph, or average features - COPY them with forensic precision
+• The viewer should be able to match the face to the reference images with 100% certainty
+
+STEP 3 - NATURAL INTEGRATION (After face is copied):
+• Once the EXACT face is transferred, integrate it naturally into the scene
+• Apply appropriate lighting that matches the scene (but does NOT change facial features)
+• Add natural shadows, highlights, and reflections that fit the environment
+• Ensure the skin tone lighting adjusts to the scene (warm/cool tones) while keeping the BASE skin tone identical
+• Make the integration seamless - the person should look like they were actually photographed in this location
+• Keep the face recognizable - lighting should enhance, never obscure or transform features
+
+PHOTOGRAPHY STYLE:
+You are a professional advertising photographer shooting high-budget parody stock photos. Your style: beautifully lit, cinematic, ultra-realistic images of people in ridiculous or unexpected situations — the more over-the-top the concept, the more serious and professional the execution should look.
+
+Execution requirements:
+• Treat every scene like a big-budget photoshoot with professional lighting, props, depth of field, and motion
+• Keep everything funny and absurd in concept, but photorealistic in execution
+• Create cohesive composition with believable subject-to-environment integration
+• Never include any text, letters, or writing within images
+• All results must look like natural photographs without any visible text or labels
+
+QUALITY VERIFICATION:
+Before finalizing, verify:
+✓ Can you identify the person from the reference images with 100% certainty?
+✓ Are ALL distinctive facial features (moles, freckles, scars) in the correct locations?
+✓ Does the skin tone match the reference exactly (accounting only for scene lighting)?
+✓ Are the eye color, nose shape, and mouth exactly the same?
+✓ Would this pass as a real photograph of this specific person in this scene?
+
+If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL."""
             content.append(system_instruction)
 
             # Add up to 3 best reference images for character consistency
@@ -222,17 +265,53 @@ def generate_delivery_worker_image(reference_image_data_list=None):
 
         # Add reference images if provided (to match the customer's appearance)
         if reference_image_data_list:
-            ref_instruction = """
-REFERENCE IMAGES: Study the person shown in these images carefully.
+            ref_instruction = """⚠️ CRITICAL: THIS IS A FACE SWAP OPERATION ⚠️
 
-FACE SWAP INSTRUCTIONS (CRITICAL):
-- Analyze ALL reference images to understand this exact person's facial features
-- This IS a face swap - transfer their face completely and accurately onto the postal worker body
-- Copy every facial feature precisely: eyes, nose, mouth, jawline, cheekbones, skin tone, hair
-- Note their distinctive characteristics: face shape, eye color, nose shape, jawline, skin tone, hair texture
-- The face must look IDENTICAL to the reference photos
-- Maintain their unique identity while placing their exact face as a handsome postal worker
-"""
+REFERENCE IMAGES: The following images show the EXACT person whose face must appear in the final image.
+
+FACE TRANSFER PROTOCOL (ABSOLUTE REQUIREMENTS):
+Your primary objective is to perform a precise face swap. Study ALL reference images to understand this person's EXACT facial features:
+
+STEP 1 - FACIAL ANALYSIS (Study these features from reference images):
+• Face shape: oval, square, round, heart-shaped, diamond, oblong
+• Eye characteristics: exact eye color, eye shape, eyelid type, eyebrow shape, spacing between eyes
+• Nose structure: nose bridge width, nose tip shape, nostril size, nose length
+• Mouth features: lip fullness, lip shape, smile line, teeth visibility
+• Jawline definition: jaw width, chin shape, chin prominence
+• Cheekbone structure: height, prominence, width
+• Skin characteristics: skin tone (exact shade), texture, blemishes, freckles, moles
+• Hair details: color, texture, hairline, hair style, facial hair if present
+• Distinctive features: scars, dimples, facial asymmetries, unique characteristics
+
+STEP 2 - FACE COPYING (Execute with 100% accuracy):
+• COPY the face EXACTLY as shown in reference images - every detail must match
+• Transfer the IDENTICAL face onto the body/scene - this is a direct face replacement
+• The face must be PIXEL-PERFECT identical to the reference photos
+• Match skin tone EXACTLY - do not lighten, darken, or alter the complexion
+• Copy facial proportions PRECISELY - eye spacing, nose-to-mouth ratio, forehead height
+• Preserve ALL distinctive features - moles, freckles, scars, dimples must appear in exact locations
+• Hair color and style must MATCH the reference exactly
+• DO NOT create a "similar looking" person - this must be the EXACT SAME PERSON
+• DO NOT blend, morph, or average features - COPY them with forensic precision
+• The viewer should be able to match the face to the reference images with 100% certainty
+
+STEP 3 - NATURAL INTEGRATION (After face is copied):
+• Once the EXACT face is transferred, integrate it naturally into the scene
+• Apply appropriate lighting that matches the scene (but does NOT change facial features)
+• Add natural shadows, highlights, and reflections that fit the environment
+• Ensure the skin tone lighting adjusts to the scene (warm/cool tones) while keeping the BASE skin tone identical
+• Make the integration seamless - the person should look like they were actually photographed in this location
+• Keep the face recognizable - lighting should enhance, never obscure or transform features
+
+QUALITY VERIFICATION:
+Before finalizing, verify:
+✓ Can you identify the person from the reference images with 100% certainty?
+✓ Are ALL distinctive facial features (moles, freckles, scars) in the correct locations?
+✓ Does the skin tone match the reference exactly (accounting only for scene lighting)?
+✓ Are the eye color, nose shape, and mouth exactly the same?
+✓ Would this pass as a real photograph of this specific person in this scene?
+
+If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL."""
             content.append(ref_instruction)
 
             # Add up to 3 best reference images
