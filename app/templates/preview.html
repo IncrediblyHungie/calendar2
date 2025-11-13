@@ -904,7 +904,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.success) {
                     // Update image source
                     const img = monthCard.querySelector('.month-variant-image');
-                    img.src = `/api/month/${monthId}/image?variant=${variantIndex}&t=${Date.now()}`;
+                    img.src = `/api/image/month/${monthId}?variant=${variantIndex}&t=${Date.now()}`;
 
                     // Update active dot
                     const dotsContainer = this.parentElement;
@@ -913,7 +913,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Update image preview trigger
                     const previewTrigger = monthCard.querySelector('.image-preview-trigger');
-                    previewTrigger.dataset.imageUrl = `/api/month/${monthId}/image?variant=${variantIndex}&t=${Date.now()}`;
+                    previewTrigger.dataset.imageUrl = `/api/image/month/${monthId}?variant=${variantIndex}&t=${Date.now()}`;
 
                     console.log('✓ Variant switched successfully');
                 } else {
@@ -985,7 +985,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Update image to show new variant
                     const img = monthCard.querySelector('.month-variant-image');
-                    img.src = `/api/month/${monthId}/image?variant=${newRetryCount}&t=${Date.now()}`;
+                    img.src = `/api/image/month/${monthId}?variant=${newRetryCount}&t=${Date.now()}`;
 
                     // Attach click handler to new dot
                     newDot.addEventListener('click', async function() {
@@ -1002,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const data = await response.json();
 
                             if (data.success) {
-                                img.src = `/api/month/${monthId}/image?variant=${variantIndex}&t=${Date.now()}`;
+                                img.src = `/api/image/month/${monthId}?variant=${variantIndex}&t=${Date.now()}`;
                                 dotsContainer.querySelectorAll('.variant-dot').forEach(d => d.classList.remove('active'));
                                 this.classList.add('active');
                             }
