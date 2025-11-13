@@ -15,10 +15,10 @@ MONTHLY_THEMES = {
         "month": "January",
         "title": "Black-Tux New Year",
         "description": "Sleek black tuxedo on rooftop with champagne and fireworks",
-        "prompt": """Use all uploaded photos to understand this person’s facial identity and proportions from multiple angles.
+        "prompt": """Use all uploaded photos to understand this person's facial identity and proportions from multiple angles.
 Create one cinematic, realistic professional photoshoot photo of the same person fully integrated into the following scene:
 
-Scene concept: I am dressed in a perfectly tailored black tuxedo jacket, styled open, showing my big powerful, sculpted physique in a dramatic, high-fashion way, paired with matching formal pants. I am captured mid-action in an exaggeratedly over-the-top New Year’s celebration as I pop a bottle of sparkling champagne. The champagne erupts into a burst of glittering foam and droplets, frozen in mid-air like a luxury commercial. My expression is confident and charismatic, with a smooth cinematic smile, and I look directly toward the camera as if this is a high-budget holiday campaign photoshoot.
+Scene concept: I am dressed in a perfectly tailored black tuxedo jacket, styled open, showing my big powerful, sculpted physique in a dramatic, high-fashion way, paired with matching formal pants posing like a male model with a smoldering gaze. I am captured mid-action in an exaggeratedly over-the-top New Year's celebration as I pop a bottle of sparkling champagne. The champagne erupts into a burst of glittering foam and droplets, frozen in mid-air like a luxury commercial. My expression is confident and charismatic, with a smooth cinematic smile, and I look directly toward the camera as if this is a high-budget holiday campaign photoshoot.
 
 The scene is intentionally dramatic and humorous — confetti drifting down around me, bright celebratory lights flaring in the background, and the moment styled with the same seriousness and intensity as a fashion ad, even though the situation is playfully ridiculous.
 
