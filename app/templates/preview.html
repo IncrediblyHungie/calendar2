@@ -93,9 +93,9 @@
             {% endif %}
 
             <!-- Calendar Grid (2-column layout matching Figma Review screen) -->
-            <div class="row calendar-grid-container">
+            <div class="row g-3">
                 {% for month in months | sort(attribute='month_number') %}
-                <div class="col-md-6">
+                <div class="col-12 col-md-6">
                     <div class="calendar-month-card">
                         <!-- Image First -->
                         <div class="month-image-container">
@@ -103,7 +103,7 @@
                                data-toggle="lightbox"
                                data-gallery="calendar-gallery"
                                data-size="fullscreen"
-                               data-caption="{{ month_names[month.month_number] }}: {{ month.title }}">
+                               data-caption="{{ month_names[month.month_number] }}: {{ month.get('title', month_names[month.month_number]) }}">
                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                      alt="{{ month_names[month.month_number] }}"
                                      class="img-fluid"
@@ -112,9 +112,9 @@
                         </div>
                         <!-- Text Content Below Image -->
                         <div class="month-content">
-                            <h5 class="month-name">{{ month_names[month.month_number] }}</h5>
-                            <p class="month-title">{{ month.title }}</p>
-                            <p class="month-description">{{ month.description }}</p>
+                            <div class="month-name">{{ month_names[month.month_number]|upper }}</div>
+                            <h5 class="month-title">{{ month.get('title', 'Hunk Theme') }}</h5>
+                            <p class="month-description">{{ month.get('description', '') }}</p>
                         </div>
                     </div>
                 </div>
@@ -838,12 +838,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <style>
-/* Calendar Grid Container (Figma styling: 16px spacing) */
-.calendar-grid-container {
-    row-gap: 16px;
-    column-gap: 16px;
-}
-
 /* Calendar Month Cards (Figma styling) */
 .calendar-month-card {
     border: 1px solid #E0E0E0;
@@ -851,7 +845,9 @@ document.addEventListener('DOMContentLoaded', () => {
     background-color: #FFFFFF;
     overflow: hidden;
     transition: all 0.3s ease;
-    margin-bottom: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .calendar-month-card:hover {
@@ -874,32 +870,39 @@ document.addEventListener('DOMContentLoaded', () => {
     border-radius: 8px 8px 0 0;
 }
 
-/* Text content below image - all left-aligned */
+/* Text content below image - all left-aligned (Figma exact styling) */
 .calendar-month-card .month-content {
-    padding: 20px;
+    padding: 16px;
     background-color: #FFFFFF;
     text-align: left;
+    flex-grow: 1;
 }
 
+/* Month name - ORANGE UPPERCASE (Figma design) */
 .calendar-month-card .month-name {
-    font-size: 24px;
-    font-weight: 600;
-    color: #172439;
-    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #FF6B35;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
     text-align: left;
 }
 
+/* Title - Bold with emoji (Figma design) */
 .calendar-month-card .month-title {
-    font-size: 16px;
-    font-weight: 500;
-    color: #333333;
-    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 6px;
     text-align: left;
+    line-height: 1.3;
 }
 
+/* Description - Gray text (Figma design) */
 .calendar-month-card .month-description {
     font-size: 14px;
-    color: #666666;
+    color: #6B7280;
     line-height: 1.5;
     margin-bottom: 0;
     text-align: left;
