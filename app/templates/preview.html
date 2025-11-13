@@ -92,10 +92,10 @@
             </h2>
             {% endif %}
 
-            <!-- Calendar Grid -->
-            <div class="row g-4">
+            <!-- Calendar Grid (2-column layout matching Figma Review screen) -->
+            <div class="row calendar-grid-container">
                 {% for month in months | sort(attribute='month_number') %}
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6">
                     <div class="calendar-month-card">
                         <div class="month-header">
                             <h5 class="mb-0">{{ month_names[month.month_number] }}</h5>
@@ -841,6 +841,49 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <style>
+/* Calendar Grid Container (Figma styling: 16px spacing) */
+.calendar-grid-container {
+    row-gap: 16px;
+    column-gap: 16px;
+}
+
+/* Calendar Month Cards (Figma styling) */
+.calendar-month-card {
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.calendar-month-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.calendar-month-card .month-header {
+    padding: 16px;
+    background-color: #F8F9FA;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.calendar-month-card .month-image-container {
+    padding: 0;
+    background-color: #FFFFFF;
+}
+
+.calendar-month-card .month-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.calendar-month-card .month-prompt {
+    padding: 12px 16px;
+    background-color: #FFFFFF;
+    border-top: 1px solid #E0E0E0;
+}
+
 /* Product selection cards */
 .product-option {
     cursor: pointer;
