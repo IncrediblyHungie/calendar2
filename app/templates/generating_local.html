@@ -22,8 +22,13 @@
                     </div>
 
                     <!-- Fun Loading Message with Emoji -->
-                    <div id="loadingMessage" class="mb-4" style="color: #6B7280; font-size: 14px; min-height: 24px;">
+                    <div id="loadingMessage" class="mb-4" style="color: #6B7280; font-size: 14px; min-height: 24px; transition: opacity 0.5s ease-in-out;">
                         <span id="loadingEmoji">🧘</span> <span id="loadingText">Getting a tan...</span>
+                    </div>
+
+                    <!-- Progress Counter -->
+                    <div id="progressCounter" class="mb-2" style="color: #1A1A1A; font-size: 16px; font-weight: 600; text-align: center;">
+                        <span id="completedCount">0</span>/<span id="totalCount">0</span> images completed (<span id="percentComplete">0</span>%)
                     </div>
 
                     <!-- Mockup Generation Loading State -->
@@ -119,14 +124,24 @@ let messageIndex = 0;
 let messageInterval = null;
 
 function updateLoadingMessage() {
+    const loadingMessageEl = document.getElementById('loadingMessage');
     const message = loadingMessages[messageIndex];
-    document.getElementById('loadingEmoji').textContent = message.emoji;
-    document.getElementById('loadingText').textContent = message.text;
+
+    // Fade out
+    loadingMessageEl.style.opacity = '0';
+
+    // Wait for fade out, then update text and fade in
+    setTimeout(() => {
+        document.getElementById('loadingEmoji').textContent = message.emoji;
+        document.getElementById('loadingText').textContent = message.text;
+        loadingMessageEl.style.opacity = '1';
+    }, 500); // Match CSS transition duration
+
     messageIndex = (messageIndex + 1) % loadingMessages.length;
 }
 
-// Start cycling messages every 1.5 seconds
-messageInterval = setInterval(updateLoadingMessage, 1500);
+// Start cycling messages every 3 seconds (longer delay for readability)
+messageInterval = setInterval(updateLoadingMessage, 3000);
 updateLoadingMessage(); // Show first message immediately
 
 // Calculate total expected images based on generation stage
@@ -140,8 +155,13 @@ function getTotalExpected() {
 
 function updateProgress() {
     const totalExpected = getTotalExpected();
-    const percentage = (completedCount / totalExpected) * 100;
+    const percentage = Math.round((completedCount / totalExpected) * 100);
     progressBar.style.width = percentage + '%';
+
+    // Update progress counter display
+    document.getElementById('completedCount').textContent = completedCount;
+    document.getElementById('totalCount').textContent = totalExpected;
+    document.getElementById('percentComplete').textContent = percentage;
 }
 
 function updateBadge(monthNum, status, retryNum = null) {
