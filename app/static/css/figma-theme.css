@@ -248,10 +248,7 @@ p {
     font-weight: 600;
     line-height: 20px;
     letter-spacing: -0.15px;
-    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: white;
 }
 
 /* Scrollbar styling for carousel */
