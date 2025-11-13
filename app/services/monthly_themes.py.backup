@@ -1,0 +1,316 @@
+"""
+Pre-defined monthly hunk themes with ULTRA-ENHANCED photo-realistic prompts
+Each month features memorable, photo-realistic scenarios optimized for face consistency
+
+ENHANCEMENTS APPLIED:
+- Professional camera and lens specifications for realistic rendering
+- Detailed lighting setups with specific angles and color temperatures
+- Muscular physique descriptions with specific body details
+- Photo-realistic quality instructions (8K, professional photography)
+- Face swap optimizations (angles, lighting, clear features)
+- Memorable storytelling with rich environmental details
+"""
+
+MONTHLY_THEMES = {
+    0: {
+        "month": "Cover",
+        "title": "Hunk of the Month Magazine Hero",
+        "description": "Epic magazine cover hero shot with dramatic lighting and charismatic presence",
+        "prompt": """Professional fashion photography, Canon EOS R5 with 85mm f/1.4 lens, ultra-realistic, 8K resolution.
+
+SUBJECT: THIS EXACT PERSON from reference images - Extremely fit athletic male, 25-30 years old, muscular build with defined chest and arms, broad shoulders, 6-pack abs. Chiseled jawline, confident expression with warm subtle smile. Face angled 20° from camera, direct eye contact.
+
+FACE SWAP OPTIMIZATION: Face centered, well-lit from multiple angles, no obstructions, neutral-to-warm expression, eyes clearly visible.
+
+OUTFIT: Impeccably tailored black tuxedo or magazine cover styling emphasizing physique.
+
+LIGHTING: Soft golden hour window light, subtle rim light, face evenly illuminated with catchlights in eyes. No harsh shadows.
+
+ATMOSPHERE: Magazine cover quality, professional glamour photography, GQ aesthetic.
+
+Style: Professional fitness/glamour photography - natural, seamless identity preservation"""
+    },
+    1: {
+        "month": "January",
+        "title": "Black-Tux New Year",
+        "description": "Sleek black tuxedo on rooftop with champagne and fireworks",
+        "prompt": """⚠️ FACE SWAP ULTRA PRIORITY: This is a FACE SWAP - use the EXACT face from reference images. Copy EVERY facial feature with 100% accuracy: eyes (color, shape, size), nose (structure, width), mouth (lip shape, size), jawline (exact shape), cheekbones, skin tone, facial hair pattern, hair color/style. The face MUST look IDENTICAL to the reference photos - this is the MOST CRITICAL requirement. Study all reference angles carefully.
+
+Create a hyper-realistic photo of a confident man in a sleek black tuxedo pouring champagne while fireworks explode across a midnight skyline. He stands on a rooftop terrace, city lights glimmering below, champagne foam sparkling in the air, his smile smooth and cinematic. The mood is luxury and celebration, golden rim-light catching his features like a magazine cover.
+
+Professional photography, medium-wide shot, 8K quality, photorealistic, natural skin texture. No text or labels.
+
+CRITICAL REMINDER: Face must match reference images EXACTLY - perfect facial accuracy is paramount."""
+    },
+    2: {
+        "month": "February",
+        "title": "Valentine's Day Cupid Cop",
+        "description": "Ripped police officer as Cupid with heart-shaped arrows",
+        "prompt": """⚠️ FACE SWAP ULTRA PRIORITY: This is a FACE SWAP - use the EXACT face from reference images. Copy EVERY facial feature with 100% accuracy: eyes (color, shape, size), nose (structure, width), mouth (lip shape, size), jawline (exact shape), cheekbones, skin tone, facial hair pattern, hair color/style. The face MUST look IDENTICAL to the reference photos - this is the MOST CRITICAL requirement. Study all reference angles carefully.
+
+A shirtless Cupid-style police officer surrounded by red roses and soft romantic lighting. He wears a polished police hat and badge, holding a bright red heart-shaped prop like Cupid's arrow, playful grin teasing the camera. Rose petals scatter across a velvety background under warm golden-pink tones that glow around him, cinematic and flirty Valentine's mood.
+
+Professional photography, medium shot, 8K quality, photorealistic, natural skin texture. No text or labels.
+
+CRITICAL REMINDER: Face must match reference images EXACTLY - perfect facial accuracy is paramount."""
+    },
+    3: {
+        "month": "March",
+        "title": "Wall Street Billionaire CEO",
+        "description": "Commanding CEO in minimalist glass-walled corner office",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+The subject is a commanding, highly attractive, and well-built CEO, positioned inside a minimalist glass-walled corner office high above the city. Late-day sunlight floods through floor-to-ceiling windows, gilding the panoramic skyline and wrapping him in warm reflections off chrome and leather surfaces. He holds a sleek phone to his ear, one hand in his pocket, displaying a posture that is relaxed yet in total control. His shirt is slightly unbuttoned at the collar, revealing a subtle chest chain, and his tie is loosened. His cuffs are rolled up, suggesting end-of-day intensity rather than disarray, and a faint smirk plays on his lips. He wears a prominent, expensive-looking watch. In the foreground, a modern executive desk is visible, featuring a sophisticated notebook, pen, and a high-end smartphone. Subtle depth-of-field isolates him from the panoramic skyline, transforming the office into a powerful stage of wealth, quiet charisma, and undeniable sexiness.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks authentically photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    4: {
+        "month": "April",
+        "title": "Sexy Firefighter Model",
+        "description": "Shirtless firefighter posing by fire hydrant with cat in tree",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A muscular, sexy male firefighter posing like a male model beside a red fire hydrant, shirtless with turnout pants and a turnout coat hanging open, suspenders loose, leaning confidently on the fire hydrant with a smoldering gaze, sunlight glistening on his abs and shoulders, a fluffy cat perched on a nearby tree branch watching, soft golden hour lighting with warm tones, shallow depth of field, background firetruck and firefighters slightly out of focus, realistic skin texture, wet pavement reflections, water droplets in motion, studio-quality professional male model photoshoot.
+
+FACE PRESERVATION (CRITICAL):
+- Maintain perfect facial accuracy to the provided reference images — identical bone structure, skin tone, and facial proportions
+- Render in ultra-photorealistic style, as if shot on a professional full-frame camera with a prime portrait lens
+- Prioritize realism, detail, and personality over stylization — the face should look like a real photo of the same person, not a generic model
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Overall tone: confident, sexy, warm, and cinematic, like a high-end men's fashion editorial photoshoot for a firefighter calendar. Lighting should feel golden-hour professional, with a soft, flattering glow and subtle warmth. Expression should communicate strength, charm, and playful confidence, like a model aware of the camera. Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    5: {
+        "month": "May",
+        "title": "Beach Lifeguard Rescue",
+        "description": "Lifeguard sprinting through surf carrying rescued swimmer",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A lifeguard sprinting through shallow surf while carrying an unconscious swimmer to shore. He wears soaked red lifeguard shorts clinging to his skin as ocean water splashes around his legs, sunlight glistening across his chest and shoulders. In the background, beachgoers and other lifeguards run toward the rescue, waves breaking under a dramatic golden-hour glow, and a subtle shark fin cuts through the water in the distance. Salt spray and droplets hang frozen midair, capturing the intensity and heroism of the moment in crisp cinematic focus.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    6: {
+        "month": "June",
+        "title": "Hot Pool Guy",
+        "description": "Shirtless pool cleaner with skimmer net and sun-kissed glow",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+Create a hyper-realistic, intoxicating cinematic photograph of an intensely sexy, sun-kissed pool guy, his powerful, sculpted physique glistening with a fine sheen of sweat and pool spray, casually paused while expertly cleaning a pristine swimming pool. The setting is a sprawling, sun-drenched Beverly Hills estate at the peak of a hot, clear afternoon, with a vast, immaculate infinity pool and lush, vibrant bougainvillea stretching out behind a modern, architectural marvel of a house. He is bathed in the brilliant, unforgiving California sunlight that makes the water sparkle like diamonds and casts defined, alluring shadows. He possesses a magnificent, leanly muscled and functionally powerful physique, every ripple of his defined abs and sculpted chest visible and honed to perfection. His face is a canvas of effortless charm: a strong, defined jawline, intense, piercing, steady yet engaging dark eyes that hold a captivating spark, and artfully disheveled, slightly damp dark hair. His expression is one of cool confidence, raw magnetic allure, and a subtle, challenging, direct gaze that meets the viewer's, hinting at a playful edge and a complete mastery of the moment.
+
+He is completely shirtless, revealing a flawlessly toned and deeply tanned torso, the skin smooth and glowing. His low-slung, slightly damp, dark board shorts are form-fitting, clinging sensuously to his powerful, lean thighs and glutes. A practical, dark leather utility belt, holding various pool tools, is slung casually around his waist, accentuating his sculpted physique. Glistening droplets of water trace the contours of his body, emphasizing his visceral authenticity and athletic appeal. He stands paused in his work, his body angled slightly towards the house, both hands expertly gripping the long, white pole of a pool skimmer, the net filled with collected debris just breaking the surface of the water as it drips. He exudes an aura of potent, relaxed masculinity, health, and undeniable expertise.
+
+The entire scene is captured from the perspective of someone inside the cool, shaded kitchen, looking out through a massive, spotless glass window or sliding door. In the extreme foreground, the sleek, modern, metallic silhouette of a kitchen faucet and a corner of a pristine white countertop are artfully blurred, framing the scene and creating a powerful sense of intimate voyeurism and a stolen glance. The background features the vast, open, and luxurious beauty of a Beverly Hills backyard – towering palm trees, vibrant pink bougainvillea bushes, distant rolling hills, and the hazy silhouette of the city's downtown buildings beyond, all bathed in the intense, bright light of a California afternoon. The atmosphere is intensely alluring, viscerally sensual, and overtly, powerfully magnetic, depicting a moment of quiet, formidable presence, absolute command of his environment, and raw, compelling allure. 8K resolution, extreme detail, razor-sharp lens depth, and a rich, hyper-tactile, glossy, almost palpable photographic texture that conveys immense realism, effortless power, and irresistible, visceral sex appeal.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    7: {
+        "month": "July",
+        "title": "Hot Cowboy",
+        "description": "Rugged cowboy leaning against fence on golden ranch at sunset",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A rugged cowboy leaning casually against a weathered wooden fence on a golden ranch at sunset. He wears a classic cowboy hat angled low over his brow, faded blue denim jeans that fit snugly and show natural creases, and a large engraved silver belt buckle that gleams in the light. His plaid shirt hangs open across his chest, and he holds a coiled lasso in one hand while resting his other arm over the fence rail. A brown horse stands nearby, its mane catching the breeze, as warm golden light filters through drifting dust to create a cinematic Western atmosphere rich with texture and warmth.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    8: {
+        "month": "August",
+        "title": "Firefighter Saving Puppy",
+        "description": "Firefighter carrying puppy away from smoky burning building",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A firefighter carrying a small puppy away from a smoky burning building. Glowing embers and orange haze fill the air, his expression determined yet gentle under the weight of the rescue. The light and smoke merge into an epic cinematic frame.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    9: {
+        "month": "September",
+        "title": "Fighter Jet Pilot",
+        "description": "Fighter pilot holding helmet, leaning against jet at sunset",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A fighter pilot leaning casually against a jet under a vibrant teal-orange sky, holding his white flight helmet under one arm. He wears a green flight suit with patches and aviator sunglasses reflecting clouds overhead. The atmosphere feels cinematic, confident, and powerful, like a blockbuster movie still.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    10: {
+        "month": "October",
+        "title": "Full Moon Transformation",
+        "description": "Rugged man under full October moon with subtle transformation hints",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A rugged, muscular man under a full October moon in a misty field at night. His expression is intense and powerful, head tilted slightly upward as moonlight hits his face, eyes glowing faintly amber in the dark. Subtle details hint at transformation — light hair growth on the arms and jawline, veins pronounced, breath visible in the cold air — but the look remains grounded and photographic. He wears torn jeans and an open flannel blowing in the wind, body tensed in mid-motion, with fog rolling low across the ground and warm moonlight catching on his skin. The atmosphere feels cinematic and real — cool blue-gray tones, sharp lens depth, faint backlight from the moon, and a natural photographic texture. 8K resolution, dramatic but believable lighting, professional male-model photoshoot aesthetic with dark fall energy.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    11: {
+        "month": "November",
+        "title": "Shirtless Lumberjack",
+        "description": "Rugged shirtless lumberjack with axe in forest at golden hour",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A rugged, shirtless lumberjack standing in a misty forest at golden hour, holding a large axe over his shoulder. He wears fitted jeans with a leather belt, work boots, and has a confident, charming expression. His muscular chest and arms glisten with sweat in the warm forest light. Stacked logs and wood chips scatter around his feet. Tall pine trees frame the background with golden sunlight filtering through the canopy creating dramatic rays. The mood is masculine, rugged, and cinematic with warm amber tones and shallow depth of field.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    },
+    12: {
+        "month": "December",
+        "title": "Rooftop Santa Model",
+        "description": "Muscular Santa on snowy rooftop with enormous sack of presents",
+        "prompt": """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
+
+A surreal, cinematic, hyper-realistic photo of a muscular, sexy Santa Claus posing for a professional holiday photoshoot. He's on a snowy rooftop at night, lit by the warm golden glow of Christmas lights, carrying an enormous red Santa sack overflowing with wrapped presents slung over one shoulder, his large arms and chest showing through the fitted red suit with the coat open slightly to reveal toned abs. He's balancing near a brick chimney, about to climb in by hand, snow gently falling around him. His facial expression is calm and confident, with a relaxed jaw, lips softly parted, and eyes focused forward in a smoldering, magnetic gaze — projecting effortless strength and playful holiday allure. The moonlight catches the snowflakes, creating a magical shimmer in the air, while city lights twinkle in the distance. Ultra-detailed textures, warm holiday tones, cinematic lighting, realistic skin and fabric details, professional male-model photoshoot energy with festive charm and humor.
+
+FACE PRESERVATION (CRITICAL):
+- Study the reference face carefully and replicate it EXACTLY
+- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
+- Preserve their exact skin tone, facial hair pattern, and hair color/style
+- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
+- This is the MOST IMPORTANT aspect - perfect face accuracy
+
+Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels."""
+    }
+}
+
+def get_theme(month_number):
+    """Get theme for a specific month (0-12)"""
+    return MONTHLY_THEMES.get(month_number, None)
+
+def get_all_themes():
+    """Get all monthly themes"""
+    return MONTHLY_THEMES
+
+def get_enhanced_prompt(month_number, user_description=""):
+    """
+    Get ULTRA-ENHANCED photo-realistic prompt optimized for face-swapping
+
+    ENHANCEMENTS:
+    - Professional camera and lens specifications for realistic rendering
+    - Detailed lighting setups with specific angles and color temperatures
+    - Muscular physique descriptions with specific body details
+    - Photo-realistic quality instructions (8K, professional photography)
+    - Face swap optimizations (angles, lighting, clear features)
+    - Memorable storytelling with rich environmental details
+
+    Args:
+        month_number: Month number (0-12, where 0=cover)
+        user_description: Optional description of user's features
+
+    Returns:
+        Enhanced ultra-realistic prompt optimized for Gemini 2.5 Flash Image
+    """
+    theme = get_theme(month_number)
+    if not theme:
+        return ""
+
+    # The prompts now contain comprehensive photo-realistic instructions
+    base_prompt = theme['prompt']
+
+    # Add character consistency wrapper with technical specs
+    enhanced_prompt = f"""
+REFERENCE IMAGES PROVIDED: Study the person in the reference images carefully to understand their unique identity.
+
+CHARACTER IDENTITY PRESERVATION (CRITICAL):
+- These reference images show THIS EXACT PERSON whose face must appear in the generated image
+- Analyze all reference images to understand their distinctive facial features, proportions, and characteristics
+- This IS a face swap - transfer their face completely and accurately onto the body in the scene
+- Copy every facial feature precisely: eyes, nose, mouth, jawline, cheekbones, skin tone, hair
+- Maintain their unique identity: face shape, eye color, nose shape, jawline, skin tone, hair texture
+- The result should look like a natural photograph of this person with their exact face
+
+{base_prompt}
+
+COMPOSITION & FRAMING (CRITICAL - FOLLOW EXACTLY):
+- CAMERA DISTANCE: Shot from 12-15 feet away for WIDE framing with generous margins
+- HEADROOM: Leave SIGNIFICANT empty space above the head (at least 15-20% of image height above head)
+- MEDIUM-WIDE SHOT: Show full person from head to mid-thigh or knees - NEVER crop the head
+- FULL BODY VISIBLE: Entire head, torso, and upper legs must be completely in frame with room to spare
+- MARGINS: Ensure ample space on all sides - top, bottom, left, right (subject should occupy central 60-70% of frame)
+- CENTERED COMPOSITION: Subject prominently centered with generous breathing room around them
+- WIDER FRAMING: If in doubt, zoom OUT more - we need extra space for printing safety margins
+- Use 50mm lens perspective (NOT 85mm) for wider field of view and more environmental context
+- Professional fitness photography composition with commercial print safety margins
+
+PHOTO-REALISTIC QUALITY (CRITICAL):
+- Professional photography quality, 8K resolution, suitable for calendar printing
+- Physically-based rendering with accurate lighting physics
+- Vibrant colors with high dynamic range, dramatic lighting highlighting muscular physique
+- Sharp focus on subject with shallow depth of field (f/1.4-f/2.8) creating bokeh background
+- Cinematic color grading with rich blacks and glowing highlights
+- Natural skin texture, pores visible, authentic human details
+- Professional fitness/glamour photography aesthetic
+
+FINAL CHECK:
+- Face is clearly visible and well-lit (no shadows obscuring face)
+- Facial features match ALL reference images (character consistency across references)
+- Expression is natural and fits the scene emotionally
+- Body and face blend seamlessly and naturally into scene
+- Overall image looks like authentic professional photography, not digital manipulation
+- Muscular physique is clearly defined and highlighted by lighting
+- Scene is memorable, photo-realistic, and storytelling-rich
+
+Style: Ultra-realistic professional fitness/glamour photography - natural, seamless, memorable, with perfect character consistency and photo-realistic quality.
+"""
+
+    return enhanced_prompt

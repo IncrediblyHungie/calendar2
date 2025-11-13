@@ -65,39 +65,8 @@ FACE SWAP INSTRUCTIONS (CRITICAL):
                 except Exception as e:
                     print(f"Error loading reference image: {e}")
 
-        # Enhanced prompt with face swap and framing
-        enhanced_prompt = f"""
-{prompt}
-
-FACE SWAP EXECUTION (CRITICAL):
-- Transfer the EXACT face from reference images onto the body in this scene
-- This IS a face swap - copy their face completely and accurately
-- Maintain their distinctive facial features precisely: every detail must match
-- Keep their eye color, eye shape, nose, mouth, jawline, skin tone, facial structure exactly as shown
-- The face must look IDENTICAL to the reference photos - perfect face accuracy is the priority
-
-COMPOSITION & FRAMING (CRITICAL - FOLLOW EXACTLY):
-- CAMERA DISTANCE: Shot from 12-15 feet away for WIDE framing with generous margins
-- HEADROOM: Leave SIGNIFICANT empty space above the head (at least 15-20% of image height above head)
-- MEDIUM-WIDE SHOT: Show full person from head to mid-thigh or knees - NEVER crop the head
-- FULL BODY VISIBLE: Entire head, torso, and upper legs must be completely in frame with room to spare
-- MARGINS: Ensure ample space on all sides - top, bottom, left, right (subject should occupy central 60-70% of frame)
-- CENTERED COMPOSITION: Subject prominently centered with generous breathing room around them
-- WIDER FRAMING: If in doubt, zoom OUT more - we need extra space for printing safety margins
-- Use 50mm lens perspective (NOT 85mm) for wider field of view and more environmental context
-- Professional fitness photography composition with commercial print safety margins
-
-VISUAL QUALITY:
-- Photorealistic, professional photography quality
-- High resolution, suitable for calendar printing
-- Vibrant colors, dramatic lighting that highlights muscular physique
-- Dynamic pose that's ridiculously sexy and over-the-top hilarious
-- Cinematic lighting with clear focus on subject
-
-Style: Professional fitness/glamour photography meets comedy photoshoot - natural, seamless, hilarious
-"""
-
-        content.append(enhanced_prompt)
+        # Prompts are now complete and optimized - pass through as-is
+        content.append(prompt)
 
         # Generate the image using Gemini 2.5 Flash Image (Nano Banana)
         # Use 4:3 aspect ratio (1.33:1 landscape) - optimized for calendar placeholders
@@ -107,8 +76,8 @@ Style: Professional fitness/glamour photography meets comedy photoshoot - natura
             contents=content,
             config=types.GenerateContentConfig(
                 response_modalities=['IMAGE'],
-                temperature=0.7,  # Balanced for consistency and creativity
-                top_p=0.9,  # Nucleus sampling - more focused than default 0.95, reduces wild variations
+                temperature=0.5,  # Lower = more deterministic for better face consistency
+                top_p=0.85,  # Focused sampling for consistent face matching
                 image_config=types.ImageConfig(
                     aspect_ratio='4:3'  # Standard landscape (1.33:1) - near-perfect fit for calendars
                 )
@@ -277,21 +246,9 @@ FACE SWAP INSTRUCTIONS (CRITICAL):
                 except Exception as e:
                     print(f"Error loading reference image: {e}")
 
-        # Delivery worker prompt (Hot Mailman for checkout/success screen)
-        delivery_prompt = """CRITICAL: Use EXACT face from reference images - copy every facial feature precisely (eyes, nose, mouth, jawline, cheekbones, skin tone, hair). This is a face swap - transfer their face completely and accurately onto the body in the scene.
-
-A sexy mailman delivering letters at sunset. He wears an open short-sleeve postal shirt and fitted blue shorts, holding envelopes and packages beside a mail truck with a teasing smile. The warm golden glow of late afternoon enhances the playful "special delivery" mood.
-
-FACE PRESERVATION (CRITICAL):
-- Study the reference face carefully and replicate it EXACTLY
-- Match every detail: eye color, eye shape, eyebrow shape, nose structure, lip shape, face shape
-- Preserve their exact skin tone, facial hair pattern, and hair color/style
-- The face must look IDENTICAL to the reference photos - like it was photographed in this scene
-- This is the MOST IMPORTANT aspect - perfect face accuracy
-
-Blend lighting, shadows, and color naturally so the subject looks photographed in the scene. Keep the person's likeness consistent with the reference photos. Never include any text, letters, or writing within images. All results must look like natural photographs without any visible text or labels.
-"""
-        content.append(delivery_prompt)
+        # Use the bonus delivery prompt from monthly themes
+        from app.services.monthly_themes import BONUS_DELIVERY_PROMPT
+        content.append(BONUS_DELIVERY_PROMPT)
 
         # Generate the image using Gemini 2.5 Flash Image
         response = client.models.generate_content(
@@ -299,8 +256,8 @@ Blend lighting, shadows, and color naturally so the subject looks photographed i
             contents=content,
             config=types.GenerateContentConfig(
                 response_modalities=['IMAGE'],
-                temperature=0.7,
-                top_p=0.9,  # Nucleus sampling - more focused, reduces wild variations
+                temperature=0.5,  # Lower = more deterministic for better face consistency
+                top_p=0.85,  # Focused sampling for consistent face matching
                 image_config=types.ImageConfig(
                     aspect_ratio='4:3'  # Standard landscape for web display
                 )
