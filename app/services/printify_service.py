@@ -173,13 +173,14 @@ def get_optimal_scale(product_type, position):
     elif product_type == 'desktop':
         if position == 'front_cover':
             # Desktop cover: 1.96:1 aspect ratio (much wider than 5:4)
-            # - Min scale: 1.568, using 1.62 for ZERO white space
-            # - Requires significant zoom to fill ultrawide placeholder
-            return 1.62  # ZERO white space - aggressive zoom to fill cover
+            # - Min scale for zero white space: 1.568 (crops head off - TOO MUCH)
+            # - BALANCED: Use 1.05 to show full image with ~15% white space on sides
+            # - Prioritize showing complete person/composition over filling placeholder
+            return 1.05  # Balanced - shows full image, minimal crop, some side white space
         else:
             # Desktop monthly: 1.19:1 aspect ratio (close to 5:4)
-            # - Min scale: 0.952, using 0.98 for ZERO white space
-            return 0.98  # ZERO white space - fills monthly pages perfectly
+            # - Image is wider than placeholder - good fit
+            return 0.95  # Good fit with minimal white space
 
     # Fallback (should never reach here)
     return 1.05
