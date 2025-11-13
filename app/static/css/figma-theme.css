@@ -245,9 +245,13 @@ p {
     text-align: center;
     font-family: var(--font-family);
     font-size: 14px;
+    font-weight: 600;
     line-height: 20px;
     letter-spacing: -0.15px;
-    color: var(--text-secondary);
+    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Scrollbar styling for carousel */
