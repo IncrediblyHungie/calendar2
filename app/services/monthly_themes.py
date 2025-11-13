@@ -116,3 +116,20 @@ BONUS_DELIVERY_PROMPT = """Create a cinematic, cinematic photo of an incredibly 
 He wears a form-fitting, classic UPS brown uniform shirt, completely unbuttoned to boldly reveal his deeply toned, chiseled eight-pack abs and muscular chest. The sleeves are impeccably rolled high to his shoulders, showcasing powerful, intricately veined biceps and forearms. His dark brown, impeccably tailored uniform shorts are form-fitting, hugging his muscular thighs and glutes. A sturdy, dark brown UPS package scanning device is clipped to his belt, and a stack of carefully organized packages is held casually but enticingly in one hand. Prominent beads of sweat glisten on his forehead, neck, and across his defined abs, adding to his raw, rugged appeal and suggesting intense exertion under the sun, while his skin glows with a bronzed, healthy radiance.
 
 He's leaning provocatively against the side of a classic, gleaming brown UPS delivery truck, one leg slightly bent and his body angled to maximize the display of his physique, exuding an aura of undeniable, primal power and confident masculinity. The background features a dynamic urban street with sleek modern architecture, lush street trees, and perhaps a glimpse of a stylish outdoor cafe, all bathed in intense, direct sunlight. The lighting is sharp and high-contrast, casting dramatic shadows and enveloping him in a scorching, inviting glow that highlights every muscle, contour, and the rich texture of his uniform. The atmosphere is undeniably sensual, exuding raw, unbridled masculinity, overt sex appeal, and an approachable, rugged charm, like an iconic high-fashion magazine spread or a scene from a seductive urban romance. 8K resolution, extreme detail, razor-sharp lens depth, and a rich, tactile photographic texture that commands attention."""
+
+
+# Helper functions for accessing themes
+def get_all_themes():
+    """Get all monthly themes"""
+    return MONTHLY_THEMES
+
+def get_theme(month_number):
+    """Get theme for a specific month (0-12)"""
+    return MONTHLY_THEMES.get(month_number)
+
+def get_enhanced_prompt(month_number):
+    """Get the enhanced prompt for a specific month"""
+    theme = get_theme(month_number)
+    if theme:
+        return theme.get('prompt', '')
+    return ''
