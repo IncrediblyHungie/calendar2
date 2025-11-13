@@ -925,6 +925,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Fun loading messages for retry generation
+    const loadingMessages = [
+        'Hitting the Gym 🥵',
+        'Getting Undressed 🔥',
+        'Flexing Muscles 💪',
+        'Applying Oil ✨',
+        'Striking a Pose 📸',
+        'Unleashing the Charm 😏',
+        'Adding More Abs 🏋️',
+        'Perfecting the Smolder 😍',
+        'Cranking Up the Sexy 🌡️',
+        'Buffing Up 💪',
+        'Working the Angles 📐',
+        'Dialing Up the Heat 📞',
+        'Bringing the Spice 🌶️',
+        'Flexing Harder 💯',
+        'Turning Heads 👀'
+    ];
+
     // Retry Generation Button - Trigger new image generation
     const retryButtons = document.querySelectorAll('.btn-retry-generation');
     retryButtons.forEach(button => {
@@ -941,7 +960,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const originalHTML = this.innerHTML;
             this.disabled = true;
-            this.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Generating...';
+
+            // Start cycling through fun loading messages
+            let messageIndex = 0;
+            const updateMessage = () => {
+                this.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>${loadingMessages[messageIndex]}`;
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+            };
+
+            updateMessage(); // Show first message immediately
+            const messageInterval = setInterval(updateMessage, 1500); // Change every 1.5 seconds
 
             try {
                 // Trigger regeneration
@@ -953,6 +981,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.success) {
+                    // Clear the message cycling interval
+                    clearInterval(messageInterval);
                     this.innerHTML = '<i class="fas fa-check me-1"></i>New version generated!';
 
                     // Add new variant dot
@@ -1016,6 +1046,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.error || 'Failed to regenerate image');
                 }
             } catch (error) {
+                // Clear the message cycling interval
+                clearInterval(messageInterval);
                 console.error('Regeneration error:', error);
                 alert('Failed to generate new version. Please try again.');
                 this.innerHTML = originalHTML;
