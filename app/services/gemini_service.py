@@ -115,8 +115,7 @@ If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL
         content.append(prompt)
 
         # Generate the image using Gemini 2.5 Flash Image (Nano Banana)
-        # Use 4:3 aspect ratio (1.33:1 landscape) - optimized for calendar placeholders
-        # This reduces wasted space by 80% compared to 16:9
+        # Use 16:9 aspect ratio (1.78:1 widescreen landscape)
         response = client.models.generate_content(
             model='gemini-2.5-flash-image',
             contents=content,
@@ -125,7 +124,7 @@ If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL
                 temperature=0.7,  # Balanced creativity and consistency
                 top_p=0.9,  # Slightly more diverse sampling
                 image_config=types.ImageConfig(
-                    aspect_ratio='4:3'  # Standard landscape (1.33:1) - near-perfect fit for calendars
+                    aspect_ratio='16:9'  # Widescreen landscape
                 )
             )
         )
@@ -341,7 +340,7 @@ If ANY answer is "no" - the face transfer has failed. The face must be IDENTICAL
                 temperature=0.7,  # Balanced creativity and consistency
                 top_p=0.9,  # Slightly more diverse sampling
                 image_config=types.ImageConfig(
-                    aspect_ratio='4:3'  # Standard landscape for web display
+                    aspect_ratio='16:9'  # Widescreen landscape for web display
                 )
             )
         )
