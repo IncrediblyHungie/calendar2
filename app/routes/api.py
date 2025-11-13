@@ -262,24 +262,53 @@ def generate_month(month_num):
 
         print(f"✓ Month {month_num}: Prepared {len(reference_image_data)} reference images")
 
-        # Generate image with simple working prompts
-        print(f"📸 Month {month_num}: Getting enhanced prompt...")
-        enhanced_prompt = get_enhanced_prompt(month_num)
-        print(f"✓ Month {month_num}: Prompt length: {len(enhanced_prompt)} chars")
+        # SPECIAL HANDLING: Use static logo for cover (month 0)
+        if month_num == 0:
+            print(f"📸 Month {month_num}: Using static logo for cover (no AI generation)")
+            import os
+            from flask import current_app
 
-        print(f"🎨 Month {month_num}: Starting Gemini API call...")
-        image_data = generate_calendar_image(enhanced_prompt, reference_image_data)
-        print(f"✅ Month {month_num}: Generation succeeded! Size: {len(image_data)} bytes")
+            # Get path to logo file
+            logo_path = os.path.join(current_app.root_path, 'static', 'assets', 'images', 'logo', 'logo-cream-blue.png')
 
-        # Convert PNG to JPEG for smaller file size
-        # Quality 80 optimized for memory: good quality, smaller files, less RAM
-        img = PILImage.open(io.BytesIO(image_data))
-        img_io = io.BytesIO()
-        img.convert('RGB').save(img_io, format='JPEG', quality=80, optimize=True)
-        jpeg_data = img_io.getvalue()
+            if not os.path.exists(logo_path):
+                error_msg = f'Logo file not found at {logo_path}'
+                print(f"❌ Month {month_num}: {error_msg}")
+                session_storage.update_month_status(month_num, 'failed', error=error_msg)
+                return jsonify({'error': error_msg}), 500
+
+            # Load logo file
+            with open(logo_path, 'rb') as f:
+                logo_data = f.read()
+
+            print(f"✅ Month {month_num}: Loaded logo! Size: {len(logo_data)} bytes")
+
+            # Convert to JPEG format
+            img = PILImage.open(io.BytesIO(logo_data))
+            img_io = io.BytesIO()
+            img.convert('RGB').save(img_io, format='JPEG', quality=95, optimize=True)
+            jpeg_data = img_io.getvalue()
+
+        else:
+            # Generate image with AI for months 1-12
+            print(f"📸 Month {month_num}: Getting enhanced prompt...")
+            enhanced_prompt = get_enhanced_prompt(month_num)
+            print(f"✓ Month {month_num}: Prompt length: {len(enhanced_prompt)} chars")
+
+            print(f"🎨 Month {month_num}: Starting Gemini API call...")
+            image_data = generate_calendar_image(enhanced_prompt, reference_image_data)
+            print(f"✅ Month {month_num}: Generation succeeded! Size: {len(image_data)} bytes")
+
+            # Convert PNG to JPEG for smaller file size
+            # Quality 80 optimized for memory: good quality, smaller files, less RAM
+            img = PILImage.open(io.BytesIO(image_data))
+            img_io = io.BytesIO()
+            img.convert('RGB').save(img_io, format='JPEG', quality=80, optimize=True)
+            jpeg_data = img_io.getvalue()
 
         # Clear image data from memory immediately
-        del image_data
+        if month_num != 0:  # Only for AI-generated images
+            del image_data
         del img
         del img_io
         import gc
