@@ -100,10 +100,10 @@
                         <!-- Image First (Click to expand) -->
                         <div class="month-image-container">
                             <a href="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                               data-toggle="lightbox"
-                               data-gallery="calendar-gallery"
-                               data-size="fullscreen"
-                               data-caption="{{ month_names[month.month_number] }}: {{ month.get('title', month_names[month.month_number]) }}">
+                               data-bs-toggle="lightbox"
+                               data-bs-gallery="calendar-gallery"
+                               data-caption="{{ month_names[month.month_number] }}: {{ month.get('title', month_names[month.month_number]) }}"
+                               class="lightbox-trigger">
                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                      alt="{{ month_names[month.month_number] }}"
                                      class="img-fluid calendar-image-clickable">
@@ -869,7 +869,7 @@ document.addEventListener('DOMContentLoaded', () => {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 8px 8px 0 0;
+    object-fit: contain;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -891,7 +891,6 @@ document.addEventListener('DOMContentLoaded', () => {
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-    border-radius: 8px 8px 0 0;
     pointer-events: none;
 }
 
