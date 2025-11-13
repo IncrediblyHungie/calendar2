@@ -99,11 +99,11 @@
                     <div class="calendar-month-card">
                         <!-- Image First (Click to expand) -->
                         <div class="month-image-container">
-                            <a href="{{ url_for('api.get_month_image', month_id=month.id) }}"
-                               data-bs-toggle="lightbox"
-                               data-bs-gallery="calendar-gallery"
-                               data-caption="{{ month_names[month.month_number] }}: {{ month.get('title', month_names[month.month_number]) }}"
-                               class="lightbox-trigger">
+                            <a href="#"
+                               class="image-preview-trigger"
+                               data-image-url="{{ url_for('api.get_month_image', month_id=month.id) }}"
+                               data-month-name="{{ month_names[month.month_number] }}"
+                               data-month-title="{{ monthly_themes[month.month_number]['title'] }}">
                                 <img src="{{ url_for('api.get_month_image', month_id=month.id) }}"
                                      alt="{{ month_names[month.month_number] }}"
                                      class="img-fluid calendar-image-clickable">
@@ -368,12 +368,24 @@
         </div>
     </div>
 </div>
+
+<!-- Image Preview Modal -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-white" id="imagePreviewModalLabel"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img src="" alt="Calendar Preview" id="modalPreviewImage" class="img-fluid w-100">
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
-<!-- bs5-lightbox: Proven Bootstrap 5 lightbox library for smooth image viewing -->
-<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.5/dist/index.bundle.min.js"></script>
-
 <!-- Stripe.js -->
 <script src="https://js.stripe.com/v3/"></script>
 
@@ -671,18 +683,24 @@ let selectedProduct = 'wall_calendar'; // Default to most popular
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Preview page loaded, initializing...');
 
-    // Configure bs5-lightbox - wrapped in try-catch to prevent breaking cart functionality
-    try {
-        if (typeof Lightbox !== 'undefined') {
-            Lightbox.initialize({
-                constrain: false  // Allow images to scale up to fill available space
-            });
-            console.log('✓ Lightbox initialized successfully');
-        }
-    } catch (error) {
-        console.warn('⚠️ Lightbox initialization failed (non-critical):', error);
-        // Continue with rest of page functionality - cart is more important than lightbox
-    }
+    // Image Preview Modal - Click to view full-size images
+    const imagePreviewTriggers = document.querySelectorAll('.image-preview-trigger');
+    const imagePreviewModal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
+    const modalImage = document.getElementById('modalPreviewImage');
+    const modalTitle = document.getElementById('imagePreviewModalLabel');
+
+    imagePreviewTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            const imageUrl = trigger.dataset.imageUrl;
+            const monthName = trigger.dataset.monthName;
+            const monthTitle = trigger.dataset.monthTitle;
+
+            modalImage.src = imageUrl;
+            modalTitle.textContent = `${monthName}: ${monthTitle}`;
+            imagePreviewModal.show();
+        });
+    });
 
     // Product selection
     const productOptions = document.querySelectorAll('.product-option');
@@ -910,7 +928,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* Text content below image - all left-aligned (Figma exact styling) */
 .calendar-month-card .month-content {
-    padding: 12px;
+    padding: 8px 10px;
     background-color: #FFFFFF;
     text-align: left;
     flex-grow: 1;
@@ -932,7 +950,7 @@ document.addEventListener('DOMContentLoaded', () => {
     padding: 3.112px 7.261px;
     border-radius: 51.345px;
     border: 0.519px solid rgba(255, 255, 255, 0.30);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     width: fit-content;
 }
 
@@ -941,8 +959,8 @@ document.addEventListener('DOMContentLoaded', () => {
     font-size: 16px;
     font-weight: 700;
     color: #1A1A1A;
-    margin-bottom: 4px;
-    margin-top: 8px;
+    margin-bottom: 2px;
+    margin-top: 4px;
     text-align: left;
     line-height: 1.3;
 }
