@@ -1,0 +1,75 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    WHERE TO PUT YOUR FILES - QUICK GUIDE                  ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+📸 REFERENCE FACE PHOTOS (INPUT - Your Selfies)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Put selfie photos for 3 PEOPLE here:
+   /home/peteylinux/Projects/KevCal/reference_faces/
+
+Structure (3 people):
+   reference_faces/
+   ├── person1/     ← Person 1's photos
+   │   └── face1.jpg
+   ├── person2/     ← Person 2's photos
+   │   └── face1.jpg
+   └── person3/     ← Person 3's photos
+       └── face1.jpg
+
+
+💾 GENERATED SAMPLES (OUTPUT - AI-Generated Images)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generated images go HERE by default:
+   /home/peteylinux/Projects/KevCal/sample_output/
+
+Example:
+   sample_output/
+   ├── sample_month_06_june.jpg           ← AI image
+   └── sample_month_06_june_mockup.jpg    ← Calendar mockup
+
+
+🌐 WEBSITE EXAMPLES (PUBLIC - For Website Display)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+To generate samples for your website:
+   /home/peteylinux/Projects/KevCal/app/static/assets/images/examples/
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                              QUICK START                                  ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+Step 1: Copy selfies for 3 people
+   $ cp ~/Downloads/person1*.jpg reference_faces/person1/
+   $ cp ~/Downloads/person2*.jpg reference_faces/person2/
+   $ cp ~/Downloads/person3*.jpg reference_faces/person3/
+
+Step 2: Generate June for ALL 3 people
+   $ python generate_multi_person_samples.py --month 6
+
+Step 3: View output (3 AI images + 3 mockups = 6 files)
+   $ ls sample_output/
+   person1_month_06_june.jpg
+   person2_month_06_june.jpg
+   person3_month_06_june.jpg
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                         COMMON COMMANDS                                   ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+🔥 MULTI-PERSON (3 people at once):
+# Generate June for all 3 people
+python generate_multi_person_samples.py --month 6
+
+# Generate June with mockups for all 3 people
+python generate_multi_person_samples.py --month 6 --with-mockup
+
+# Generate multiple months for all 3 people
+python generate_multi_person_samples.py --months 1 6 11 --with-mockup
+
+📝 SINGLE PERSON (flexible):
+# Generate June for 1 person
+python generate_samples.py --month 6 --references reference_faces/person1/*.jpg
+
+
+Need more help? Read: MULTI_PERSON_GUIDE.md or DIRECTORY_STRUCTURE.md

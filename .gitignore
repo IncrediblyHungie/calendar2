@@ -44,6 +44,12 @@ output/*
 !output/.gitkeep
 static/uploads/
 
+# Sample generation (don't commit reference faces or test samples)
+reference_faces/
+sample_output/
+marketing_samples/
+social_media/
+
 # Models
 models/*
 !models/.gitkeep
