@@ -1038,6 +1038,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const img = monthCard.querySelector('.month-variant-image');
                     img.src = `/api/image/month/${monthId}?variant=${newRetryCount}&t=${Date.now()}`;
 
+                    // Update image preview trigger so modal shows new variant
+                    const previewTrigger = monthCard.querySelector('.image-preview-trigger');
+                    previewTrigger.dataset.imageUrl = `/api/image/month/${monthId}?variant=${newRetryCount}&t=${Date.now()}`;
+
                     // Attach click handler to new dot
                     newDot.addEventListener('click', async function() {
                         const variantIndex = parseInt(this.dataset.variantIndex);
@@ -1056,6 +1060,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 img.src = `/api/image/month/${monthId}?variant=${variantIndex}&t=${Date.now()}`;
                                 dotsContainer.querySelectorAll('.variant-dot').forEach(d => d.classList.remove('active'));
                                 this.classList.add('active');
+
+                                // Update image preview trigger so modal shows correct variant
+                                const previewTrigger = monthCard.querySelector('.image-preview-trigger');
+                                previewTrigger.dataset.imageUrl = `/api/image/month/${monthId}?variant=${variantIndex}&t=${Date.now()}`;
                             }
                         } catch (error) {
                             console.error('Variant switch error:', error);
