@@ -259,11 +259,14 @@
 
             <!-- Extract mockup data for use in product cards -->
             {% if mockup_data %}
-                {% set desktop_mockups = mockup_data.get('desktop', {}).get('mockup_images', []) %}
-                <!-- For desktop, use "front" position to show main catalog image (Jan/Feb/Mar visible) -->
-                {% set desktop_default = desktop_mockups | selectattr('position', 'equalto', 'front') | first or (desktop_mockups[0] if desktop_mockups else none) %}
-                {% set wall_mockups = mockup_data.get('wall_calendar', {}).get('mockup_images', []) %}
-                {% set wall_default = wall_mockups | selectattr('is_default', 'equalto', true) | first or (wall_mockups[0] if wall_mockups else none) %}
+                {% set all_desktop_mockups = mockup_data.get('desktop', {}).get('mockup_images', []) %}
+                {% set all_wall_mockups = mockup_data.get('wall_calendar', {}).get('mockup_images', []) %}
+
+                <!-- Desktop Calendar: Use mockups #4, #5, #6, #7 (indices 3, 4, 5, 6) -->
+                {% set desktop_mockups = [all_desktop_mockups[3], all_desktop_mockups[4], all_desktop_mockups[5], all_desktop_mockups[6]] if all_desktop_mockups|length > 6 else all_desktop_mockups %}
+
+                <!-- Wall Calendar: Use mockups #3, #4, #5, #6 (indices 2, 3, 4, 5) -->
+                {% set wall_mockups = [all_wall_mockups[2], all_wall_mockups[3], all_wall_mockups[4], all_wall_mockups[5]] if all_wall_mockups|length > 5 else all_wall_mockups %}
             {% endif %}
 
             <!-- Product Selection -->
@@ -271,13 +274,23 @@
                 <div class="col-md-5">
                     <div class="card h-100 product-option" data-product="desktop" data-price="22.50">
                         <div class="card-body text-center">
-                            <!-- Desktop Mockup Image - Shows "front" position (calendar standing with Jan/Feb/Mar visible) -->
-                            {% if desktop_default %}
-                            <div class="mb-3">
-                                <img src="{{ desktop_default.src }}"
-                                     alt="Desktop Calendar Mockup"
-                                     class="img-fluid rounded"
-                                     style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            <!-- Desktop Mockup Carousel -->
+                            {% if desktop_mockups and desktop_mockups|length > 0 %}
+                            <div class="mb-3 position-relative">
+                                <div class="mockup-carousel-container" id="desktop-carousel">
+                                    {% for mockup in desktop_mockups %}
+                                    <img src="{{ mockup.src }}"
+                                         alt="Desktop Calendar Mockup View {{ loop.index }}"
+                                         class="mockup-carousel-image img-fluid rounded {% if loop.first %}active{% endif %}"
+                                         style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: {% if loop.first %}block{% else %}none{% endif %};">
+                                    {% endfor %}
+                                </div>
+                                <!-- Carousel Dots -->
+                                <div class="mockup-carousel-dots mt-3">
+                                    {% for mockup in desktop_mockups %}
+                                    <span class="mockup-dot {% if loop.first %}active{% endif %}" data-carousel="desktop-carousel" data-index="{{ loop.index0 }}"></span>
+                                    {% endfor %}
+                                </div>
                             </div>
                             {% endif %}
                             <h5>Desktop Calendar</h5>
@@ -292,13 +305,23 @@
                     <div class="card h-100 border-success border-3 product-option selected" data-product="wall_calendar" data-price="26.25">
                         <div class="card-body text-center">
                             <div class="badge bg-success mb-2">MOST POPULAR</div>
-                            <!-- Wall Calendar Mockup Image -->
-                            {% if wall_default %}
-                            <div class="mb-3">
-                                <img src="{{ wall_default.src }}"
-                                     alt="Wall Calendar Mockup"
-                                     class="img-fluid rounded"
-                                     style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            <!-- Wall Calendar Mockup Carousel -->
+                            {% if wall_mockups and wall_mockups|length > 0 %}
+                            <div class="mb-3 position-relative">
+                                <div class="mockup-carousel-container" id="wall-carousel">
+                                    {% for mockup in wall_mockups %}
+                                    <img src="{{ mockup.src }}"
+                                         alt="Wall Calendar Mockup View {{ loop.index }}"
+                                         class="mockup-carousel-image img-fluid rounded {% if loop.first %}active{% endif %}"
+                                         style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: {% if loop.first %}block{% else %}none{% endif %};">
+                                    {% endfor %}
+                                </div>
+                                <!-- Carousel Dots -->
+                                <div class="mockup-carousel-dots mt-3">
+                                    {% for mockup in wall_mockups %}
+                                    <span class="mockup-dot {% if loop.first %}active{% endif %}" data-carousel="wall-carousel" data-index="{{ loop.index0 }}"></span>
+                                    {% endfor %}
+                                </div>
                             </div>
                             {% endif %}
                             <h5>Wall Calendar 2026</h5>
@@ -777,6 +800,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 priceSpan.innerHTML = '<del>$' + originalPrice + '</del> $' + price;
             }
             console.log('Selected product:', selectedProduct, 'Price:', price);
+        });
+    });
+
+    // Mockup Carousel Functionality
+    const mockupDots = document.querySelectorAll('.mockup-dot');
+
+    mockupDots.forEach(dot => {
+        dot.addEventListener('click', function() {
+            const carouselId = this.dataset.carousel;
+            const targetIndex = parseInt(this.dataset.index);
+            const carouselContainer = document.getElementById(carouselId);
+
+            if (!carouselContainer) return;
+
+            // Get all images in this carousel
+            const images = carouselContainer.querySelectorAll('.mockup-carousel-image');
+            const dots = document.querySelectorAll(`[data-carousel="${carouselId}"]`);
+
+            // Hide all images and deactivate all dots
+            images.forEach(img => img.style.display = 'none');
+            dots.forEach(d => d.classList.remove('active'));
+
+            // Show target image and activate target dot
+            if (images[targetIndex]) {
+                images[targetIndex].style.display = 'block';
+            }
+            this.classList.add('active');
         });
     });
 
@@ -1373,6 +1423,44 @@ document.addEventListener('DOMContentLoaded', () => {
     padding: 15px;
     border-radius: 8px;
     bottom: 30px;
+}
+
+/* Mockup Carousel Dots */
+.mockup-carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.mockup-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mockup-dot:hover {
+    background-color: #999;
+    transform: scale(1.2);
+}
+
+.mockup-dot.active {
+    background-color: #EF2B8A;
+    width: 12px;
+    height: 12px;
+}
+
+/* Mockup carousel images */
+.mockup-carousel-container {
+    position: relative;
+    width: 100%;
+}
+
+.mockup-carousel-image {
+    transition: opacity 0.3s ease;
 }
 </style>
 {% endblock %}
