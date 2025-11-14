@@ -1047,11 +1047,15 @@ def generate_remaining_months():
 def debug_mockups():
     """Debug endpoint to view all mockup data"""
     from flask import render_template_string
-    
+
     mockup_data = session_storage.get_preview_mockup_data()
-    
+
     if not mockup_data:
         return "<h1>No mockup data found</h1><p>Generate a preview first at /project/preview</p>"
+
+    # Get product IDs
+    desktop_product_id = mockup_data.get('desktop', {}).get('product_id', 'Not found')
+    wall_product_id = mockup_data.get('wall_calendar', {}).get('product_id', 'Not found')
     
     html = """
     <!DOCTYPE html>
@@ -1079,9 +1083,11 @@ def debug_mockups():
     
     for product_type, product_data in mockup_data.items():
         mockups = product_data.get('mockup_images', [])
+        product_id = product_data.get('product_id', 'Not found')
         html += f"""
         <div class="product-section">
             <h2>{product_type.replace('_', ' ').title()}</h2>
+            <p><strong>Product ID:</strong> <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; color: #d63384;">{product_id}</code></p>
             <p><strong>Total Mockups:</strong> {len(mockups)}</p>
             <div class="mockup-grid">
         """
