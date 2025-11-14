@@ -426,6 +426,8 @@ let elements, paymentElement;
 // Initialize Payment Element after fetching client secret
 async function initializePaymentElement() {
     try {
+        console.log('🔄 Initializing payment element...');
+
         // Fetch Setup Intent client secret from server
         const response = await fetch('/api/authorize-payment', {
             method: 'POST',
@@ -433,6 +435,7 @@ async function initializePaymentElement() {
         });
 
         const data = await response.json();
+        console.log('📦 Setup Intent response:', data.success ? '✓ Success' : '✗ Failed');
 
         if (!data.success) {
             throw new Error(data.error || 'Failed to initialize payment');
@@ -455,6 +458,8 @@ async function initializePaymentElement() {
             }
         });
 
+        console.log('✓ Stripe elements created');
+
         // Create Payment Element (includes Apple Pay, Google Pay, cards automatically)
         paymentElement = elements.create('payment', {
             layout: {
@@ -467,7 +472,9 @@ async function initializePaymentElement() {
             }
         });
 
+        console.log('✓ Payment element created, mounting...');
         paymentElement.mount('#payment-element');
+        console.log('✓ Payment element mounted successfully');
 
         // Handle real-time validation errors
         paymentElement.on('change', (event) => {
@@ -479,12 +486,19 @@ async function initializePaymentElement() {
             }
         });
 
-        console.log('✓ Payment Element initialized with Apple Pay support');
+        console.log('✅ Payment Element initialized with Apple Pay support');
 
     } catch (error) {
-        console.error('Failed to initialize Payment Element:', error);
+        console.error('❌ Failed to initialize Payment Element:', error);
         const displayError = document.getElementById('payment-errors');
         displayError.textContent = 'Failed to load payment form. Please refresh the page.';
+
+        // Disable the unlock button if payment element fails to load
+        const unlockButton = document.getElementById('unlock-button');
+        if (unlockButton) {
+            unlockButton.disabled = true;
+            unlockButton.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Payment form unavailable';
+        }
     }
 }
 
@@ -530,6 +544,13 @@ async function handleUnlock(e) {
 
     const unlockButton = document.getElementById('unlock-button');
     const originalHTML = unlockButton.innerHTML;
+
+    // Validate that elements are initialized
+    if (!elements) {
+        console.error('❌ Payment element not initialized!');
+        document.getElementById('payment-errors').textContent = 'Payment form not ready. Please refresh the page and try again.';
+        return;
+    }
 
     // Disable button and show loading
     unlockButton.disabled = true;
