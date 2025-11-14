@@ -167,6 +167,9 @@ def get_optimal_scale(product_type, position):
     # - Printify API has no "fit to screen" option (only x, y, scale, angle parameters)
     # - Zoomed out to show more environment/context (not too close to camera)
     if product_type == 'wall_calendar':
+        if position == 'back':
+            # Back cover needs larger scale to fill the back placeholder properly
+            return 1.5  # Fill back cover completely
         return 0.98  # Balanced - shows environment/context, minimal white space (~2%)
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
