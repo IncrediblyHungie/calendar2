@@ -4,10 +4,10 @@
 
 {% block extra_head %}
 <style>
-/* Inline carousel animation - WORKS! */
+/* Seamless infinite carousel animation */
 @keyframes carouselScroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
+    100% { transform: translateX(calc(-280px * 5 - 24px * 5)); }
 }
 
 .carousel-animate {
@@ -21,45 +21,41 @@
 {% endblock %}
 
 {% block content %}
-<!-- WORKING CAROUSEL: Inline styles + simple animation -->
+<!-- PERFECTED CAROUSEL: Seamless infinite loop -->
 <div style="background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%); padding: 60px 0; overflow: hidden;">
-    <div style="display: flex; width: max-content;">
+    <div class="carousel-animate" style="display: flex; gap: 24px; width: max-content;">
         <!-- First group -->
-        <div class="carousel-animate" style="display: flex; gap: 24px; padding-right: 24px; flex-shrink: 0;">
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/january.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/february.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/march.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/april.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/may.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/january.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/february.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/march.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/april.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/may.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
         </div>
 
         <!-- Duplicate group for seamless loop -->
-        <div class="carousel-animate" style="display: flex; gap: 24px; padding-right: 24px; flex-shrink: 0;">
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/january.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/february.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/march.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/april.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
-            <div style="flex-shrink: 0; width: 280px; height: 320px;">
-                <img src="/static/assets/images/carousel/may.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
-            </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/january.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/february.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/march.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/april.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px;">
+            <img src="/static/assets/images/carousel/may.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
         </div>
     </div>
 </div>
