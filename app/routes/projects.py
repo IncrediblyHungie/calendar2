@@ -288,10 +288,14 @@ def cart_page():
     cart_items = session_storage.get_cart_items()
     cart_total = session_storage.get_cart_total()
 
+    # Get preview mockups for dynamic mockup selection
+    preview_mockups = session_storage.get_preview_mockup_data()
+
     return render_template('cart.html',
                           project=project,
                           cart_items=cart_items,
-                          cart_total=cart_total)
+                          cart_total=cart_total,
+                          preview_mockups=preview_mockups)
 
 @bp.route('/create-another')
 def create_another():

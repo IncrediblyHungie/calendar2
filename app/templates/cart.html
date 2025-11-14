@@ -22,9 +22,22 @@
                         <div class="row align-items-center">
                             <!-- Product Image (Printify Mockup) -->
                             <div class="col-md-3">
-                                {% if item.mockup_url %}
+                                {% set mockup_url = None %}
+                                {% if preview_mockups and item.product_type in preview_mockups %}
+                                    {% set mockup_data = preview_mockups[item.product_type] %}
+                                    {% set mockup_images = mockup_data.mockup_images %}
+                                    {# Wall Calendar: mockup #2 (index 1), Desktop: mockup #9 (index 8) #}
+                                    {% set mockup_index = 1 if item.product_type == 'wall_calendar' else 8 %}
+                                    {% if mockup_images and mockup_index < mockup_images|length %}
+                                        {% set mockup_url = mockup_images[mockup_index].src %}
+                                    {% elif mockup_images %}
+                                        {% set mockup_url = mockup_images[0].src %}
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if mockup_url %}
                                 <!-- Display Printify-generated mockup (preferred) -->
-                                <img src="{{ item.mockup_url }}"
+                                <img src="{{ mockup_url }}"
                                      class="img-fluid rounded"
                                      alt="Calendar Mockup"
                                      style="max-height: 200px; object-fit: contain;">
