@@ -26,8 +26,8 @@
                                 {% if preview_mockups and item.product_type in preview_mockups %}
                                     {% set mockup_data = preview_mockups[item.product_type] %}
                                     {% set mockup_images = mockup_data.mockup_images %}
-                                    {# Wall Calendar: mockup #1 (index 0) - FIRST DEFAULT, Desktop: mockup #9 (index 8) #}
-                                    {% set mockup_index = 0 if item.product_type == 'wall_calendar' else 8 %}
+                                    {# Wall Calendar: mockup #8 (index 7), Desktop: mockup #9 (index 8) #}
+                                    {% set mockup_index = 7 if item.product_type == 'wall_calendar' else 8 %}
                                     {% if mockup_images and mockup_index < mockup_images|length %}
                                         {% set mockup_url = mockup_images[mockup_index].src %}
                                     {% elif mockup_images %}
