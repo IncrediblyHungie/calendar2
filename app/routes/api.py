@@ -262,29 +262,29 @@ def generate_month(month_num):
 
         print(f"✓ Month {month_num}: Prepared {len(reference_image_data)} reference images")
 
-        # SPECIAL HANDLING: Use static logo for cover (month 0)
+        # SPECIAL HANDLING: Use static cover image for cover (month 0)
         if month_num == 0:
-            print(f"📸 Month {month_num}: Using static logo for cover (no AI generation)")
+            print(f"📸 Month {month_num}: Using static cover image for cover (no AI generation)")
             import os
             from flask import current_app
 
-            # Get path to logo file
-            logo_path = os.path.join(current_app.root_path, 'static', 'assets', 'images', 'logo', 'logo-cream-blue.png')
+            # Get path to cover image file
+            cover_path = os.path.join(current_app.root_path, 'static', 'assets', 'images', 'cover.png')
 
-            if not os.path.exists(logo_path):
-                error_msg = f'Logo file not found at {logo_path}'
+            if not os.path.exists(cover_path):
+                error_msg = f'Cover image file not found at {cover_path}'
                 print(f"❌ Month {month_num}: {error_msg}")
                 session_storage.update_month_status(month_num, 'failed', error=error_msg)
                 return jsonify({'error': error_msg}), 500
 
-            # Load logo file
-            with open(logo_path, 'rb') as f:
-                logo_data = f.read()
+            # Load cover image file
+            with open(cover_path, 'rb') as f:
+                cover_data = f.read()
 
-            print(f"✅ Month {month_num}: Loaded logo! Size: {len(logo_data)} bytes")
+            print(f"✅ Month {month_num}: Loaded cover image! Size: {len(cover_data)} bytes")
 
             # Convert to JPEG format
-            img = PILImage.open(io.BytesIO(logo_data))
+            img = PILImage.open(io.BytesIO(cover_data))
             img_io = io.BytesIO()
             img.convert('RGB').save(img_io, format='JPEG', quality=95, optimize=True)
             jpeg_data = img_io.getvalue()
