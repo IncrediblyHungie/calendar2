@@ -166,10 +166,8 @@ def get_optimal_scale(product_type, position):
     # - 4:3 (1.33) vs 1.286 → Min scale: 0.964, using 0.98 for balanced fit
     # - Printify API has no "fit to screen" option (only x, y, scale, angle parameters)
     # - Zoomed out to show more environment/context (not too close to camera)
+    # NOTE: Wall calendars do NOT have back_cover placeholder
     if product_type == 'wall_calendar':
-        if position == 'back_cover':
-            # Back cover needs larger scale to fill the back placeholder properly
-            return 1.5  # Fill back cover completely
         return 0.98  # Balanced - shows environment/context, minimal white space (~2%)
 
     # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
@@ -271,23 +269,10 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
             ]
         })
 
-    # Add back cover for wall calendar only
-    if product_type == 'wall_calendar' and "back_cover" in month_image_ids:
-        back_cover_scale = get_optimal_scale(product_type, 'back_cover')
-        print(f"  📐 Back cover scale: {back_cover_scale} (optimized for {product_type})")
-        print_areas[0]["placeholders"].append({
-            "position": "back_cover",  # Changed from "back" to "back_cover"
-            "images": [
-                {
-                    "id": month_image_ids["back_cover"],
-                    "x": 0.5,
-                    "y": 0.5,
-                    "scale": back_cover_scale,
-                    "angle": 0
-                }
-            ]
-        })
-        print("  ✓ Using dedicated back cover image for wall calendar")
+    # NOTE: Wall calendars (blueprint 1253) do NOT have a back_cover placeholder
+    # They only have 13 placeholders: front_cover + 12 months (january-december)
+    # The back of wall calendars is typically blank or has generic calendar info
+    # Desktop calendars may have different placeholder structures - TBD if they support back covers
 
     payload = {
         "title": title,
@@ -593,18 +578,8 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
             print(f"  ✅ Front cover image uploaded")
             time.sleep(0.1)
 
-        # Upload back cover image (month -1) for wall calendar
-        if -1 in month_image_data:
-            print("  📸 Uploading back cover image...")
-            from app.services.image_padding_service import add_safe_padding
-            padded_back_cover = add_safe_padding(
-                month_image_data[-1],
-                use_face_detection=False
-            )
-            upload_data = upload_image(padded_back_cover, "back_cover_preview.jpg")
-            month_image_ids["back_cover"] = upload_data['id']
-            print(f"  ✅ Back cover image uploaded")
-            time.sleep(0.1)
+        # NOTE: Back cover NOT uploaded - wall calendars don't have back_cover placeholder
+        # Blueprint 1253 only supports: front_cover + 12 months (january-december)
 
         # Upload monthly images (months 1-12)
         for month_num in range(1, 13):

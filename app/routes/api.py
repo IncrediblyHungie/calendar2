@@ -341,21 +341,11 @@ def generate_month(month_num):
                     if image_data:
                         month_image_data[month_num] = image_data
 
-                # Add back cover for wall calendar (load from static file)
-                import os
-                from flask import current_app
-                back_cover_path = os.path.join(current_app.root_path, 'static', 'assets', 'images', 'back_cover.png')
-                if os.path.exists(back_cover_path):
-                    with open(back_cover_path, 'rb') as f:
-                        back_cover_data = f.read()
-                    # Convert to JPEG
-                    img = PILImage.open(io.BytesIO(back_cover_data))
-                    img_io = io.BytesIO()
-                    img.convert('RGB').save(img_io, format='JPEG', quality=95, optimize=True)
-                    month_image_data[-1] = img_io.getvalue()  # Use -1 for back cover
-                    print(f"✓ Loaded back cover image for wall calendar")
+                # NOTE: Wall calendars do NOT support back_cover placeholder
+                # Blueprint 1253 only has 13 placeholders: front_cover + 12 months
+                # Back cover removed as it doesn't exist in Printify's wall calendar template
 
-                print(f"✓ Collected {len(month_image_data)} images for mockups (cover + 12 months + back cover)")
+                print(f"✓ Collected {len(month_image_data)} images for mockups (cover + 12 months)")
 
                 # Create Printify products for all calendar types
                 from app.services import printify_service
@@ -590,21 +580,11 @@ def generate_mockup():
                 raise Exception(f"Missing image data for month {month_num}")
             month_image_data[month_num] = image_data
 
-        # Add back cover for wall calendar (load from static file)
-        import os
-        from flask import current_app
-        back_cover_path = os.path.join(current_app.root_path, 'static', 'assets', 'images', 'back_cover.png')
-        if os.path.exists(back_cover_path):
-            with open(back_cover_path, 'rb') as f:
-                back_cover_data = f.read()
-            # Convert to JPEG
-            img = PILImage.open(io.BytesIO(back_cover_data))
-            img_io = io.BytesIO()
-            img.convert('RGB').save(img_io, format='JPEG', quality=95, optimize=True)
-            month_image_data[-1] = img_io.getvalue()  # Use -1 for back cover
-            print(f"✓ Loaded back cover image for wall calendar")
+        # NOTE: Wall calendars do NOT support back_cover placeholder
+        # Blueprint 1253 only has 13 placeholders: front_cover + 12 months
+        # Back cover removed as it doesn't exist in Printify's wall calendar template
 
-        print(f"✓ Collected {len(month_image_data)} images (cover + 12 months + back cover)")
+        print(f"✓ Collected {len(month_image_data)} images (cover + 12 months)")
 
         # Create Printify products for all calendar types
         from app.services import printify_service
