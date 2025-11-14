@@ -565,11 +565,21 @@ def add_to_cart(project_id, product_type):
         mockup_images = mockup_data.get('mockup_images', [])
         print(f"   Found {len(mockup_images)} mockup images for {product_type}")
 
-        # Get the first/default mockup image
+        # Get specific mockup image for cart preview
+        # Wall Calendar: mockup #2 (index 1)
+        # Desktop Calendar: mockup #9 (index 8)
         if mockup_images:
-            # Prefer the default image, or fall back to first image
-            default_mockup = next((img for img in mockup_images if img.get('is_default')), mockup_images[0])
-            mockup_url = default_mockup.get('src')
+            mockup_index = 1 if product_type == 'wall_calendar' else 8  # Default to index 8 for desktop
+
+            # Ensure the requested index exists, fallback to first image
+            if mockup_index < len(mockup_images):
+                selected_mockup = mockup_images[mockup_index]
+                print(f"   📸 Using mockup #{mockup_index + 1} (index {mockup_index}) for cart")
+            else:
+                selected_mockup = mockup_images[0]
+                print(f"   ⚠️ Mockup index {mockup_index} not available, using first mockup")
+
+            mockup_url = selected_mockup.get('src')
             print(f"   ✅ Mockup URL: {mockup_url[:80]}..." if mockup_url else "   ❌ No mockup URL found")
     else:
         print(f"   ❌ No mockups found for {product_type}")
