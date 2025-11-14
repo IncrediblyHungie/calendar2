@@ -2,8 +2,119 @@
 
 {% block title %}Turn Your Man Into a Calendar{% endblock %}
 
+{% block extra_head %}
+<style>
+/* Auto-scrolling carousel styles */
+.hero-carousel-container {
+    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%);
+    padding: 40px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 24px;
+    animation: scroll 30s linear infinite;
+    will-change: transform;
+}
+
+.carousel-track:hover {
+    animation-play-state: paused;
+}
+
+.carousel-item {
+    flex-shrink: 0;
+    width: 280px;
+    transform: rotate(-2deg);
+    transition: transform 0.3s ease;
+}
+
+.carousel-item:nth-child(even) {
+    transform: rotate(2deg);
+    margin-top: 20px;
+}
+
+.carousel-item:hover {
+    transform: rotate(0deg) scale(1.05);
+    z-index: 10;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-280px * 5 - 24px * 5));
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .carousel-item {
+        width: 220px;
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-220px * 5 - 24px * 5));
+        }
+    }
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<!-- Frame 1: Hero Section - WHITE BACKGROUND -->
+<!-- Auto-Scrolling Carousel Hero - PINK GRADIENT -->
+<section class="hero-carousel-container">
+    <div class="carousel-track">
+        <!-- First set of images -->
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/january.jpeg') }}" alt="January Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/february.jpeg') }}" alt="February Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/march.jpeg') }}" alt="March Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/april.jpeg') }}" alt="April Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/may.jpeg') }}" alt="May Calendar">
+        </div>
+
+        <!-- Duplicate set for seamless loop -->
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/january.jpeg') }}" alt="January Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/february.jpeg') }}" alt="February Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/march.jpeg') }}" alt="March Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/april.jpeg') }}" alt="April Calendar">
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/images/carousel/may.jpeg') }}" alt="May Calendar">
+        </div>
+    </div>
+</section>
+
+<!-- Hero Content Section - WHITE BACKGROUND -->
 <section class="hero-figma" style="background-color: white; padding: var(--spacing-2xl) var(--spacing-md) var(--spacing-xl) var(--spacing-md); min-height: auto;">
     <div style="max-width: 700px; margin: 0 auto; text-align: center;">
         <h1 style="font-family: var(--font-family); font-weight: 700; font-size: 48px; line-height: 1.1; letter-spacing: -0.848px; color: #172439; margin-bottom: var(--spacing-md);">
@@ -15,7 +126,7 @@
         </p>
 
         <a href="{{ url_for('main.start') }}" class="btn-figma-primary" style="background: var(--gradient-cta); color: white; font-size: 16px; font-weight: 600; padding: 16px 32px; border-radius: 24px; text-decoration: none; display: inline-block;">
-            Make him a hunk
+            Make him a hunk ✨
         </a>
 
         <div style="margin-top: var(--spacing-md); font-size: 14px; color: #9CA3AF;">
