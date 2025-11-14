@@ -167,7 +167,7 @@ def get_optimal_scale(product_type, position):
     # - Printify API has no "fit to screen" option (only x, y, scale, angle parameters)
     # - Zoomed out to show more environment/context (not too close to camera)
     if product_type == 'wall_calendar':
-        if position == 'back':
+        if position == 'back_cover':
             # Back cover needs larger scale to fill the back placeholder properly
             return 1.5  # Fill back cover completely
         return 0.98  # Balanced - shows environment/context, minimal white space (~2%)
@@ -273,10 +273,10 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
 
     # Add back cover for wall calendar only
     if product_type == 'wall_calendar' and "back_cover" in month_image_ids:
-        back_cover_scale = get_optimal_scale(product_type, 'back')
+        back_cover_scale = get_optimal_scale(product_type, 'back_cover')
         print(f"  📐 Back cover scale: {back_cover_scale} (optimized for {product_type})")
         print_areas[0]["placeholders"].append({
-            "position": "back",
+            "position": "back_cover",  # Changed from "back" to "back_cover"
             "images": [
                 {
                     "id": month_image_ids["back_cover"],
