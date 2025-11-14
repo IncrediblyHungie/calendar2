@@ -4,96 +4,61 @@
 
 {% block extra_head %}
 <style>
-/* Auto-scrolling carousel styles */
+/* Auto-scrolling carousel styles - WORKING PATTERN */
 .hero-carousel-container {
-    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%) !important;
-    padding: 40px 0 !important;
-    overflow-x: auto !important; /* Changed from hidden to auto for debugging */
-    overflow-y: hidden !important;
-    position: relative !important;
-    min-height: 400px !important;
-    width: 100% !important;
+    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%);
+    padding: 40px 0;
+    overflow: hidden;
+    margin: 0 auto;
+    max-width: 100%;
 }
 
-.carousel-track {
-    display: flex !important;
-    gap: 24px !important;
-    animation: scroll 30s linear infinite !important;
-    will-change: transform !important;
-    padding-left: 50px !important;
-    width: fit-content !important;
+.carousel-wrapper {
+    display: flex;
+    width: max-content;
 }
 
-.carousel-track:hover {
-    animation-play-state: paused !important;
+.carousel-wrapper:hover .carousel-group {
+    animation-play-state: paused;
+}
+
+.carousel-group {
+    display: flex;
+    gap: 24px;
+    padding-right: 24px;
+    will-change: transform;
+    animation: scrolling 30s linear infinite;
 }
 
 .carousel-item {
-    flex-shrink: 0 !important;
-    width: 280px !important;
-    min-width: 280px !important;
-    height: 280px !important;
-    min-height: 280px !important;
-    transform: rotate(-2deg) !important;
-    transition: transform 0.3s ease !important;
-    background-color: #f0f0f0 !important; /* Visible placeholder */
-}
-
-.carousel-item:nth-child(even) {
-    transform: rotate(2deg) !important;
-    margin-top: 20px !important;
-}
-
-.carousel-item:hover {
-    transform: rotate(0deg) scale(1.05) !important;
-    z-index: 10 !important;
+    flex-shrink: 0;
+    width: 280px;
+    height: 320px;
 }
 
 .carousel-item img {
-    width: 280px !important;
-    height: 280px !important;
-    min-width: 280px !important;
-    min-height: 280px !important;
-    object-fit: cover !important;
-    border-radius: 12px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: block;
 }
 
-@keyframes scroll {
+@keyframes scrolling {
     0% {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(calc((-280px - 24px) * 5));
+        transform: translateX(-100%);
     }
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
     .carousel-item {
-        width: 220px !important;
-        min-width: 220px !important;
-        height: 220px !important;
-        min-height: 220px !important;
-    }
-
-    .carousel-item img {
-        width: 220px !important;
-        height: 220px !important;
-        min-width: 220px !important;
-        min-height: 220px !important;
-    }
-
-    @keyframes scroll {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(calc((-220px - 24px) * 5));
-        }
+        width: 220px;
+        height: 260px;
     }
 }
 </style>
@@ -102,39 +67,43 @@
 {% block content %}
 <!-- Auto-Scrolling Carousel Hero - PINK GRADIENT -->
 <section class="hero-carousel-container">
-    <div class="carousel-track">
-        <!-- First set of images -->
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/january.jpeg') }}" alt="January Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/february.jpeg') }}" alt="February Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/march.jpeg') }}" alt="March Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/april.jpeg') }}" alt="April Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/may.jpeg') }}" alt="May Calendar">
+    <div class="carousel-wrapper">
+        <!-- First group of images -->
+        <div class="carousel-group">
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/january.jpeg') }}" alt="January Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/february.jpeg') }}" alt="February Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/march.jpeg') }}" alt="March Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/april.jpeg') }}" alt="April Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/may.jpeg') }}" alt="May Calendar">
+            </div>
         </div>
 
-        <!-- Duplicate set for seamless loop -->
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/january.jpeg') }}" alt="January Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/february.jpeg') }}" alt="February Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/march.jpeg') }}" alt="March Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/april.jpeg') }}" alt="April Calendar">
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/images/carousel/may.jpeg') }}" alt="May Calendar">
+        <!-- Duplicate group for seamless loop -->
+        <div class="carousel-group" aria-hidden="true">
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/january.jpeg') }}" alt="January Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/february.jpeg') }}" alt="February Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/march.jpeg') }}" alt="March Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/april.jpeg') }}" alt="April Calendar">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='assets/images/carousel/may.jpeg') }}" alt="May Calendar">
+            </div>
         </div>
     </div>
 </section>
