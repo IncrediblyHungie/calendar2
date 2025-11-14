@@ -533,8 +533,8 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
     so users can see realistic calendar preview before purchasing.
 
     Args:
-        month_image_data: Dict mapping month numbers (1-12) to binary image data
-                         {1: bytes, 2: bytes, ..., 12: bytes}
+        month_image_data: Dict mapping month numbers (0-12) to binary image data
+                         {0: bytes (cover), 1: bytes, 2: bytes, ..., 12: bytes}
         product_type: 'calendar_2026', 'desktop', or 'standard_wall'
 
     Returns:
@@ -553,12 +553,26 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
     print(f"{'='*70}\n")
 
     try:
-        # Step 1: Upload all 12 month images with padding
+        # Step 1: Upload cover and all 12 month images with padding
         print("📤 STEP 1: Uploading padded images to Printify...")
         month_image_ids = {}
         month_names = ["january", "february", "march", "april", "may", "june",
                       "july", "august", "september", "october", "november", "december"]
 
+        # Upload cover image (month 0)
+        if 0 in month_image_data:
+            print("  📸 Uploading cover image...")
+            from app.services.image_padding_service import add_safe_padding
+            padded_cover = add_safe_padding(
+                month_image_data[0],
+                use_face_detection=False
+            )
+            upload_data = upload_image(padded_cover, "cover_preview.jpg")
+            month_image_ids["cover"] = upload_data['id']
+            print(f"  ✅ Cover image uploaded")
+            time.sleep(0.1)
+
+        # Upload monthly images (months 1-12)
         for month_num in range(1, 13):
             if month_num not in month_image_data:
                 raise ValueError(f"Missing image data for month {month_num}")
@@ -579,7 +593,7 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
             # Small delay to avoid rate limiting
             time.sleep(0.1)
 
-        print(f"✅ Uploaded {len(month_image_ids)} images\n")
+        print(f"✅ Uploaded {len(month_image_ids)} images (cover + 12 months)\n")
 
         # Step 2: Create calendar product
         print("🎨 STEP 2: Creating calendar product...")
@@ -636,8 +650,8 @@ def process_full_order(product_type, month_image_data, shipping_address, custome
 
     Args:
         product_type: 'calendar_2026', 'desktop', or 'standard_wall'
-        month_image_data: Dict mapping month numbers (1-12) to binary image data
-                         {1: bytes, 2: bytes, ..., 12: bytes}
+        month_image_data: Dict mapping month numbers (0-12) to binary image data
+                         {0: bytes (cover), 1: bytes, 2: bytes, ..., 12: bytes}
         shipping_address: Dict with required address fields
                          {'first_name', 'last_name', 'address1', 'address2',
                           'city', 'state', 'zip', 'country', 'phone'}
@@ -655,12 +669,21 @@ def process_full_order(product_type, month_image_data, shipping_address, custome
     print(f"{'='*70}\n")
 
     try:
-        # Step 1: Upload all 12 month images
+        # Step 1: Upload cover and all 12 month images
         print("📤 STEP 1: Uploading images...")
         month_image_ids = {}
         month_names = ["january", "february", "march", "april", "may", "june",
                       "july", "august", "september", "october", "november", "december"]
 
+        # Upload cover image (month 0)
+        if 0 in month_image_data:
+            print("  📸 Uploading cover image...")
+            upload_data = upload_image(month_image_data[0], "cover.jpg")
+            month_image_ids["cover"] = upload_data['id']
+            print(f"  ✅ Cover image uploaded")
+            time.sleep(0.1)
+
+        # Upload monthly images (months 1-12)
         for month_num in range(1, 13):
             if month_num not in month_image_data:
                 raise ValueError(f"Missing image data for month {month_num}")
@@ -674,7 +697,7 @@ def process_full_order(product_type, month_image_data, shipping_address, custome
             # Small delay to avoid rate limiting
             time.sleep(0.1)
 
-        print(f"✅ Uploaded {len(month_image_ids)} images\n")
+        print(f"✅ Uploaded {len(month_image_ids)} images (cover + 12 months)\n")
 
         # Step 2: Create calendar product
         print("🎨 STEP 2: Creating calendar product...")

@@ -334,14 +334,14 @@ def generate_month(month_num):
             print(f"{'='*70}\n")
 
             try:
-                # Collect month image data for all 12 months (not cover/month 0)
+                # Collect month image data for cover (month 0) and all 12 months
                 month_image_data = {}
-                for month_num in range(1, 13):
+                for month_num in range(0, 13):  # Include month 0 (cover)
                     image_data = session_storage.get_month_image_data(month_num)
                     if image_data:
                         month_image_data[month_num] = image_data
 
-                print(f"✓ Collected {len(month_image_data)} month images for mockups")
+                print(f"✓ Collected {len(month_image_data)} month images for mockups (including cover)")
 
                 # Create Printify products for all calendar types
                 from app.services import printify_service
@@ -568,15 +568,15 @@ def generate_mockup():
 
         print(f"✓ All 12 months confirmed completed")
 
-        # Collect month image data
+        # Collect month image data (including cover)
         month_image_data = {}
-        for month_num in range(1, 13):
+        for month_num in range(0, 13):  # Include month 0 (cover)
             image_data = session_storage.get_month_image_data(month_num)
             if not image_data:
                 raise Exception(f"Missing image data for month {month_num}")
             month_image_data[month_num] = image_data
 
-        print(f"✓ Collected {len(month_image_data)} month images")
+        print(f"✓ Collected {len(month_image_data)} month images (including cover)")
 
         # Create Printify products for all calendar types
         from app.services import printify_service
