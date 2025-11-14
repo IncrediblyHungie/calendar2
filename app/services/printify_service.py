@@ -268,6 +268,24 @@ def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Ca
             ]
         })
 
+    # Add back cover for wall calendar only
+    if product_type == 'wall_calendar' and "back_cover" in month_image_ids:
+        back_cover_scale = get_optimal_scale(product_type, 'back')
+        print(f"  📐 Back cover scale: {back_cover_scale} (optimized for {product_type})")
+        print_areas[0]["placeholders"].append({
+            "position": "back",
+            "images": [
+                {
+                    "id": month_image_ids["back_cover"],
+                    "x": 0.5,
+                    "y": 0.5,
+                    "scale": back_cover_scale,
+                    "angle": 0
+                }
+            ]
+        })
+        print("  ✓ Using dedicated back cover image for wall calendar")
+
     payload = {
         "title": title,
         "description": "Personalized calendar with AI-generated hunk images",
@@ -561,7 +579,7 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
 
         # Upload cover image (month 0)
         if 0 in month_image_data:
-            print("  📸 Uploading cover image...")
+            print("  📸 Uploading front cover image...")
             from app.services.image_padding_service import add_safe_padding
             padded_cover = add_safe_padding(
                 month_image_data[0],
@@ -569,7 +587,20 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
             )
             upload_data = upload_image(padded_cover, "cover_preview.jpg")
             month_image_ids["cover"] = upload_data['id']
-            print(f"  ✅ Cover image uploaded")
+            print(f"  ✅ Front cover image uploaded")
+            time.sleep(0.1)
+
+        # Upload back cover image (month -1) for wall calendar
+        if -1 in month_image_data:
+            print("  📸 Uploading back cover image...")
+            from app.services.image_padding_service import add_safe_padding
+            padded_back_cover = add_safe_padding(
+                month_image_data[-1],
+                use_face_detection=False
+            )
+            upload_data = upload_image(padded_back_cover, "back_cover_preview.jpg")
+            month_image_ids["back_cover"] = upload_data['id']
+            print(f"  ✅ Back cover image uploaded")
             time.sleep(0.1)
 
         # Upload monthly images (months 1-12)
@@ -677,10 +708,18 @@ def process_full_order(product_type, month_image_data, shipping_address, custome
 
         # Upload cover image (month 0)
         if 0 in month_image_data:
-            print("  📸 Uploading cover image...")
+            print("  📸 Uploading front cover image...")
             upload_data = upload_image(month_image_data[0], "cover.jpg")
             month_image_ids["cover"] = upload_data['id']
-            print(f"  ✅ Cover image uploaded")
+            print(f"  ✅ Front cover image uploaded")
+            time.sleep(0.1)
+
+        # Upload back cover image (month -1) for wall calendar
+        if -1 in month_image_data:
+            print("  📸 Uploading back cover image...")
+            upload_data = upload_image(month_image_data[-1], "back_cover.jpg")
+            month_image_ids["back_cover"] = upload_data['id']
+            print(f"  ✅ Back cover image uploaded")
             time.sleep(0.1)
 
         # Upload monthly images (months 1-12)
