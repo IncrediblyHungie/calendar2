@@ -830,6 +830,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Mockup Image Click to Preview - Open in modal like month images
+    const mockupImages = document.querySelectorAll('.mockup-carousel-image');
+
+    mockupImages.forEach(img => {
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent card selection
+
+            const imageUrl = this.src;
+            const altText = this.alt;
+
+            // Determine if it's Desktop or Wall Calendar
+            const carouselId = this.closest('.mockup-carousel-container').id;
+            const calendarType = carouselId.includes('desktop') ? 'Desktop Calendar' : 'Wall Calendar 2026';
+
+            modalImage.src = imageUrl;
+            modalTitle.textContent = `${calendarType} - ${altText}`;
+            imagePreviewModal.show();
+        });
+    });
+
     // Add to Cart button
     const addToCartBtn = document.getElementById('add-to-cart-btn');
     console.log('Add to cart button:', addToCartBtn);
@@ -1460,7 +1481,13 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 .mockup-carousel-image {
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.mockup-carousel-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15) !important;
 }
 </style>
 {% endblock %}
