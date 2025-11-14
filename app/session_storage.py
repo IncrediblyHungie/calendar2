@@ -566,10 +566,10 @@ def add_to_cart(project_id, product_type):
         print(f"   Found {len(mockup_images)} mockup images for {product_type}")
 
         # Get specific mockup image for cart preview
-        # Wall Calendar: mockup #2 (index 1)
+        # Wall Calendar: mockup #1 (index 0) - FIRST DEFAULT
         # Desktop Calendar: mockup #9 (index 8)
         if mockup_images:
-            mockup_index = 1 if product_type == 'wall_calendar' else 8  # Default to index 8 for desktop
+            mockup_index = 0 if product_type == 'wall_calendar' else 8  # Default to index 8 for desktop
 
             # Ensure the requested index exists, fallback to first image
             if mockup_index < len(mockup_images):
