@@ -78,7 +78,7 @@ def add_watermark(img, logo_size_percent=8, margin_percent=2):
         print(f"  ⚠️  Watermark failed: {e}, returning original image")
         return img
 
-def add_safe_padding(image_bytes, use_face_detection=False):
+def add_safe_padding(image_bytes, use_face_detection=False, skip_watermark=False):
     """
     Add intelligent padding to image with multiple safety layers
 
@@ -87,6 +87,7 @@ def add_safe_padding(image_bytes, use_face_detection=False):
     Args:
         image_bytes: Input image as bytes
         use_face_detection: Enable face detection for smart padding (requires cv2)
+        skip_watermark: Skip adding watermark/logo (for cover images that ARE the logo)
 
     Returns:
         bytes: Image with watermark as JPEG bytes
@@ -99,8 +100,11 @@ def add_safe_padding(image_bytes, use_face_detection=False):
         print(f"  🖼️  Original size: {original_width}x{original_height}")
         print(f"  ⚠️  PADDING DISABLED - adding watermark only")
 
-        # Add watermark to bottom right corner
-        img = add_watermark(img, logo_size_percent=8, margin_percent=2)
+        # Add watermark to bottom right corner (unless skip_watermark=True)
+        if skip_watermark:
+            print(f"  🚫 Skipping watermark (cover image)")
+        else:
+            img = add_watermark(img, logo_size_percent=8, margin_percent=2)
 
         # Convert to JPEG bytes
         output = io.BytesIO()

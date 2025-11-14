@@ -291,9 +291,13 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
         cover_data = next((m for m in months if m['month_number'] == 0), None)
         if cover_data and cover_data.get('master_image_data'):
             print(f"  📸 Processing Cover image...")
+            # Skip watermark for wall calendar cover only (cover IS the logo)
+            # Desktop calendar covers still get watermark
+            skip_logo = (product_type == 'wall_calendar')
             padded_cover = image_padding_service.add_safe_padding(
                 cover_data['master_image_data'],
-                use_face_detection=False
+                use_face_detection=False,
+                skip_watermark=skip_logo
             )
             upload_data = printify_service.upload_image(
                 padded_cover,

@@ -569,9 +569,13 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
         if 0 in month_image_data:
             print("  📸 Uploading front cover image...")
             from app.services.image_padding_service import add_safe_padding
+            # Skip watermark for wall calendar cover only (cover IS the logo)
+            # Desktop calendar covers still get watermark
+            skip_logo = (product_type == 'wall_calendar')
             padded_cover = add_safe_padding(
                 month_image_data[0],
-                use_face_detection=False
+                use_face_detection=False,
+                skip_watermark=skip_logo
             )
             upload_data = upload_image(padded_cover, "cover_preview.jpg")
             month_image_ids["cover"] = upload_data['id']
