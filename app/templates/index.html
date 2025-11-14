@@ -21,8 +21,8 @@
 {% endblock %}
 
 {% block content %}
-<!-- PERFECTED CAROUSEL: Seamless infinite loop - LARGER CALENDARS (380px × 450px) -->
-<div style="background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%); padding: 80px 0; overflow: hidden;">
+<!-- PERFECTED CAROUSEL: Seamless infinite loop with overlap effect (Figma Hero Section style) -->
+<div style="background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%); padding: 60px 0 20px 0; overflow: visible; position: relative; z-index: 10;">
     <div class="carousel-animate" style="display: flex; gap: 32px; width: max-content;">
         <!-- First group -->
         <div style="flex-shrink: 0; width: 380px; height: 450px;">
@@ -103,8 +103,8 @@
     </div>
 </section>
 
-<!-- Hero Content Section - WHITE BACKGROUND -->
-<section class="hero-figma" style="background-color: white; padding: var(--spacing-2xl) var(--spacing-md) var(--spacing-xl) var(--spacing-md); min-height: auto;">
+<!-- Hero Content Section - WHITE BACKGROUND (overlapped by carousel) -->
+<section class="hero-figma" style="background-color: white; margin-top: -250px; padding-top: 300px; padding-left: var(--spacing-md); padding-right: var(--spacing-md); padding-bottom: var(--spacing-xl); min-height: auto; position: relative; z-index: 5;">
     <div style="max-width: 700px; margin: 0 auto; text-align: center;">
         <h1 style="font-family: var(--font-family); font-weight: 700; font-size: 48px; line-height: 1.1; letter-spacing: -0.848px; color: #172439; margin-bottom: var(--spacing-md);">
             Turn your man into<br>a calendar hunk 😍
