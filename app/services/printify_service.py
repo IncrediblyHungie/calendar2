@@ -20,7 +20,7 @@ CALENDAR_PRODUCTS = {
         'title': 'Custom Hunk Calendar 2026',
         'size': '10.8" × 8.4"',  # Today's Graphics size
         'description': '270gsm semi-glossy paper, wire binding, date grids',
-        'price': 2625  # $26.25 (updated pricing)
+        'price': 2650  # $26.50 (updated pricing)
     },
     'desktop': {
         'blueprint_id': 1353,  # Desktop Calendar (2026 grid) - FIXED
@@ -30,7 +30,7 @@ CALENDAR_PRODUCTS = {
         'title': 'Custom Desktop Hunk Calendar',
         'size': '10" × 5"',
         'description': '250gsm matte paper, spiral binding',
-        'price': 3000  # $30.00
+        'price': 2250  # $22.50
     }
 }
 

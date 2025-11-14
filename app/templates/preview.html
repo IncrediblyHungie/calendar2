@@ -302,7 +302,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-5">
-                    <div class="card h-100 border-success border-3 product-option selected" data-product="wall_calendar" data-price="26.25">
+                    <div class="card h-100 border-success border-3 product-option selected" data-product="wall_calendar" data-price="26.50">
                         <div class="card-body text-center p-4">
                             <div class="badge bg-success mb-2">MOST POPULAR</div>
                             <!-- Wall Calendar Mockup Carousel -->
@@ -328,7 +328,7 @@
                             <p class="text-muted mb-1">10.8" × 8.4"</p>
                             <small class="text-muted d-block mb-2">270gsm semi-glossy paper, wire binding</small>
                             <small class="text-success d-block mb-2"><i class="fas fa-flag-usa"></i> Made in USA</small>
-                            <h4 class="text-success mb-0"><del class="text-muted">$35</del> $26.25 <small class="text-success">(25% off)</small></h4>
+                            <h4 class="text-success mb-0"><del class="text-muted">$35.33</del> $26.50 <small class="text-success">(25% off)</small></h4>
                         </div>
                     </div>
                 </div>
@@ -339,7 +339,7 @@
                 <div class="col-md-6 mb-3">
                     <button id="add-to-cart-btn" class="btn btn-success btn-lg w-100">
                         <i class="fas fa-cart-plus me-2"></i>
-                        Add to Cart (<span id="selected-price"><del>$35</del> $26.25</span>)
+                        Add to Cart (<span id="selected-price"><del>$35.33</del> $26.50</span>)
                     </button>
                     <small class="text-muted d-block mt-2 text-center">
                         <i class="fas fa-info-circle me-1"></i>
@@ -796,7 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const priceSpan = document.getElementById('selected-price');
             if (priceSpan) {
                 // Calculate original price (25% off)
-                const originalPrice = price === '22.50' ? '30' : '35';
+                const originalPrice = price === '22.50' ? '30' : '35.33';
                 priceSpan.innerHTML = '<del>$' + originalPrice + '</del> $' + price;
             }
             console.log('Selected product:', selectedProduct, 'Price:', price);
