@@ -260,8 +260,8 @@
             <!-- Extract mockup data for use in product cards -->
             {% if mockup_data %}
                 {% set desktop_mockups = mockup_data.get('desktop', {}).get('mockup_images', []) %}
-                <!-- For desktop, use is_default mockup to show main catalog image (Jan/Feb/Mar visible) -->
-                {% set desktop_default = desktop_mockups | selectattr('is_default', 'equalto', true) | first or (desktop_mockups[0] if desktop_mockups else none) %}
+                <!-- For desktop, try to find mockup that's NOT front_cover or single month (want full product view) -->
+                {% set desktop_default = (desktop_mockups | rejectattr('position', 'equalto', 'front_cover') | first) if desktop_mockups else none %}
                 {% set wall_mockups = mockup_data.get('wall_calendar', {}).get('mockup_images', []) %}
                 {% set wall_default = wall_mockups | selectattr('is_default', 'equalto', true) | first or (wall_mockups[0] if wall_mockups else none) %}
             {% endif %}

@@ -1066,6 +1066,8 @@ def debug_mockups():
             body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
             h1 { color: #333; }
             .product-section { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .position-list { background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #ffc107; }
+            .position-list code { background: #fff; padding: 2px 6px; border-radius: 3px; }
             .mockup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
             .mockup-card { border: 1px solid #ddd; padding: 10px; border-radius: 4px; background: #fafafa; }
             .mockup-card img { width: 100%; height: auto; border-radius: 4px; }
@@ -1073,36 +1075,55 @@ def debug_mockups():
             .mockup-info strong { color: #0066cc; }
             .badge { display: inline-block; padding: 4px 8px; background: #28a745; color: white; border-radius: 3px; font-size: 12px; margin-left: 5px; }
             .january { border: 3px solid #ff6b6b; background: #fff5f5; }
+            .first-mockup { border: 3px solid #007bff; background: #e7f3ff; }
         </style>
     </head>
     <body>
         <h1>🖼️ Printify Mockup Debug View</h1>
         <p><a href="/project/preview">← Back to Preview</a></p>
-        
+
     """
     
     for product_type, product_data in mockup_data.items():
         mockups = product_data.get('mockup_images', [])
         product_id = product_data.get('product_id', 'Not found')
+
+        # Get all unique positions
+        positions = [m.get('position', 'unknown') for m in mockups]
+        position_summary = ', '.join([f"<code>{p}</code>" for p in positions])
+
         html += f"""
         <div class="product-section">
             <h2>{product_type.replace('_', ' ').title()}</h2>
             <p><strong>Product ID:</strong> <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; color: #d63384;">{product_id}</code></p>
             <p><strong>Total Mockups:</strong> {len(mockups)}</p>
+            <div class="position-list">
+                <strong>🎯 All Position Values (in order):</strong><br>
+                {position_summary}
+            </div>
             <div class="mockup-grid">
         """
-        
+
         for i, mockup in enumerate(mockups, 1):
             position = mockup.get('position', 'unknown')
             is_default = mockup.get('is_default', False)
             is_january = position == 'january'
-            card_class = 'mockup-card january' if is_january else 'mockup-card'
-            
+            is_first = (i == 1)
+
+            # Determine card class
+            if is_first:
+                card_class = 'mockup-card first-mockup'
+            elif is_january:
+                card_class = 'mockup-card january'
+            else:
+                card_class = 'mockup-card'
+
             html += f"""
             <div class="{card_class}">
                 <img src="{mockup.get('src', '')}" alt="{position}">
                 <div class="mockup-info">
                     <strong>#{i} - Position:</strong> {position}
+                    {' <span class="badge" style="background: #007bff;">FIRST</span>' if is_first else ''}
                     {' <span class="badge">DEFAULT</span>' if is_default else ''}
                     {' <span class="badge" style="background: #ff6b6b;">JANUARY</span>' if is_january else ''}
                     <br><strong>Variant IDs:</strong> {mockup.get('variant_ids', [])}
