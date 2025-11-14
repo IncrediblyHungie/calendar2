@@ -6,50 +6,60 @@
 <style>
 /* Auto-scrolling carousel styles */
 .hero-carousel-container {
-    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%);
-    padding: 40px 0;
-    overflow: hidden;
-    position: relative;
-    min-height: 400px;
+    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%) !important;
+    padding: 40px 0 !important;
+    overflow-x: auto !important; /* Changed from hidden to auto for debugging */
+    overflow-y: hidden !important;
+    position: relative !important;
+    min-height: 400px !important;
+    width: 100% !important;
 }
 
 .carousel-track {
-    display: flex;
-    gap: 24px;
-    animation: scroll 30s linear infinite;
-    will-change: transform;
-    padding-left: 50px;
+    display: flex !important;
+    gap: 24px !important;
+    animation: scroll 30s linear infinite !important;
+    will-change: transform !important;
+    padding-left: 50px !important;
+    width: fit-content !important;
 }
 
 .carousel-track:hover {
-    animation-play-state: paused;
+    animation-play-state: paused !important;
 }
 
 .carousel-item {
-    flex-shrink: 0;
-    width: 280px;
-    min-height: 280px;
-    transform: rotate(-2deg);
-    transition: transform 0.3s ease;
+    flex-shrink: 0 !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    height: 280px !important;
+    min-height: 280px !important;
+    transform: rotate(-2deg) !important;
+    transition: transform 0.3s ease !important;
+    background-color: #f0f0f0 !important; /* Visible placeholder */
 }
 
 .carousel-item:nth-child(even) {
-    transform: rotate(2deg);
-    margin-top: 20px;
+    transform: rotate(2deg) !important;
+    margin-top: 20px !important;
 }
 
 .carousel-item:hover {
-    transform: rotate(0deg) scale(1.05);
-    z-index: 10;
+    transform: rotate(0deg) scale(1.05) !important;
+    z-index: 10 !important;
 }
 
 .carousel-item img {
-    width: 280px;
-    height: 280px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    display: block;
+    width: 280px !important;
+    height: 280px !important;
+    min-width: 280px !important;
+    min-height: 280px !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 @keyframes scroll {
@@ -64,13 +74,17 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .carousel-item {
-        width: 220px;
-        min-height: 220px;
+        width: 220px !important;
+        min-width: 220px !important;
+        height: 220px !important;
+        min-height: 220px !important;
     }
 
     .carousel-item img {
-        width: 220px;
-        height: 220px;
+        width: 220px !important;
+        height: 220px !important;
+        min-width: 220px !important;
+        min-height: 220px !important;
     }
 
     @keyframes scroll {
