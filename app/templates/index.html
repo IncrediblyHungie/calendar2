@@ -86,8 +86,23 @@
 {% endblock %}
 
 {% block content %}
+<!-- INLINE TEST: Bypass all CSS -->
+<div style="background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%); padding: 60px 20px; overflow: hidden;">
+    <div style="display: flex; gap: 24px;">
+        <div style="flex-shrink: 0; width: 280px; height: 320px; background: #ccc;">
+            <img src="/static/assets/images/carousel/january.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block;">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px; background: #ccc;">
+            <img src="/static/assets/images/carousel/february.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block;">
+        </div>
+        <div style="flex-shrink: 0; width: 280px; height: 320px; background: #ccc;">
+            <img src="/static/assets/images/carousel/march.jpeg" style="width: 280px; height: 320px; object-fit: cover; display: block;">
+        </div>
+    </div>
+</div>
+
 <!-- Auto-Scrolling Carousel Hero - PINK GRADIENT -->
-<section class="hero-carousel-container">
+<section class="hero-carousel-container" style="display: none;">
     <div class="carousel-wrapper">
         <!-- First group of images -->
         <div class="carousel-group">
