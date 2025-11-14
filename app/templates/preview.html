@@ -260,8 +260,8 @@
             <!-- Extract mockup data for use in product cards -->
             {% if mockup_data %}
                 {% set desktop_mockups = mockup_data.get('desktop', {}).get('mockup_images', []) %}
-                <!-- For desktop, find first month mockup (not cover) - look for one with position > 0 or month indicator -->
-                {% set desktop_default = desktop_mockups | selectattr('is_default', 'equalto', true) | first or (desktop_mockups[1] if desktop_mockups|length > 1 else desktop_mockups[0]) if desktop_mockups else none %}
+                <!-- For desktop, use January mockup to show calendar grid (not front_cover which has no grid) -->
+                {% set desktop_default = desktop_mockups | selectattr('position', 'equalto', 'january') | first or (desktop_mockups[1] if desktop_mockups|length > 1 else desktop_mockups[0]) if desktop_mockups else none %}
                 {% set wall_mockups = mockup_data.get('wall_calendar', {}).get('mockup_images', []) %}
                 {% set wall_default = wall_mockups | selectattr('is_default', 'equalto', true) | first or (wall_mockups[0] if wall_mockups else none) %}
             {% endif %}
@@ -271,7 +271,7 @@
                 <div class="col-md-5">
                     <div class="card h-100 product-option" data-product="desktop" data-price="22.50">
                         <div class="card-body text-center">
-                            <!-- Desktop Mockup Image - Use default mockup (same as Wall Calendar) -->
+                            <!-- Desktop Mockup Image - Shows January page with calendar grid -->
                             {% if desktop_default %}
                             <div class="mb-3">
                                 <img src="{{ desktop_default.src }}"
