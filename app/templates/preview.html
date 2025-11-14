@@ -270,19 +270,19 @@
             {% endif %}
 
             <!-- Product Selection -->
-            <div class="row mb-4 justify-content-center">
-                <div class="col-md-5">
+            <div class="row mb-4 justify-content-center g-4">
+                <div class="col-md-6 col-lg-5">
                     <div class="card h-100 product-option" data-product="desktop" data-price="22.50">
-                        <div class="card-body text-center">
+                        <div class="card-body text-center p-4">
                             <!-- Desktop Mockup Carousel -->
                             {% if desktop_mockups and desktop_mockups|length > 0 %}
                             <div class="mb-3 position-relative">
-                                <div class="mockup-carousel-container" id="desktop-carousel">
+                                <div class="mockup-carousel-container" id="desktop-carousel" style="max-width: 600px; margin: 0 auto;">
                                     {% for mockup in desktop_mockups %}
                                     <img src="{{ mockup.src }}"
                                          alt="Desktop Calendar Mockup View {{ loop.index }}"
                                          class="mockup-carousel-image img-fluid rounded {% if loop.first %}active{% endif %}"
-                                         style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: {% if loop.first %}block{% else %}none{% endif %};">
+                                         style="width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: {% if loop.first %}block{% else %}none{% endif %};">
                                     {% endfor %}
                                 </div>
                                 <!-- Carousel Dots -->
@@ -301,19 +301,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6 col-lg-5">
                     <div class="card h-100 border-success border-3 product-option selected" data-product="wall_calendar" data-price="26.25">
-                        <div class="card-body text-center">
+                        <div class="card-body text-center p-4">
                             <div class="badge bg-success mb-2">MOST POPULAR</div>
                             <!-- Wall Calendar Mockup Carousel -->
                             {% if wall_mockups and wall_mockups|length > 0 %}
                             <div class="mb-3 position-relative">
-                                <div class="mockup-carousel-container" id="wall-carousel">
+                                <div class="mockup-carousel-container" id="wall-carousel" style="max-width: 600px; margin: 0 auto;">
                                     {% for mockup in wall_mockups %}
                                     <img src="{{ mockup.src }}"
                                          alt="Wall Calendar Mockup View {{ loop.index }}"
                                          class="mockup-carousel-image img-fluid rounded {% if loop.first %}active{% endif %}"
-                                         style="max-width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: {% if loop.first %}block{% else %}none{% endif %};">
+                                         style="width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: {% if loop.first %}block{% else %}none{% endif %};">
                                     {% endfor %}
                                 </div>
                                 <!-- Carousel Dots -->
