@@ -16,9 +16,9 @@
 .carousel-track {
     display: flex;
     gap: 24px;
-    width: fit-content;
     animation: scroll 30s linear infinite;
     will-change: transform;
+    padding-left: 50px;
 }
 
 .carousel-track:hover {
@@ -28,6 +28,7 @@
 .carousel-item {
     flex-shrink: 0;
     width: 280px;
+    min-height: 280px;
     transform: rotate(-2deg);
     transition: transform 0.3s ease;
 }
@@ -43,13 +44,12 @@
 }
 
 .carousel-item img {
-    width: 100%;
-    height: auto;
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     display: block;
-    max-width: 100%;
-    background-color: #f0f0f0;
 }
 
 @keyframes scroll {
@@ -65,6 +65,12 @@
 @media (max-width: 768px) {
     .carousel-item {
         width: 220px;
+        min-height: 220px;
+    }
+
+    .carousel-item img {
+        width: 220px;
+        height: 220px;
     }
 
     @keyframes scroll {
