@@ -52,9 +52,10 @@
             <!-- Delivery Worker Hero Image -->
             <div class="mb-lg" style="text-align: center;">
                 <img id="delivery-worker-image"
-                     src="{{ url_for('api.get_delivery_image') }}"
+                     src="{{ url_for('api.get_delivery_image', stripe_session_id=session_id) }}"
                      alt="Your personal delivery hunky postal worker"
-                     style="max-width: 600px; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                     style="max-width: 600px; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);"
+                     onerror="console.error('Failed to load delivery worker image'); this.style.display='none';">
             </div>
 
             <!-- Order Summary -->

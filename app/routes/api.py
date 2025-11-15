@@ -957,11 +957,34 @@ def get_cart_project_cover(project_id):
 def get_delivery_image():
     """Serve delivery worker image for order success page"""
     try:
-        delivery_image_data = session_storage.get_delivery_image()
+        # Get stripe_session_id from URL parameter
+        stripe_session_id = request.args.get('stripe_session_id')
+
+        if stripe_session_id:
+            # Look up internal session ID from Stripe metadata
+            import stripe
+            try:
+                stripe_session = stripe.checkout.Session.retrieve(stripe_session_id)
+                internal_session_id = stripe_session.metadata.get('internal_session_id')
+
+                if internal_session_id:
+                    print(f"🔍 Looking up delivery image for internal session: {internal_session_id}")
+                    delivery_image_data = session_storage.get_delivery_image_by_session_id(internal_session_id)
+                else:
+                    print(f"⚠️  No internal_session_id in Stripe metadata")
+                    delivery_image_data = session_storage.get_delivery_image()
+            except Exception as stripe_error:
+                print(f"⚠️  Failed to retrieve Stripe session: {stripe_error}")
+                delivery_image_data = session_storage.get_delivery_image()
+        else:
+            # Fallback to current session (for backwards compatibility)
+            delivery_image_data = session_storage.get_delivery_image()
 
         if not delivery_image_data:
+            print(f"❌ Delivery image not found")
             return jsonify({'error': 'Delivery image not found'}), 404
 
+        print(f"✅ Serving delivery image ({len(delivery_image_data)} bytes)")
         return send_file(
             io.BytesIO(delivery_image_data),
             mimetype='image/jpeg'
@@ -969,6 +992,8 @@ def get_delivery_image():
 
     except Exception as e:
         print(f"❌ Get delivery image error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
 # ============================================================================
