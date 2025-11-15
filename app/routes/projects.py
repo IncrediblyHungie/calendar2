@@ -90,6 +90,9 @@ def upload():
                         flash(f'Error processing {file.filename}: {str(e)}', 'warning')
                         continue
 
+            # CRITICAL: Force save to disk before redirect
+            session_storage._save_session(session_storage._get_session_id())
+
             flash(f'{len(files)} photos uploaded successfully!', 'success')
 
         # Redirect to GET request (Post/Redirect/Get pattern)
