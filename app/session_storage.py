@@ -239,11 +239,24 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
     return image_id
 
 def get_image_by_id(image_id):
-    """Get image by ID from active project"""
-    project = _get_active_project()
-    for img in project.get('images', []):
-        if img['id'] == image_id:
-            return img
+    """Get image by ID - searches across all sessions (for split architecture)"""
+    # First try current session's active project
+    try:
+        project = _get_active_project()
+        for img in project.get('images', []):
+            if img['id'] == image_id:
+                return img
+    except:
+        pass
+
+    # Search across all sessions to find the image (needed for split architecture)
+    _load_storage()
+    for session_id, session_data in _storage.items():
+        if 'project' in session_data:
+            for img in session_data['project'].get('images', []):
+                if img['id'] == image_id:
+                    return img
+
     return None
 
 def delete_image(image_id):
