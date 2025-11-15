@@ -111,8 +111,8 @@
     justify-content: center;
     gap: 10px;
     border-radius: 100px;
-    background: #F1F2F9;
-    box-shadow: 0 0.5px 1px 0 rgba(25, 33, 61, 0.07);
+    background: linear-gradient(114deg, #FF4DA6 0%, #FF8C42 100%);
+    box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.12) inset, 0 1px 1.5px 0 rgba(255, 255, 255, 0.25) inset, 0 2px 6px 0 rgba(74, 58, 255, 0.10);
     transition: all 0.3s ease;
     width: 28px;
     height: 28px;
@@ -123,18 +123,18 @@
     content: '↓';
     font-size: 16px;
     transition: transform 0.3s ease;
-    color: #192636;
+    color: white;
 }
 
 /* Open state */
 .faq-item[open] .faq-arrow {
-    background: linear-gradient(114deg, #FF4DA6 0%, #FF8C42 100%);
-    box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.12) inset, 0 1px 1.5px 0 rgba(255, 255, 255, 0.25) inset, 0 2px 6px 0 rgba(74, 58, 255, 0.10);
+    background: #F1F2F9;
+    box-shadow: 0 0.5px 1px 0 rgba(25, 33, 61, 0.07);
 }
 
 .faq-item[open] .faq-arrow::after {
     transform: rotate(180deg);
-    color: white;
+    color: #192636;
 }
 
 .faq-content {
