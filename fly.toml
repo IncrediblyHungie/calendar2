@@ -11,15 +11,15 @@ primary_region = "sjc"
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"        # Scale to zero when idle
+  auto_stop_machines = "suspend"     # Suspend instead of stop (faster wake-up)
   auto_start_machines = true
-  min_machines_running = 0           # Zero cost when no requests
+  min_machines_running = 1           # Keep 1 machine always running (no cold starts)
   processes = ["app"]
 
   [http_service.concurrency]
     type = "connections"
-    hard_limit = 25
-    soft_limit = 20
+    hard_limit = 100                 # Gunicorn can handle 100 connections per machine
+    soft_limit = 80                  # Start new machine at 80 concurrent connections
 
 [[vm]]
   memory = '2048mb'  # Upgraded from 512mb to 2GB
