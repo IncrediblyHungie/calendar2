@@ -73,12 +73,20 @@ def get_thumbnail(image_id):
     # Get project_id from query parameter (optional)
     project_id = request.args.get('project_id')
 
+    print(f"🖼️  Thumbnail request: image_id={image_id}, project_id={project_id}")
+
     if project_id:
         # Get image from SPECIFIC project (guaranteed correct)
         image = session_storage.get_image_by_id_from_project(image_id, project_id)
+        if not image:
+            print(f"❌ Image {image_id} not found in project {project_id}")
+        else:
+            print(f"✅ Found image {image_id} in project {project_id}")
     else:
         # Fallback: Get image from active project (backwards compatibility)
         image = session_storage.get_image_by_id(image_id)
+        if not image:
+            print(f"❌ Image {image_id} not found in active project")
 
     if not image or not image.get('thumbnail_data'):
         return jsonify({'error': 'Image not found'}), 404
