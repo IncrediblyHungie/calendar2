@@ -199,7 +199,7 @@
                                 </form>
 
                                 <p class="text-muted text-center mt-3 mb-0 small">
-                                    <i class="fas fa-shield-alt me-1"></i>
+                                    <i class="fas fa-shield-halved me-1"></i>
                                     Secured by Stripe. No charge until you order.
                                 </p>
                             </div>
@@ -423,6 +423,9 @@ const stripe = Stripe('{{ config.STRIPE_PUBLISHABLE_KEY }}');
 let elements, paymentElement;
 
 console.log('🔑 Stripe Mode:', '{{ config.STRIPE_PUBLISHABLE_KEY }}'.startsWith('pk_live') ? 'LIVE' : 'TEST');
+
+// Check Font Awesome loading
+console.log('🎨 Font Awesome loaded:', typeof FontAwesome !== 'undefined' || document.querySelector('link[href*="font-awesome"]') !== null);
 
 // Initialize Payment Element after fetching client secret
 async function initializePaymentElement() {

@@ -135,6 +135,12 @@ main {
     color: white;
 }
 
+.step.completed .step-number i {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1;
+}
+
 .step-label {
     font-size: 14px;
     color: #444444;
