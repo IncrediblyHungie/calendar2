@@ -309,8 +309,23 @@ main {
 }
 
 .btn-lg {
-    padding: 12px 30px;
-    font-size: 18px;
+    display: flex !important;
+    min-width: 251px;
+    height: 45px;
+    padding: 10.611px 52.239px !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8.162px;
+    flex-shrink: 0;
+    border-radius: 70px !important;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Make w-100 buttons responsive while maintaining height */
+.btn-lg.w-100 {
+    min-width: auto;
+    width: 100%;
 }
 
 /* Forms */

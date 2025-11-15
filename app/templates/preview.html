@@ -364,8 +364,8 @@
                 </div>
                 <div class="modal-body text-center py-4">
                     <i class="fas fa-calendar-check fa-4x text-success mb-3"></i>
-                    <h4>Calendar Added Successfully!</h4>
-                    <p class="lead mb-3">You now have <strong><span id="modalCartCount">1</span> calendar(s)</strong> in your cart.</p>
+                    <h4 style="color: #000000; font-weight: 600;">Calendar Added Successfully!</h4>
+                    <p class="lead mb-3" style="color: #000000;">You now have <strong><span id="modalCartCount">1</span> calendar(s)</strong> in your cart.</p>
                     <p class="text-muted">
                         Want to create calendars for other people?<br>
                         Upload different photos for each person!
@@ -1449,6 +1449,26 @@ document.addEventListener('DOMContentLoaded', () => {
 .mockup-carousel-image:hover {
     transform: scale(1.02);
     box-shadow: 0 6px 16px rgba(0,0,0,0.15) !important;
+}
+
+/* Standardized Button Styling - Figma Design System */
+.btn-lg {
+    display: flex !important;
+    min-width: 251px;
+    height: 45px;
+    padding: 10.611px 52.239px !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8.162px;
+    flex-shrink: 0;
+    border-radius: 70px !important;
+    font-weight: 600;
+}
+
+/* Make w-100 buttons responsive while maintaining height */
+.btn-lg.w-100 {
+    min-width: auto;
+    width: 100%;
 }
 </style>
 
