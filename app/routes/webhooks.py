@@ -440,7 +440,7 @@ def create_printify_order(internal_session_id, stripe_session_id, payment_intent
     print("\n📸 Checking delivery worker image...")
     try:
         # Check if image was already pre-generated at checkout
-        existing_image = session_storage.get_delivery_image()
+        existing_image = session_storage.get_delivery_image_by_session_id(internal_session_id)
 
         if existing_image:
             print(f"✅ Delivery worker image already pre-generated at checkout ({len(existing_image)} bytes)")
