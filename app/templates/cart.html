@@ -2,6 +2,57 @@
 
 {% block title %}Shopping Cart{% endblock %}
 
+{% block extra_head %}
+<style>
+/* Mobile Cart Styling - Center and Stack Items */
+@media (max-width: 991px) {
+    /* Center cart items container on mobile */
+    .cart-items-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Stack cart item elements vertically on mobile */
+    .cart-item .row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Image section - full width, centered */
+    .cart-item .col-md-3 {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 20px;
+    }
+
+    /* Product details - full width, centered */
+    .cart-item .col-md-6 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /* Price and actions - full width, centered */
+    .cart-item .col-md-3 {
+        width: 100%;
+        text-align: center !important;
+    }
+
+    /* Order summary - full width on mobile */
+    .order-summary-container {
+        max-width: 600px;
+        margin: 30px auto 0 auto;
+    }
+
+    /* Remove sticky positioning on mobile */
+    .card.sticky-top {
+        position: static !important;
+    }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container py-5">
     <h1 class="text-center mb-5 text-dark">
@@ -12,7 +63,7 @@
     {% if cart_items %}
     <!-- Cart Items -->
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-8 cart-items-container">
             <div class="card shadow-sm mb-4">
                 <div class="card-body p-4">
                     <h4 class="card-title mb-4">Cart Items ({{ cart_items|length }})</h4>
@@ -61,11 +112,6 @@
                                 <h5 class="mb-2 text-dark">
                                     Wall Calendar 2026
                                 </h5>
-                                <p class="text-muted mb-1">
-                                    <small>
-                                        10.8" × 8.4" • 270gsm semi-glossy paper, wire binding
-                                    </small>
-                                </p>
                                 <p class="text-muted mb-0">
                                     <small>
                                         <i class="fas fa-clock me-1"></i>
@@ -102,7 +148,7 @@
         </div>
 
         <!-- Order Summary -->
-        <div class="col-lg-4">
+        <div class="col-lg-4 order-summary-container">
             <div class="card shadow-lg sticky-top" style="top: 20px;">
                 <div class="card-body p-4">
                     <h4 class="card-title mb-4">Order Summary</h4>
