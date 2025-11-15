@@ -49,7 +49,7 @@
             </a>
             <div class="ms-auto">
                 <a href="{{ url_for('projects.cart_page') }}" class="btn position-relative" style="background: transparent; border: 2px solid var(--accent-primary); color: var(--accent-primary); border-radius: 70px; padding: 6px 15px; width: 56px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                    <span style="font-size: 20px;">🛒</span>
+                    <img src="{{ url_for('static', filename='assets/icons/shopping-cart.png') }}" alt="Cart" style="width: 20px; height: 20px;">
                     <span class="cart-count-badge position-absolute top-0 start-100 translate-middle badge rounded-pill"
                           style="display: none; background: var(--accent-primary);">
                         0
@@ -83,8 +83,8 @@
         <div class="container">
             <!-- Instagram Icon -->
             <div class="mb-3">
-                <a href="https://www.instagram.com/hunkofthemonthofficial/?igsh=NTc4MTIwNjQ2YQ%3D%3D" target="_blank" rel="noopener noreferrer" style="font-size: 32px; text-decoration: none; transition: opacity 0.3s ease; display: inline-block;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                    <span style="background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 32px;">📷</span>
+                <a href="https://www.instagram.com/hunkofthemonthofficial/?igsh=NTc4MTIwNjQ2YQ%3D%3D" target="_blank" rel="noopener noreferrer" style="text-decoration: none; transition: opacity 0.3s ease; display: inline-block;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                    <img src="{{ url_for('static', filename='assets/icons/instagram.png') }}" alt="Instagram" style="width: 32px; height: 32px;">
                 </a>
             </div>
 
