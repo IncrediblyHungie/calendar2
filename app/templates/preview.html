@@ -415,6 +415,8 @@
 const stripe = Stripe('{{ config.STRIPE_PUBLISHABLE_KEY }}');
 let elements, paymentElement;
 
+console.log('🔑 Stripe Mode:', '{{ config.STRIPE_PUBLISHABLE_KEY }}'.startsWith('pk_live') ? 'LIVE' : 'TEST');
+
 // Initialize Payment Element after fetching client secret
 async function initializePaymentElement() {
     try {
@@ -488,6 +490,27 @@ async function initializePaymentElement() {
             console.log('✅ Payment Element ready - checking available payment methods...');
             console.log('📱 If you\'re on Safari (iOS/macOS), Apple Pay should appear as the first option');
             console.log('💳 If you\'re on Chrome (Android), Google Pay should appear as the first option');
+
+            // Check if ApplePaySession is available (indicates Apple Pay support)
+            if (window.ApplePaySession) {
+                if (ApplePaySession.canMakePayments()) {
+                    console.log('✅ Apple Pay IS SUPPORTED on this device');
+                    console.log('💡 Apple Pay should be visible in the payment form above');
+                    console.log('🔍 If you don\'t see it, check:');
+                    console.log('   1. Are you using Safari browser?');
+                    console.log('   2. Do you have cards in Apple Wallet?');
+                    console.log('   3. Is your region/country supported?');
+                } else {
+                    console.log('⚠️ Apple Pay NOT available - no cards in Apple Wallet');
+                    console.log('💡 Add a card to Wallet: Settings → Wallet & Apple Pay → Add Card');
+                }
+            } else {
+                console.log('❌ Apple Pay NOT supported on this device/browser');
+                console.log('💡 Apple Pay requires:');
+                console.log('   - Safari browser on iOS 10.1+ or macOS 10.12+');
+                console.log('   - iPhone, iPad, or Mac with Touch ID/Face ID');
+                console.log('   - Current browser:', navigator.userAgent);
+            }
         });
 
         // Handle real-time validation errors
