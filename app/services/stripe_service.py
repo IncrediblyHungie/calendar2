@@ -179,6 +179,7 @@ def create_setup_intent(metadata=None):
     """
     Create Setup Intent for card authorization WITHOUT charging
     Used for 3-month preview unlock gate
+    Supports Apple Pay, Google Pay, Link, and cards
 
     Args:
         metadata: Optional dict of metadata (internal_session_id, project_id, etc.)
@@ -187,7 +188,7 @@ def create_setup_intent(metadata=None):
         dict: {'client_secret': str, 'setup_intent_id': str}
     """
     setup_intent = stripe.SetupIntent.create(
-        payment_method_types=['card'],
+        automatic_payment_methods={'enabled': True},  # Auto-enable Apple Pay, Google Pay, Link, cards
         usage='off_session',  # Allow charging later without customer present
         metadata=metadata or {}
     )
