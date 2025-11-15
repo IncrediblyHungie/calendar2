@@ -137,35 +137,50 @@ def stripe_webhook():
 
                 order_ids = []
                 for i, cart_item in enumerate(cart_items, 1):
+                    quantity = cart_item.get('quantity', 1)  # Get quantity (default 1 for legacy items)
+
                     print(f"\n{'='*60}")
                     print(f"📦 Processing cart item {i}/{len(cart_items)}")
                     print(f"   Project ID: {cart_item['project_id']}")
                     print(f"   Product Type: {cart_item['product_type']}")
+                    print(f"   Quantity: {quantity}")
                     print(f"{'='*60}")
 
-                    try:
-                        order_id = create_printify_order(
-                            internal_session_id=internal_session_id,
-                            stripe_session_id=checkout_session.id,
-                            payment_intent_id=payment_intent_id,
-                            product_type=cart_item['product_type'],
-                            customer_email=customer_email,
-                            shipping_address=shipping_address,
-                            project_id=cart_item['project_id']  # Specify which project to use
-                        )
+                    # Create separate Printify orders for each quantity
+                    # Printify doesn't support quantity in API, so we create multiple orders
+                    for q in range(1, quantity + 1):
+                        try:
+                            if quantity > 1:
+                                print(f"\n  📦 Creating order {q}/{quantity} for this item...")
 
-                        order_ids.append(order_id)
-                        print(f"✅ Cart item {i} created in Printify: {order_id}")
+                            order_id = create_printify_order(
+                                internal_session_id=internal_session_id,
+                                stripe_session_id=checkout_session.id,
+                                payment_intent_id=payment_intent_id,
+                                product_type=cart_item['product_type'],
+                                customer_email=customer_email,
+                                shipping_address=shipping_address,
+                                project_id=cart_item['project_id']  # Specify which project to use
+                            )
 
-                    except Exception as item_error:
-                        print(f"❌ Cart item {i} failed to create: {item_error}")
-                        import traceback
-                        traceback.print_exc()
-                        # Continue with other items even if one fails
+                            order_ids.append(order_id)
+                            if quantity > 1:
+                                print(f"  ✅ Order {q}/{quantity} created in Printify: {order_id}")
+                            else:
+                                print(f"✅ Cart item {i} created in Printify: {order_id}")
 
-                print(f"\n🎉 Cart fulfillment complete: {len(order_ids)}/{len(cart_items)} orders created in Printify")
-                if len(order_ids) < len(cart_items):
-                    print(f"⚠️  {len(cart_items) - len(order_ids)} orders failed to create")
+                        except Exception as item_error:
+                            print(f"❌ Cart item {i} (order {q}/{quantity}) failed to create: {item_error}")
+                            import traceback
+                            traceback.print_exc()
+                            # Continue with other items even if one fails
+
+                # Calculate total expected orders (sum of all quantities)
+                total_expected_orders = sum(item.get('quantity', 1) for item in cart_items)
+
+                print(f"\n🎉 Cart fulfillment complete: {len(order_ids)}/{total_expected_orders} orders created in Printify")
+                if len(order_ids) < total_expected_orders:
+                    print(f"⚠️  {total_expected_orders - len(order_ids)} orders failed to create")
                 print(f"📋 Check orders at: https://printify.com/app/orders")
 
                 # Clear cart after successful fulfillment

@@ -554,7 +554,12 @@ def add_to_cart(project_id, product_type):
     # Check if this project+product combo already in cart
     for item in storage['cart']:
         if item['project_id'] == project_id and item['product_type'] == product_type:
-            # Already in cart - don't add duplicate
+            # Already in cart - increment quantity instead of adding duplicate
+            item['quantity'] = item.get('quantity', 1) + 1
+            if item['quantity'] > 99:
+                item['quantity'] = 99  # Cap at 99
+            _save_session(_get_session_id())
+            print(f"📦 Incremented quantity to {item['quantity']} for existing cart item")
             return item['id']
 
     # Get Printify mockup URL for this product type
@@ -589,13 +594,14 @@ def add_to_cart(project_id, product_type):
     else:
         print(f"   ❌ No mockups found for {product_type}")
 
-    # Create cart item
+    # Create cart item with quantity
     cart_item_id = secrets.token_urlsafe(16)
     cart_item = {
         'id': cart_item_id,
         'project_id': project_id,
         'product_type': product_type,
         'price': PRODUCT_PRICES[product_type],
+        'quantity': 1,  # Default quantity
         'mockup_url': mockup_url,  # Printify mockup image URL
         'added_at': datetime.utcnow().isoformat()
     }
@@ -627,6 +633,7 @@ def get_cart_items():
                 'project_id': cart_item['project_id'],
                 'product_type': cart_item['product_type'],
                 'price': cart_item['price'],
+                'quantity': cart_item.get('quantity', 1),  # Include quantity (default 1 for legacy items)
                 'added_at': cart_item['added_at'],
                 'project_created_at': project['created_at'],
                 'has_cover_image': cover_month is not None and cover_month.get('generation_status') == 'completed',
@@ -641,9 +648,27 @@ def get_cart_count():
     return len(storage['cart'])
 
 def get_cart_total():
-    """Get total price of all cart items"""
+    """Get total price of all cart items (price × quantity for each item)"""
     storage = _get_storage()
-    return sum(item['price'] for item in storage['cart'])
+    return sum(item['price'] * item.get('quantity', 1) for item in storage['cart'])
+
+def update_cart_quantity(cart_item_id, quantity):
+    """Update the quantity of a cart item"""
+    storage = _get_storage()
+
+    # Validate quantity (1-99)
+    if not isinstance(quantity, int) or quantity < 1 or quantity > 99:
+        raise ValueError("Quantity must be between 1 and 99")
+
+    # Find cart item and update quantity
+    for item in storage['cart']:
+        if item['id'] == cart_item_id:
+            item['quantity'] = quantity
+            _save_session(_get_session_id())
+            print(f"📦 Updated cart item {cart_item_id} quantity to {quantity}")
+            return True
+
+    raise ValueError(f"Cart item not found: {cart_item_id}")
 
 def remove_from_cart(cart_item_id):
     """Remove an item from the cart"""

@@ -792,6 +792,35 @@ def get_cart():
         print(f"❌ Get cart error: {e}")
         return jsonify({'error': str(e)}), 500
 
+@bp.route('/cart/update-quantity/<cart_item_id>', methods=['POST'])
+def update_cart_quantity(cart_item_id):
+    """Update quantity of a cart item"""
+    try:
+        data = request.get_json()
+        quantity = data.get('quantity')
+
+        if not quantity:
+            return jsonify({'error': 'Missing quantity'}), 400
+
+        # Update quantity
+        session_storage.update_cart_quantity(cart_item_id, int(quantity))
+
+        # Get updated cart total
+        cart_total = session_storage.get_cart_total()
+
+        return jsonify({
+            'success': True,
+            'cart_total': cart_total,
+            'message': f'Quantity updated to {quantity}'
+        })
+
+    except ValueError as e:
+        print(f"❌ Update quantity validation error: {e}")
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        print(f"❌ Update quantity error: {e}")
+        return jsonify({'error': str(e)}), 500
+
 @bp.route('/cart/remove/<cart_item_id>', methods=['DELETE'])
 def remove_from_cart(cart_item_id):
     """Remove item from cart"""
@@ -856,7 +885,7 @@ def checkout_cart():
                         'description': product_info['description']
                     }
                 },
-                'quantity': 1
+                'quantity': item.get('quantity', 1)  # Use cart item quantity (default 1 for legacy items)
             })
 
         # Create Stripe checkout session (API key already configured globally in app/__init__.py)

@@ -889,6 +889,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Order now button:', orderNowBtn);
 
     if (orderNowBtn) {
+        // Reset button state on page load (fixes stuck "Redirecting..." when using back button)
+        orderNowBtn.disabled = false;
+        orderNowBtn.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Order This Calendar Now';
+
         orderNowBtn.addEventListener('click', async function() {
             console.log('Order now clicked, product:', selectedProduct);
         const originalHTML = this.innerHTML;
@@ -1451,14 +1455,19 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 // Customer Info Management
 function saveCustomerInfo() {
-    const email = document.getElementById('customer-email').value;
-    const phone = document.getElementById('customer-phone').value;
+    const email = document.getElementById('customer-email').value.trim();
+    const phone = document.getElementById('customer-phone').value.trim();
     const saveCheckbox = document.getElementById('save-customer-info');
 
     if (saveCheckbox && saveCheckbox.checked) {
-        const customerInfo = { email, phone };
-        localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
-        console.log('Customer info saved:', customerInfo);
+        // Only save if email is valid (basic validation)
+        if (email && email.includes('@') && email.includes('.')) {
+            const customerInfo = { email, phone };
+            localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+            console.log('Customer info saved:', customerInfo);
+        } else {
+            console.log('Email invalid or empty, not saving');
+        }
     }
 }
 

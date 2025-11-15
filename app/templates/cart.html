@@ -121,9 +121,28 @@
 
                             <!-- Price and Actions -->
                             <div class="col-md-3 text-end">
-                                <h4 class="text-primary mb-3">
-                                    <del class="text-muted">${{ "%.2f"|format(30.00 if item.price == 22.50 else 35.33) }}</del>
-                                    ${{ "%.2f"|format(item.price) }}
+                                <!-- Quantity Selector -->
+                                <div class="mb-3">
+                                    <label for="quantity-{{ item.id }}" class="form-label small text-muted">Quantity</label>
+                                    <input type="number"
+                                           class="form-control quantity-input"
+                                           id="quantity-{{ item.id }}"
+                                           data-item-id="{{ item.id }}"
+                                           value="{{ item.quantity }}"
+                                           min="1"
+                                           max="99"
+                                           style="width: 80px; margin: 0 auto;">
+                                </div>
+
+                                <!-- Price Display -->
+                                <h4 class="text-primary mb-1">
+                                    {% if item.quantity > 1 %}
+                                    <small class="d-block text-muted" style="font-size: 0.9rem;">
+                                        ${{ "%.2f"|format(item.price) }} × {{ item.quantity }}
+                                    </small>
+                                    {% endif %}
+                                    <del class="text-muted">${{ "%.2f"|format((30.00 if item.price == 22.50 else 35.33) * item.quantity) }}</del>
+                                    ${{ "%.2f"|format(item.price * item.quantity) }}
                                     <small class="text-success d-block">(25% off)</small>
                                 </h4>
                                 <button class="btn btn-sm btn-outline-danger remove-item-btn"
@@ -201,6 +220,54 @@
 </div>
 
 <script>
+// Update quantity when input changes
+document.querySelectorAll('.quantity-input').forEach(input => {
+    // Debounce timer to avoid excessive API calls
+    let debounceTimer;
+
+    input.addEventListener('change', async function() {
+        const itemId = this.dataset.itemId;
+        const quantity = parseInt(this.value);
+
+        // Validate quantity
+        if (quantity < 1 || quantity > 99) {
+            alert('Quantity must be between 1 and 99');
+            this.value = this.defaultValue;  // Reset to previous value
+            return;
+        }
+
+        // Clear any existing debounce timer
+        clearTimeout(debounceTimer);
+
+        // Debounce: wait 500ms before updating
+        debounceTimer = setTimeout(async () => {
+            try {
+                const response = await fetch(`/api/cart/update-quantity/${itemId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ quantity })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Reload page to update all prices
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to update quantity'));
+                    this.value = this.defaultValue;  // Reset to previous value
+                }
+            } catch (error) {
+                console.error('Update quantity error:', error);
+                alert('Failed to update quantity. Please try again.');
+                this.value = this.defaultValue;  // Reset to previous value
+            }
+        }, 500);
+    });
+});
+
 // Remove item from cart
 document.querySelectorAll('.remove-item-btn').forEach(btn => {
     btn.addEventListener('click', async function() {
@@ -288,8 +355,13 @@ document.getElementById('checkout-btn').addEventListener('click', async function
         if (savedInfo) {
             try {
                 const { email } = JSON.parse(savedInfo);
-                customerEmail = email;
-                console.log('Auto-filling customer email:', customerEmail);
+                // Only use email if it's valid (not empty and contains @ and .)
+                if (email && email.trim() && email.includes('@') && email.includes('.')) {
+                    customerEmail = email.trim();
+                    console.log('Auto-filling customer email:', customerEmail);
+                } else {
+                    console.log('Saved email is invalid, not using it');
+                }
             } catch (e) {
                 console.error('Error loading customer info:', e);
             }
