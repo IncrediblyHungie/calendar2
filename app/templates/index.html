@@ -6,26 +6,27 @@
 <style>
 /* Static Hero Image - Responsive */
 .hero-image-container {
-    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%);
-    padding: 60px 0 0 0;
+    background: white; /* White background for entire hero section */
+    padding: 0;
     overflow: hidden;
     position: relative;
 }
 
 .hero-image-wrapper {
     width: 100%;
-    padding-bottom: 150px; /* Space for overlap effect */
+    height: auto;
+    background: white; /* White background for wrapper */
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    padding-bottom: 150px; /* Space for overlap effect */
 }
 
 .hero-image {
     width: 100%;
-    max-width: 1400px;
-    height: auto;
+    height: 100%;
     display: block;
-    object-fit: contain;
+    object-fit: cover; /* Fill entire container */
 }
 
 /* Show desktop hero by default */
