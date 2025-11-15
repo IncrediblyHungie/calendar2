@@ -4,75 +4,6 @@
 
 {% block extra_head %}
 <style>
-/* Steps Progress Bar */
-.steps-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-    margin: 40px auto 60px;
-    max-width: 600px;
-    padding: 0 20px;
-}
-
-.step {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.step-number {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Inter;
-    font-size: 14px;
-    font-weight: 600;
-    background: #E5E5E5;
-    color: #737373;
-}
-
-.step.active .step-number {
-    background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
-    color: white;
-}
-
-.step-label {
-    font-family: Inter;
-    font-size: 14px;
-    font-weight: 500;
-    color: #737373;
-}
-
-.step.active .step-label {
-    color: #192636;
-    font-weight: 600;
-}
-
-.step-divider {
-    width: 40px;
-    height: 2px;
-    background: #E5E5E5;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .steps-container {
-        gap: 12px;
-    }
-
-    .step-label {
-        display: none;
-    }
-
-    .step-divider {
-        width: 20px;
-    }
-}
-
 /* Upload Section Styles */
 .upload-container {
     max-width: 800px;
@@ -201,6 +132,14 @@
     position: relative;
 }
 
+/* Bigger thumbnails on desktop */
+@media (min-width: 768px) {
+    .image-thumbnail {
+        width: 120px;
+        height: 120px;
+    }
+}
+
 .image-thumbnail-wrapper {
     position: relative;
     display: inline-block;
@@ -318,26 +257,23 @@
 
 {% block content %}
 <div class="container-figma section-figma">
-    <!-- Steps Progress Bar -->
-    <div class="steps-container">
+    <!-- Progress Steps (matching themes page) -->
+    <div class="progress-steps mb-5">
         <div class="step active">
             <div class="step-number">1</div>
             <div class="step-label">Upload Photos</div>
         </div>
-        <div class="step-divider"></div>
         <div class="step">
             <div class="step-number">2</div>
             <div class="step-label">Review Themes</div>
         </div>
-        <div class="step-divider"></div>
         <div class="step">
             <div class="step-number">3</div>
             <div class="step-label">Generate</div>
         </div>
-        <div class="step-divider"></div>
         <div class="step">
             <div class="step-number">4</div>
-            <div class="step-label">Checkout</div>
+            <div class="step-label">Preview</div>
         </div>
     </div>
 
@@ -423,9 +359,8 @@
         <!-- Next Button -->
         {% if images and images|length >= 3 %}
         <div class="text-center">
-            <a href="{{ url_for('projects.themes') }}" class="btn-next">
-                Next: Review Monthly Themes
-                <i class="fas fa-arrow-right ms-2"></i>
+            <a href="{{ url_for('projects.themes') }}" class="btn-next" style="text-decoration: none;">
+                Start transformation
             </a>
         </div>
         {% endif %}
