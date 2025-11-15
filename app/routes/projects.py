@@ -79,12 +79,11 @@ def upload():
                         thumb_data = thumb_io.getvalue()
 
                         # Save to session storage
-                        image_id = session_storage.add_uploaded_image(
+                        session_storage.add_uploaded_image(
                             secure_filename(file.filename),
                             img_data,
                             thumb_data
                         )
-                        print(f"✅ Uploaded image saved with ID: {image_id}")
                         processed_count += 1
 
                     except Exception as e:
@@ -97,16 +96,8 @@ def upload():
         # This prevents "Are you sure you want to resubmit?" warnings
         return redirect(url_for('projects.upload'))
 
-    # Get uploaded images (force reload to get latest from disk)
-    session_storage._load_storage(force_reload=True)
+    # Get uploaded images
     images = session_storage.get_uploaded_images()
-
-    print(f"📸 Rendering upload page:")
-    print(f"   Project ID: {project.get('id', 'unknown')}")
-    print(f"   Images count: {len(images)}")
-    print(f"   Image IDs: {[img['id'] for img in images]}")
-    for img in images:
-        print(f"   - ID {img['id']}: {img.get('filename', 'no filename')}, has_thumbnail={bool(img.get('thumbnail_data'))}")
 
     return render_template('upload.html', project=project, images=images)
 

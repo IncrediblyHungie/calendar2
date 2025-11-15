@@ -230,8 +230,6 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
     existing_ids = [img['id'] for img in project.get('images', [])]
     image_id = max(existing_ids) + 1 if existing_ids else 1
 
-    print(f"📷 Adding image: filename={filename}, new_id={image_id}, existing_ids={existing_ids}")
-
     # Store binary data directly in server memory (no base64 needed!)
     project['images'].append({
         'id': image_id,
@@ -245,21 +243,10 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
 
 def get_image_by_id(image_id):
     """Get image by ID from active project"""
-    # Force reload to ensure we have latest data from disk
-    _load_storage(force_reload=True)
-
     project = _get_active_project()
-    available_ids = [img['id'] for img in project.get('images', [])]
-
-    print(f"🔍 get_image_by_id({image_id}): available_ids={available_ids}, active_project={project.get('id', 'unknown')}")
-
     for img in project.get('images', []):
         if img['id'] == image_id:
-            has_thumbnail = 'thumbnail_data' in img and img['thumbnail_data'] is not None
-            print(f"✅ Found image {image_id}, has_thumbnail={has_thumbnail}")
             return img
-
-    print(f"❌ Image {image_id} not found in active project")
     return None
 
 def delete_image(image_id):
