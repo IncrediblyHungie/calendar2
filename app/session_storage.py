@@ -19,13 +19,15 @@ STORAGE_DIR.mkdir(exist_ok=True, parents=True)
 _storage = {}
 _loaded = False
 
-def _load_storage():
+def _load_storage(force_reload=False):
     """Load storage from disk on first access"""
     global _storage, _loaded
-    if _loaded:
+    if _loaded and not force_reload:
         return
 
     # Load all session files from disk
+    if force_reload:
+        _storage.clear()  # Clear existing data when force reloading
     for session_file in STORAGE_DIR.glob('*.pkl'):
         try:
             with open(session_file, 'rb') as f:
@@ -35,7 +37,10 @@ def _load_storage():
             print(f"Warning: Failed to load session {session_file}: {e}")
 
     _loaded = True
-    print(f"✓ Loaded {len(_storage)} sessions from disk")
+    if force_reload:
+        print(f"♻️  Force reloaded {len(_storage)} sessions from disk")
+    else:
+        print(f"✓ Loaded {len(_storage)} sessions from disk")
 
 def _save_session(session_id):
     """Save a single session to disk"""
@@ -602,6 +607,8 @@ def add_to_cart(project_id, product_type):
 
 def get_cart_items():
     """Get all cart items with project details"""
+    # Force reload from disk to ensure we have latest cart data (fixes race condition)
+    _load_storage(force_reload=True)
     storage = _get_storage()
     cart_items_with_details = []
 
@@ -701,7 +708,8 @@ def get_months_by_session_id(session_id, project_id=None):
 
 def get_cart_by_session_id(session_id):
     """Get cart items for a specific session ID (used by webhooks)"""
-    _load_storage()
+    # Force reload from disk to ensure we have latest cart data (fixes race condition)
+    _load_storage(force_reload=True)
     if session_id in _storage:
         return _storage[session_id].get('cart', [])
     return []
