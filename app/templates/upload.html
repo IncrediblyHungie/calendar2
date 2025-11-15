@@ -668,10 +668,6 @@ if (deleteAllBtn) {
     deleteAllBtn.addEventListener('click', async function(e) {
         e.preventDefault();
 
-        if (!confirm('Are you sure you want to delete all photos?')) {
-            return;
-        }
-
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Deleting...';
 
