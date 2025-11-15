@@ -119,6 +119,11 @@ main {
     transition: all 0.3s;
 }
 
+.step-number i {
+    font-size: 20px;
+    line-height: 1;
+}
+
 .step.active .step-number {
     background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
     color: white;
