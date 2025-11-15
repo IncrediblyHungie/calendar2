@@ -241,8 +241,25 @@ document.getElementById('checkout-btn').addEventListener('click', async function
     this.disabled = true;
 
     try {
+        // Get saved customer info from localStorage
+        const savedInfo = localStorage.getItem('customerInfo');
+        let customerEmail = null;
+        if (savedInfo) {
+            try {
+                const { email } = JSON.parse(savedInfo);
+                customerEmail = email;
+                console.log('Auto-filling customer email:', customerEmail);
+            } catch (e) {
+                console.error('Error loading customer info:', e);
+            }
+        }
+
         const response = await fetch('/api/cart/checkout', {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ customer_email: customerEmail })
         });
 
         const data = await response.json();

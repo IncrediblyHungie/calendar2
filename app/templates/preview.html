@@ -295,6 +295,31 @@
                 </div>
             </div>
 
+            <!-- Customer Information (Optional) -->
+            <div class="card mb-4" style="border: 1px solid #E5E5E5; border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h6 class="mb-3" style="font-family: Inter; font-weight: 600; color: #192636;">
+                        <i class="fas fa-user-circle me-2"></i>Optional: Save for faster checkout
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="customer-email" class="form-label" style="font-family: Inter; font-size: 14px; color: #5A697B;">Email</label>
+                            <input type="email" class="form-control" id="customer-email" placeholder="your@email.com" style="font-family: Inter;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customer-phone" class="form-label" style="font-family: Inter; font-size: 14px; color: #5A697B;">Mobile number</label>
+                            <input type="tel" class="form-control" id="customer-phone" placeholder="(555) 123-4567" style="font-family: Inter;">
+                        </div>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="save-customer-info">
+                        <label class="form-check-label" for="save-customer-info" style="font-family: Inter; font-size: 14px; color: #5A697B;">
+                            Save my information for faster checkout
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <!-- Action Buttons -->
             <div class="row mb-4">
                 <div class="col-md-6 mb-3">
@@ -1445,6 +1470,54 @@ document.addEventListener('DOMContentLoaded', () => {
 </style>
 
 <script>
+// Customer Info Management
+function saveCustomerInfo() {
+    const email = document.getElementById('customer-email').value;
+    const phone = document.getElementById('customer-phone').value;
+    const saveCheckbox = document.getElementById('save-customer-info');
+
+    if (saveCheckbox && saveCheckbox.checked) {
+        const customerInfo = { email, phone };
+        localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+        console.log('Customer info saved:', customerInfo);
+    }
+}
+
+function loadCustomerInfo() {
+    const savedInfo = localStorage.getItem('customerInfo');
+    if (savedInfo) {
+        try {
+            const { email, phone } = JSON.parse(savedInfo);
+            document.getElementById('customer-email').value = email || '';
+            document.getElementById('customer-phone').value = phone || '';
+            document.getElementById('save-customer-info').checked = true;
+        } catch (e) {
+            console.error('Error loading customer info:', e);
+        }
+    }
+}
+
+// Auto-save when checkbox is changed
+document.addEventListener('DOMContentLoaded', function() {
+    loadCustomerInfo();
+
+    const saveCheckbox = document.getElementById('save-customer-info');
+    const emailInput = document.getElementById('customer-email');
+    const phoneInput = document.getElementById('customer-phone');
+
+    if (saveCheckbox) {
+        saveCheckbox.addEventListener('change', saveCustomerInfo);
+    }
+
+    if (emailInput) {
+        emailInput.addEventListener('blur', saveCustomerInfo);
+    }
+
+    if (phoneInput) {
+        phoneInput.addEventListener('blur', saveCustomerInfo);
+    }
+});
+
 // Handle "Create Calendar for Another Person" button
 async function handleCreateAnother() {
     try {

@@ -706,6 +706,7 @@ def create_checkout():
 
     data = request.json
     product_type = data.get('product_type', 'wall_calendar')  # Default to wall_calendar
+    customer_email = data.get('customer_email')  # Optional customer email for pre-fill
 
     if product_type != 'wall_calendar':
         return jsonify({'error': 'Invalid product type'}), 400
@@ -722,7 +723,8 @@ def create_checkout():
             metadata={
                 'internal_session_id': internal_session_id,
                 'product_type': product_type
-            }
+            },
+            customer_email=customer_email  # Pre-fill email in Stripe checkout
         )
 
         return jsonify({
@@ -830,6 +832,10 @@ def checkout_cart():
         if not cart_items:
             return jsonify({'error': 'Cart is empty'}), 400
 
+        # Get customer email from request (optional)
+        data = request.json or {}
+        customer_email = data.get('customer_email')
+
         # Get internal session ID for webhook lookup
         internal_session_id = session_storage._get_session_id()
 
@@ -863,7 +869,7 @@ def checkout_cart():
             mode='payment',
             success_url=url_for('main.order_success', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=url_for('projects.cart_page', _external=True),
-            customer_email=None,  # Stripe will collect
+            customer_email=customer_email,  # Pre-fill if provided, otherwise Stripe will collect
             billing_address_collection='auto',  # Collect billing address (shows "same as shipping" checkbox)
             shipping_address_collection={
                 'allowed_countries': ['US', 'CA', 'GB', 'AU', 'DE', 'FR', 'ES', 'IT', 'NL', 'BE']

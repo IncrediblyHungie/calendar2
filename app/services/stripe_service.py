@@ -27,7 +27,7 @@ PRODUCT_INFO = {
     }
 }
 
-def create_checkout_session(product_type, success_url, cancel_url, metadata=None):
+def create_checkout_session(product_type, success_url, cancel_url, metadata=None, customer_email=None):
     """
     Create Stripe Checkout session for calendar purchase
 
@@ -36,6 +36,7 @@ def create_checkout_session(product_type, success_url, cancel_url, metadata=None
         success_url: URL to redirect after successful payment
         cancel_url: URL to redirect if user cancels
         metadata: Optional dict of metadata to attach to session
+        customer_email: Optional customer email to pre-fill checkout
 
     Returns:
         dict: {'session_id': str, 'url': str}
@@ -70,7 +71,7 @@ def create_checkout_session(product_type, success_url, cancel_url, metadata=None
         mode='payment',
         success_url=success_url,
         cancel_url=cancel_url,
-        customer_email=None,  # Stripe will collect
+        customer_email=customer_email,  # Pre-fill if provided, otherwise Stripe will collect
         billing_address_collection='auto',  # Collect billing address (shows "same as shipping" checkbox)
         shipping_address_collection={
             'allowed_countries': ['US', 'CA', 'GB', 'AU', 'DE', 'FR', 'ES', 'IT', 'NL', 'BE']
