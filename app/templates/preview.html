@@ -424,8 +424,50 @@ let elements, paymentElement;
 
 console.log('🔑 Stripe Mode:', '{{ config.STRIPE_PUBLISHABLE_KEY }}'.startsWith('pk_live') ? 'LIVE' : 'TEST');
 
-// Check Font Awesome loading
-console.log('🎨 Font Awesome loaded:', typeof FontAwesome !== 'undefined' || document.querySelector('link[href*="font-awesome"]') !== null);
+// COMPREHENSIVE Font Awesome DEBUG
+console.log('=' .repeat(60));
+console.log('🎨 FONT AWESOME DEBUGGING');
+console.log('=' * 60);
+
+// Check if CSS link is in DOM
+const faLink = document.querySelector('link[href*="fontawesome"]');
+console.log('📄 FA CSS Link Found:', faLink !== null);
+if (faLink) {
+    console.log('   URL:', faLink.href);
+    console.log('   Sheet loaded:', faLink.sheet !== null);
+    if (faLink.sheet) {
+        console.log('   CSS Rules count:', faLink.sheet.cssRules ? faLink.sheet.cssRules.length : 'N/A');
+    }
+}
+
+// Check if fonts are loaded
+if (document.fonts) {
+    document.fonts.ready.then(() => {
+        console.log('🔤 Fonts Ready. Checking Font Awesome fonts...');
+        const faFonts = Array.from(document.fonts).filter(font =>
+            font.family.includes('Font Awesome') || font.family.includes('FontAwesome')
+        );
+        console.log('   FA Fonts Found:', faFonts.length);
+        faFonts.forEach(font => {
+            console.log(`   - ${font.family} (${font.style} ${font.weight}): ${font.status}`);
+        });
+    });
+}
+
+// Test icon rendering
+setTimeout(() => {
+    const testIcon = document.querySelector('.fas.fa-check');
+    if (testIcon) {
+        const styles = window.getComputedStyle(testIcon);
+        console.log('✓ Test Icon Element Found');
+        console.log('   font-family:', styles.fontFamily);
+        console.log('   font-weight:', styles.fontWeight);
+        console.log('   content:', styles.getPropertyValue('--fa') || styles.content);
+    } else {
+        console.log('❌ No .fas.fa-check element found in DOM');
+    }
+    console.log('=' * 60);
+}, 1000);
 
 // Initialize Payment Element after fetching client secret
 async function initializePaymentElement() {

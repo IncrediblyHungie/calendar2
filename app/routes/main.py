@@ -24,6 +24,31 @@ def apple_pay_domain_verification():
     well_known_dir = os.path.join(current_app.root_path, 'static', '.well-known')
     return send_from_directory(well_known_dir, 'apple-developer-merchantid-domain-association')
 
+@bp.route('/static/webfonts/<path:filename>')
+def serve_font(filename):
+    """
+    Serve Font Awesome webfonts with proper MIME types and CORS headers
+    This ensures fonts load correctly across all browsers
+    """
+    from flask import make_response
+
+    webfonts_dir = os.path.join(current_app.root_path, 'static', 'webfonts')
+    response = make_response(send_from_directory(webfonts_dir, filename))
+
+    # Set proper MIME type based on extension
+    if filename.endswith('.woff2'):
+        response.headers['Content-Type'] = 'font/woff2'
+    elif filename.endswith('.woff'):
+        response.headers['Content-Type'] = 'font/woff'
+    elif filename.endswith('.ttf'):
+        response.headers['Content-Type'] = 'font/ttf'
+
+    # Add CORS headers for cross-origin font loading
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+
+    return response
+
 @bp.route('/about')
 def about():
     """About page"""
