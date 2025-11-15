@@ -1,10 +1,11 @@
 """
 Main routes - Landing page, about, etc.
 """
-from flask import Blueprint, render_template, session, redirect, url_for, request
+from flask import Blueprint, render_template, session, redirect, url_for, request, send_from_directory, current_app
 from app import session_storage
 from datetime import datetime, timedelta
 import secrets
+import os
 
 bp = Blueprint('main', __name__)
 
@@ -12,6 +13,16 @@ bp = Blueprint('main', __name__)
 def index():
     """Landing page"""
     return render_template('index.html')
+
+@bp.route('/.well-known/apple-developer-merchantid-domain-association')
+def apple_pay_domain_verification():
+    """
+    Serve Apple Pay domain verification file for Stripe
+    This file is required for Apple Pay to work on your domain
+    Download from: Stripe Dashboard → Settings → Payment methods → Apple Pay
+    """
+    well_known_dir = os.path.join(current_app.root_path, 'static', '.well-known')
+    return send_from_directory(well_known_dir, 'apple-developer-merchantid-domain-association')
 
 @bp.route('/about')
 def about():
