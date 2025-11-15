@@ -239,16 +239,11 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
     return image_id
 
 def get_image_by_id(image_id):
-    """Get image by ID - searches only in current user's session"""
-    # Get current session's storage
-    storage = _get_storage()
-
-    # Search in current session's project
-    if 'project' in storage:
-        for img in storage['project'].get('images', []):
-            if img['id'] == image_id:
-                return img
-
+    """Get image by ID from active project"""
+    project = _get_active_project()
+    for img in project.get('images', []):
+        if img['id'] == image_id:
+            return img
     return None
 
 def delete_image(image_id):
