@@ -80,17 +80,12 @@
     <!-- Calendar Preview -->
     <div class="card shadow mb-5">
         <div class="card-body p-5">
-            {% if generation_status.stage == 'preview_only' %}
-            <h2 class="card-title text-center mb-4">
-                <i class="fas fa-eye text-info me-2"></i>
-                Your 3-Month Preview
+            <h2 class="mb-3" style="color: #192636; text-align: center; font-family: Inter; font-size: 54px; font-style: normal; font-weight: 700; line-height: 120%; align-self: stretch;">
+                Review your hunk
             </h2>
-            {% else %}
-            <h2 class="card-title text-center mb-4">
-                <i class="fas fa-fire text-danger me-2"></i>
-                Your "Hunk of the Month" Calendar
-            </h2>
-            {% endif %}
+            <p class="mb-4" style="color: #5A697B; text-align: center; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 400; line-height: 140%;">
+                These are the images that will be in your calendar.
+            </p>
 
             <!-- Calendar Grid (2-column layout matching Figma Review screen) -->
             <div class="row g-3">
@@ -250,11 +245,11 @@
     <!-- PRODUCT SELECTION & CHECKOUT -->
     <div class="card shadow-lg border-success">
         <div class="card-body p-5">
-            <h3 class="text-center mb-4" style="color: #172439; font-weight: 600;">
+            <h3 class="text-center mb-4" style="color: #172439; font-family: Inter; font-weight: 600;">
                 Love This Calendar?
             </h3>
-            <p class="lead text-center mb-4">
-                Choose your calendar style and add to cart. Perfect for gifts, gags, or just admiring this hunky transformation!
+            <p class="text-center mb-4" style="font-family: Inter;">
+                Order Yours Today
             </p>
 
             <!-- Extract mockup data for use in product cards -->
