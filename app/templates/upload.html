@@ -280,7 +280,7 @@
     <div class="upload-container">
         <!-- Hero Section -->
         <h1 class="upload-heading">Upload his pics 📷</h1>
-        <p class="upload-subheading">Upload at least 3 pics. Any will work. We'll handle the rest.</p>
+        <p class="upload-subheading">Upload at least 2 pics (3 preferred, 5 max). Any will work. We'll handle the rest.</p>
 
         <!-- Upload Dropzone -->
         <div class="upload-dropzone" id="dropzone">
@@ -357,7 +357,7 @@
         </div>
 
         <!-- Next Button -->
-        {% if images and images|length >= 3 %}
+        {% if images and images|length >= 2 %}
         <div class="text-center">
             <a href="{{ url_for('projects.themes') }}" class="btn-next" style="text-decoration: none;">
                 Start transformation

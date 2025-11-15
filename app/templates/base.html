@@ -21,6 +21,19 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Apple Emoji Font -->
+    <style>
+        /* Add Apple Color Emoji as fallback for all text to ensure consistent emoji rendering */
+        body, * {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+
+        /* Specific font families with Apple emoji support */
+        h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, label {
+            font-family: inherit;
+        }
+    </style>
     {% endblock %}
 
     {% block extra_head %}{% endblock %}

@@ -30,6 +30,15 @@ def upload():
         if 'photos' in request.files:
             files = request.files.getlist('photos')
 
+            # Check current uploaded images count
+            current_images = session_storage.get_uploaded_images()
+            current_count = len(current_images)
+
+            # Enforce maximum of 5 photos total
+            if current_count + len(files) > 5:
+                flash(f'Maximum 5 photos allowed. You currently have {current_count} photo(s). Please remove some before uploading more.', 'warning')
+                return redirect(url_for('projects.upload'))
+
             processed_count = 0
             for file in files:
                 if file and file.filename:
