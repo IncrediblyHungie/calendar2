@@ -154,13 +154,11 @@
     <!-- UNLOCK GATE -->
     <div class="card shadow-lg border-warning">
         <div class="card-body p-5">
-            <h3 class="text-center mb-4">
-                <i class="fas fa-lock text-warning me-2"></i>
-                Unlock All 12 Months
+            <h3 class="text-center mb-4" style="color: #192636; text-align: center; font-family: Inter; font-size: 32px; font-style: normal; font-weight: 700; line-height: 120%;">
+                Love what you see?
             </h3>
-            <p class="lead text-center mb-4" style="color: #2d3748;">
-                Love what you see? Enter your payment info to unlock the cover + remaining 9 months (10 total).
-                <strong>We'll only charge you when you're ready to order!</strong>
+            <p class="text-center mb-4" style="color: #5A697B; text-align: center; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 400; line-height: 140%;">
+                Enter your payment info to unlock the cover + remaining months.
             </p>
 
             {% if generation_status.has_payment_method %}
@@ -180,24 +178,17 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title mb-3">
-                                    <i class="fas fa-credit-card me-2"></i>
-                                    Authorize Payment Method
-                                </h5>
-                                <p class="text-muted small mb-3">
-                                    We'll securely save your payment info but won't charge you until you place an order.
-                                    <strong>Select your preferred method below:</strong>
-                                </p>
-
                                 <!-- Stripe Payment Element (Apple Pay, Google Pay, Cards) -->
                                 <form id="payment-form">
                                     <div id="payment-element" class="mb-3"></div>
                                     <div id="payment-errors" class="text-danger mb-3" role="alert"></div>
 
-                                    <button id="unlock-button" type="submit" class="btn btn-warning btn-lg w-100">
-                                        <i class="fas fa-unlock-alt me-2"></i>
-                                        Authorize & Unlock Full Calendar
-                                    </button>
+                                    <div class="d-flex justify-content-center">
+                                        <button id="unlock-button" type="submit" style="display: flex; width: 251px; height: 45px; padding: 10.611px 52.239px; justify-content: center; align-items: center; gap: 8.162px; flex-shrink: 0; border: none; border-radius: 24.042px; background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%); box-shadow: 0 0 32px 0 rgba(153, 23, 255, 0.32), 0 0 0.816px 3.265px rgba(255, 255, 255, 0.10), 0 -3.265px 1.632px 0 rgba(0, 0, 0, 0.25) inset, 0 1.632px 0.816px 0 rgba(255, 255, 255, 0.25) inset; color: white; font-family: Inter; font-weight: 600; cursor: pointer;">
+                                            <img src="{{ url_for('static', filename='assets/icons/unlock-icon.svg') }}" alt="" style="width: 14px; height: 14px; margin-right: 8px;">
+                                            Unlock all images
+                                        </button>
+                                    </div>
                                 </form>
 
                                 <p class="text-muted text-center mt-3 mb-0 small">
