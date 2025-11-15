@@ -96,11 +96,14 @@
             const response = await fetch('/api/cart');
             const data = await response.json();
 
-            if (data.success && data.count > 0) {
-                const badge = document.querySelector('.cart-count-badge');
-                if (badge) {
+            const badge = document.querySelector('.cart-count-badge');
+            if (badge) {
+                if (data.success && data.count > 0) {
                     badge.textContent = data.count;
                     badge.style.display = 'inline';
+                } else {
+                    badge.textContent = '0';
+                    badge.style.display = 'none';
                 }
             }
         } catch (error) {
