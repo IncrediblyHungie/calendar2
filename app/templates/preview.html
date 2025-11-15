@@ -875,6 +875,98 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ========================================================================
+    // VARIANT SWITCHING - Click dots or swipe to navigate between variants
+    // ========================================================================
+    const variantDots = document.querySelectorAll('.variant-dot');
+
+    // Click on variant dots to switch
+    variantDots.forEach(dot => {
+        dot.addEventListener('click', async function(e) {
+            e.stopPropagation();
+            const variantIndex = parseInt(this.dataset.variantIndex);
+            const monthCard = this.closest('.calendar-month-card');
+            const monthId = monthCard.dataset.monthId;
+
+            await switchMonthVariant(monthId, variantIndex, monthCard);
+        });
+    });
+
+    // Swipe gestures on month images for mobile
+    const monthImages = document.querySelectorAll('.month-variant-image');
+
+    monthImages.forEach(img => {
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        img.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        img.addEventListener('touchend', async (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const monthCard = e.target.closest('.calendar-month-card');
+            const monthId = monthCard.dataset.monthId;
+            const activeDot = monthCard.querySelector('.variant-dot.active');
+            const currentIndex = parseInt(activeDot.dataset.variantIndex);
+            const allDots = monthCard.querySelectorAll('.variant-dot');
+            const totalVariants = allDots.length;
+
+            // Detect swipe direction (min 50px swipe)
+            const swipeDistance = touchEndX - touchStartX;
+
+            if (Math.abs(swipeDistance) > 50) {
+                let newIndex;
+
+                if (swipeDistance > 0) {
+                    // Swipe right - previous variant
+                    newIndex = currentIndex > 0 ? currentIndex - 1 : totalVariants - 1;
+                } else {
+                    // Swipe left - next variant
+                    newIndex = currentIndex < totalVariants - 1 ? currentIndex + 1 : 0;
+                }
+
+                await switchMonthVariant(monthId, newIndex, monthCard);
+            }
+        }, { passive: true });
+    });
+
+    // Function to switch month variant
+    async function switchMonthVariant(monthId, variantIndex, monthCard) {
+        try {
+            // Update UI - switch active dot
+            const allDots = monthCard.querySelectorAll('.variant-dot');
+            allDots.forEach(d => d.classList.remove('active'));
+            allDots[variantIndex].classList.add('active');
+
+            // Call API to select variant
+            const response = await fetch(`/api/months/${monthId}/select-variant`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ variant_index: variantIndex })
+            });
+
+            if (response.ok) {
+                // Reload the month image
+                const img = monthCard.querySelector('.month-variant-image');
+                const imageUrl = `/api/months/${monthId}/image?v=${Date.now()}`;
+                img.src = imageUrl;
+
+                // Update preview trigger link
+                const previewTrigger = monthCard.querySelector('.image-preview-trigger');
+                if (previewTrigger) {
+                    previewTrigger.dataset.imageUrl = imageUrl;
+                }
+
+                console.log(`✅ Switched to variant ${variantIndex + 1} for month ${monthId}`);
+            } else {
+                console.error('Failed to switch variant:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error switching variant:', error);
+        }
+    }
+
     // Add to Cart button
     const addToCartBtn = document.getElementById('add-to-cart-btn');
     console.log('Add to cart button:', addToCartBtn);
