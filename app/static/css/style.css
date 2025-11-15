@@ -120,7 +120,7 @@ main {
 }
 
 .step.active .step-number {
-    background: #F827A8;
+    background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
     color: white;
     box-shadow: 0 0 0 4px rgba(248, 39, 168, 0.2);
 }
@@ -136,7 +136,10 @@ main {
 }
 
 .step.active .step-label {
-    color: #F827A8;
+    background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 600;
 }
 
