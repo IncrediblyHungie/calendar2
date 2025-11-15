@@ -161,13 +161,6 @@
                 Enter your payment info to unlock the cover + remaining months.
             </p>
 
-            <!-- Trust message -->
-            <div class="mb-4" style="display: flex; padding: 8px; justify-content: center; align-items: center; gap: 10px; border-radius: 8px; background: #DAEDFF;">
-                <p class="mb-0" style="color: #173356; text-align: center; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 400; line-height: 140%;">
-                    💙 We'll only charge you when you're ready to order.
-                </p>
-            </div>
-
             {% if generation_status.has_payment_method %}
             <!-- Payment already authorized - trigger generation -->
             <div class="alert alert-success text-center" role="alert">
@@ -199,7 +192,7 @@
                                 </form>
 
                                 <p class="text-muted text-center mt-3 mb-0 small">
-                                    <i class="fas fa-shield-halved me-1"></i>
+                                    <i class="fas fa-shield-alt me-1"></i>
                                     Secured by Stripe. No charge until you order.
                                 </p>
                             </div>
@@ -422,53 +415,6 @@
 const stripe = Stripe('{{ config.STRIPE_PUBLISHABLE_KEY }}');
 let elements, paymentElement;
 
-console.log('🔑 Stripe Mode:', '{{ config.STRIPE_PUBLISHABLE_KEY }}'.startsWith('pk_live') ? 'LIVE' : 'TEST');
-
-// COMPREHENSIVE Font Awesome DEBUG
-console.log('=' .repeat(60));
-console.log('🎨 FONT AWESOME DEBUGGING');
-console.log('=' * 60);
-
-// Check if CSS link is in DOM
-const faLink = document.querySelector('link[href*="fontawesome"]');
-console.log('📄 FA CSS Link Found:', faLink !== null);
-if (faLink) {
-    console.log('   URL:', faLink.href);
-    console.log('   Sheet loaded:', faLink.sheet !== null);
-    if (faLink.sheet) {
-        console.log('   CSS Rules count:', faLink.sheet.cssRules ? faLink.sheet.cssRules.length : 'N/A');
-    }
-}
-
-// Check if fonts are loaded
-if (document.fonts) {
-    document.fonts.ready.then(() => {
-        console.log('🔤 Fonts Ready. Checking Font Awesome fonts...');
-        const faFonts = Array.from(document.fonts).filter(font =>
-            font.family.includes('Font Awesome') || font.family.includes('FontAwesome')
-        );
-        console.log('   FA Fonts Found:', faFonts.length);
-        faFonts.forEach(font => {
-            console.log(`   - ${font.family} (${font.style} ${font.weight}): ${font.status}`);
-        });
-    });
-}
-
-// Test icon rendering
-setTimeout(() => {
-    const testIcon = document.querySelector('.fas.fa-check');
-    if (testIcon) {
-        const styles = window.getComputedStyle(testIcon);
-        console.log('✓ Test Icon Element Found');
-        console.log('   font-family:', styles.fontFamily);
-        console.log('   font-weight:', styles.fontWeight);
-        console.log('   content:', styles.getPropertyValue('--fa') || styles.content);
-    } else {
-        console.log('❌ No .fas.fa-check element found in DOM');
-    }
-    console.log('=' * 60);
-}, 1000);
-
 // Initialize Payment Element after fetching client secret
 async function initializePaymentElement() {
     try {
@@ -522,48 +468,8 @@ async function initializePaymentElement() {
         });
 
         console.log('✓ Payment element created, mounting...');
-
-        // Debug: Check browser and device capabilities
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.platform);
-        console.log('🔍 Browser Detection:', {
-            browser: isSafari ? 'Safari' : 'Other',
-            platform: isIOS ? 'iOS' : (isMac ? 'macOS' : 'Other'),
-            userAgent: navigator.userAgent
-        });
-        console.log('💡 Apple Pay requirement: Safari on iOS/macOS');
-
         paymentElement.mount('#payment-element');
         console.log('✓ Payment element mounted successfully');
-
-        // Debug: Log when Payment Element is ready
-        paymentElement.on('ready', (event) => {
-            console.log('✅ Payment Element ready - checking available payment methods...');
-            console.log('📱 If you\'re on Safari (iOS/macOS), Apple Pay should appear as the first option');
-            console.log('💳 If you\'re on Chrome (Android), Google Pay should appear as the first option');
-
-            // Check if ApplePaySession is available (indicates Apple Pay support)
-            if (window.ApplePaySession) {
-                if (ApplePaySession.canMakePayments()) {
-                    console.log('✅ Apple Pay IS SUPPORTED on this device');
-                    console.log('💡 Apple Pay should be visible in the payment form above');
-                    console.log('🔍 If you don\'t see it, check:');
-                    console.log('   1. Are you using Safari browser?');
-                    console.log('   2. Do you have cards in Apple Wallet?');
-                    console.log('   3. Is your region/country supported?');
-                } else {
-                    console.log('⚠️ Apple Pay NOT available - no cards in Apple Wallet');
-                    console.log('💡 Add a card to Wallet: Settings → Wallet & Apple Pay → Add Card');
-                }
-            } else {
-                console.log('❌ Apple Pay NOT supported on this device/browser');
-                console.log('💡 Apple Pay requires:');
-                console.log('   - Safari browser on iOS 10.1+ or macOS 10.12+');
-                console.log('   - iPhone, iPad, or Mac with Touch ID/Face ID');
-                console.log('   - Current browser:', navigator.userAgent);
-            }
-        });
 
         // Handle real-time validation errors
         paymentElement.on('change', (event) => {
@@ -916,127 +822,6 @@ document.addEventListener('DOMContentLoaded', () => {
             imagePreviewModal.show();
         });
     });
-
-    // ========================================================================
-    // VARIANT SWITCHING - Click dots or swipe to navigate between variants
-    // ========================================================================
-    const variantDots = document.querySelectorAll('.variant-dot');
-
-    // Click on variant dots to switch
-    variantDots.forEach(dot => {
-        dot.addEventListener('click', async function(e) {
-            e.stopPropagation();
-            const variantIndex = parseInt(this.dataset.variantIndex);
-            const monthCard = this.closest('.calendar-month-card');
-            const monthId = monthCard.dataset.monthId;
-
-            await switchMonthVariant(monthId, variantIndex, monthCard);
-        });
-    });
-
-    // Swipe gestures on month images for mobile - ONLY if multiple variants exist
-    const monthImages = document.querySelectorAll('.month-variant-image');
-
-    monthImages.forEach(img => {
-        const monthCard = img.closest('.calendar-month-card');
-        const allDots = monthCard.querySelectorAll('.variant-dot');
-        const totalVariants = allDots.length;
-
-        // ONLY add swipe handlers if there are multiple variants to swipe between
-        if (totalVariants > 1) {
-            let touchStartX = 0;
-            let touchEndX = 0;
-            let touchStartY = 0;
-            let touchEndY = 0;
-            let touchStartTime = 0;
-
-            img.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-                touchStartY = e.changedTouches[0].screenY;
-                touchStartTime = Date.now();
-            }, { passive: true });
-
-            img.addEventListener('touchend', async (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                touchEndY = e.changedTouches[0].screenY;
-                const touchDuration = Date.now() - touchStartTime;
-
-                const monthId = monthCard.dataset.monthId;
-                const activeDot = monthCard.querySelector('.variant-dot.active');
-
-                if (!activeDot) {
-                    return; // Let normal click work
-                }
-
-                const currentIndex = parseInt(activeDot.dataset.variantIndex);
-
-                // Detect swipe direction (min 50px horizontal swipe)
-                const swipeDistanceX = touchEndX - touchStartX;
-                const swipeDistanceY = touchEndY - touchStartY;
-
-                // Only trigger swipe if:
-                // 1. Horizontal distance > 50px
-                // 2. More horizontal than vertical
-                // 3. Touch duration < 300ms (fast swipe, not a long press)
-                if (Math.abs(swipeDistanceX) > 50 &&
-                    Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY) &&
-                    touchDuration < 300) {
-
-                    // Prevent the click event from firing
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    let newIndex;
-                    if (swipeDistanceX > 0) {
-                        // Swipe right - previous variant
-                        newIndex = currentIndex > 0 ? currentIndex - 1 : totalVariants - 1;
-                    } else {
-                        // Swipe left - next variant
-                        newIndex = currentIndex < totalVariants - 1 ? currentIndex + 1 : 0;
-                    }
-
-                    await switchMonthVariant(monthId, newIndex, monthCard);
-                }
-                // If not a swipe, let the normal click event bubble up to the parent anchor
-            }, { passive: false }); // passive: false so we can preventDefault if needed
-        }
-    });
-
-    // Function to switch month variant
-    async function switchMonthVariant(monthId, variantIndex, monthCard) {
-        try {
-            // Update UI - switch active dot
-            const allDots = monthCard.querySelectorAll('.variant-dot');
-            allDots.forEach(d => d.classList.remove('active'));
-            allDots[variantIndex].classList.add('active');
-
-            // Call API to select variant
-            const response = await fetch(`/api/months/${monthId}/select-variant`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ variant_index: variantIndex })
-            });
-
-            if (response.ok) {
-                // Reload the month image
-                const img = monthCard.querySelector('.month-variant-image');
-                const imageUrl = `/api/months/${monthId}/image?v=${Date.now()}`;
-                img.src = imageUrl;
-
-                // Update preview trigger link
-                const previewTrigger = monthCard.querySelector('.image-preview-trigger');
-                if (previewTrigger) {
-                    previewTrigger.dataset.imageUrl = imageUrl;
-                }
-
-                console.log(`✅ Switched to variant ${variantIndex + 1} for month ${monthId}`);
-            } else {
-                console.error('Failed to switch variant:', await response.text());
-            }
-        } catch (error) {
-            console.error('Error switching variant:', error);
-        }
-    }
 
     // Add to Cart button
     const addToCartBtn = document.getElementById('add-to-cart-btn');
