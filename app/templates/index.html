@@ -95,6 +95,55 @@
         width: 100%;
         max-width: 100%;
     }
+
+    /* CTA Card Mobile Reordering */
+    .cta-card-container {
+        flex-direction: column !important;
+        gap: 24px !important;
+        padding: 24px !important;
+    }
+
+    .cta-heading {
+        display: block;
+        order: 1;
+    }
+
+    .cta-heading-desktop {
+        display: none !important;
+    }
+
+    .cta-image {
+        order: 2;
+    }
+
+    .cta-content {
+        order: 3;
+    }
+
+    .cta-image img {
+        width: 100% !important;
+        max-width: 300px !important;
+    }
+
+    /* Reduce spacing between carousel and "Make a hunk" section on mobile */
+    .make-hunk-section {
+        padding-top: var(--spacing-md) !important;
+    }
+}
+
+/* Desktop: Hide mobile heading, show desktop heading in content */
+@media (min-width: 769px) {
+    .cta-heading {
+        display: none;
+    }
+
+    .cta-heading-desktop {
+        display: block;
+    }
+
+    .cta-card-container {
+        align-items: center;
+    }
 }
 
 /* FAQ Accordion Styles */
@@ -219,7 +268,7 @@
 </section>
 
 <!-- Make a Hunk Section - WHITE BACKGROUND -->
-<section class="section-figma" style="background-color: white; padding: var(--spacing-2xl) 0;">
+<section class="section-figma make-hunk-section" style="background-color: white; padding: var(--spacing-2xl) 0;">
     <div style="max-width: 976px; margin: 0 auto; padding: 0 var(--spacing-md);">
         <!-- Heading -->
         <h2 style="color: #192636; text-align: center; font-family: Inter; font-size: 40px; font-style: normal; font-weight: 700; line-height: 110%; margin-bottom: var(--spacing-xs);">
@@ -611,19 +660,26 @@
 <section class="section-figma" style="background: white; padding: var(--spacing-2xl) 0;">
     <div style="display: flex; justify-content: center; padding: 0 var(--spacing-md);">
         <!-- CTA Card with March Image -->
-        <div style="display: flex; max-width: 932px; width: 100%; padding: 40px; justify-content: center; align-items: center; gap: 40px; border-radius: 16px; border: 8px solid rgba(255, 255, 255, 0.20); background: #FFF;">
+        <div class="cta-card-container" style="display: flex; max-width: 932px; width: 100%; padding: 40px; justify-content: center; align-items: center; gap: 40px; border-radius: 16px; border: 8px solid rgba(255, 255, 255, 0.20); background: #FFF;">
 
-            <!-- March Calendar Preview Image -->
-            <div style="flex-shrink: 0;">
+            <!-- Heading (reordered on mobile) -->
+            <div class="cta-heading" style="flex: 1; text-align: center;">
+                <h2 style="color: #192636; font-family: Inter; font-size: 32px; font-style: normal; font-weight: 700; line-height: 110%; margin: 0;">
+                    Ready to make the calendar of your dreams?
+                </h2>
+            </div>
+
+            <!-- March Calendar Preview Image (reordered on mobile) -->
+            <div class="cta-image" style="flex-shrink: 0;">
                 <img src="{{ url_for('static', filename='assets/images/march-preview.jpg') }}"
                      alt="March Calendar Preview"
                      style="width: 300px; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
             </div>
 
-            <!-- CTA Content -->
-            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px;">
-                <!-- Heading -->
-                <h2 style="color: #192636; font-family: Inter; font-size: 32px; font-style: normal; font-weight: 700; line-height: 110%; margin: 0;">
+            <!-- CTA Content (reordered on mobile) -->
+            <div class="cta-content" style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px;">
+                <!-- Heading (shown on desktop only) -->
+                <h2 class="cta-heading-desktop" style="color: #192636; font-family: Inter; font-size: 32px; font-style: normal; font-weight: 700; line-height: 110%; margin: 0;">
                     Ready to make the calendar of your dreams?
                 </h2>
 
