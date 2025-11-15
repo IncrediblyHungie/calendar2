@@ -468,8 +468,27 @@ async function initializePaymentElement() {
         });
 
         console.log('✓ Payment element created, mounting...');
+
+        // Debug: Check browser and device capabilities
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.platform);
+        console.log('🔍 Browser Detection:', {
+            browser: isSafari ? 'Safari' : 'Other',
+            platform: isIOS ? 'iOS' : (isMac ? 'macOS' : 'Other'),
+            userAgent: navigator.userAgent
+        });
+        console.log('💡 Apple Pay requirement: Safari on iOS/macOS');
+
         paymentElement.mount('#payment-element');
         console.log('✓ Payment element mounted successfully');
+
+        // Debug: Log when Payment Element is ready
+        paymentElement.on('ready', (event) => {
+            console.log('✅ Payment Element ready - checking available payment methods...');
+            console.log('📱 If you\'re on Safari (iOS/macOS), Apple Pay should appear as the first option');
+            console.log('💳 If you\'re on Chrome (Android), Google Pay should appear as the first option');
+        });
 
         // Handle real-time validation errors
         paymentElement.on('change', (event) => {
