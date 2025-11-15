@@ -29,14 +29,8 @@
             <div class="card shadow">
                 <div class="card-body p-5">
                     <h2 class="card-title mb-4 text-center">
-                        <i class="fas fa-calendar-alt text-primary me-2"></i>
                         Your Monthly Hunk Transformations
                     </h2>
-
-                    <p class="lead text-center mb-4">
-                        We'll place YOUR face on 12 ridiculously sexy hunks, one for each month!
-                        Check out what absurd scenarios await you...
-                    </p>
 
                     <div class="alert alert-info text-center">
                         <i class="fas fa-fire me-2"></i>
@@ -70,9 +64,8 @@
                                 Side effects may include excessive laughter and increased confidence.
                             </div>
 
-                            <button type="submit" class="btn btn-success btn-lg px-5 mb-3">
-                                <i class="fas fa-magic me-2"></i>
-                                Make Me A Hunk! (Generate Calendar)
+                            <button type="submit" class="btn-generate mb-3">
+                                Make Me A Hunk!
                             </button>
 
                             <br>
@@ -153,6 +146,26 @@
     line-height: 1.4;
     margin-bottom: 8px;
     text-align: left;
+}
+
+/* Generate Button - Match upload page "Start transformation" style */
+.btn-generate {
+    padding: 12px 32px;
+    border-radius: 24px;
+    background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
+    border: none;
+    color: white;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-generate:hover {
+    opacity: 0.9;
+    color: white;
 }
 </style>
 {% endblock %}
