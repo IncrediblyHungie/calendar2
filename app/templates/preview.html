@@ -884,7 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Add to cart button not found!');
     }
 
-    // Order Now button (add to cart + immediate checkout)
+    // Order Now button (add to cart + redirect to cart page)
     const orderNowBtn = document.getElementById('order-now-btn');
     console.log('Order now button:', orderNowBtn);
 
@@ -914,26 +914,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            console.log('✓ Added to cart, now creating checkout...');
-            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating checkout...';
+            console.log('✓ Added to cart, redirecting to cart page...');
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Redirecting...';
 
-            // Step 2: Checkout with ALL cart items (including what was already there)
-            const checkoutResponse = await fetch('/api/cart/checkout', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'}
-            });
-
-            const checkoutData = await checkoutResponse.json();
-
-            if (checkoutData.success) {
-                // Redirect to Stripe checkout with all cart items
-                console.log('✓ Checkout session created:', checkoutData.session_id);
-                window.location.href = checkoutData.checkout_url;
-            } else {
-                alert('Error: ' + (checkoutData.error || 'Failed to create checkout session'));
-                this.innerHTML = originalHTML;
-                this.disabled = false;
-            }
+            // Redirect to cart page
+            window.location.href = '/cart';
         } catch (error) {
             console.error('Checkout error:', error);
             alert('Failed to start checkout. Please try again.');
