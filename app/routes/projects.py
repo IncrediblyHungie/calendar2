@@ -1,7 +1,7 @@
 """
 Project routes - Upload, prompts, preview, checkout
 """
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify, current_app
 from werkzeug.utils import secure_filename
 from app import session_storage
 from app.routes.main import get_current_project
@@ -25,10 +25,10 @@ def upload():
     if not project:
         return redirect(url_for('main.start'))
 
-    print(f"\n{'='*70}")
-    print(f"📤 UPLOAD ROUTE - Method: {request.method}")
-    print(f"   Project ID: {project['id']}")
-    print(f"{'='*70}\n")
+    current_app.logger.info("=" * 70)
+    current_app.logger.info(f"📤 UPLOAD ROUTE - Method: {request.method}")
+    current_app.logger.info(f"   Project ID: {project['id']}")
+    current_app.logger.info("=" * 70)
 
     if request.method == 'POST':
         # Handle file uploads
@@ -89,15 +89,16 @@ def upload():
                             img_data,
                             thumb_data
                         )
-                        print(f"   ✅ Saved image {image_id}: {secure_filename(file.filename)} to project {project['id']}")
+                        current_app.logger.info(f"   ✅ Saved image {image_id}: {secure_filename(file.filename)} to project {project['id']}")
                         processed_count += 1
 
                     except Exception as e:
                         flash(f'Error processing {file.filename}: {str(e)}', 'warning')
+                        current_app.logger.error(f"   ❌ Error processing {file.filename}: {str(e)}")
                         continue
 
-            print(f"\n✅ Upload complete: {processed_count} images saved to project {project['id']}")
-            print(f"   Redirecting to GET /project/upload...\n")
+            current_app.logger.info(f"✅ Upload complete: {processed_count} images saved to project {project['id']}")
+            current_app.logger.info(f"   Redirecting to GET /project/upload...")
             flash(f'{len(files)} photos uploaded successfully!', 'success')
 
         # Redirect to GET request (Post/Redirect/Get pattern)
@@ -106,9 +107,10 @@ def upload():
 
     # GET request - retrieve and display images
     images = session_storage.get_uploaded_images()
-    print(f"   Retrieved {len(images)} images from project {project['id']}")
+    current_app.logger.info(f"   Retrieved {len(images)} images from project {project['id']}")
     if images:
-        print(f"   Image IDs: {[img['id'] for img in images]}")
+        current_app.logger.info(f"   Image IDs: {[img['id'] for img in images]}")
+        current_app.logger.info(f"   Filenames: {[img['filename'] for img in images]}")
 
     return render_template('upload.html', project=project, images=images)
 

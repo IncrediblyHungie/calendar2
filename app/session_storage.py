@@ -2,13 +2,14 @@
 Server-side persistent storage system (temporary replacement for database)
 Stores data in files on disk to survive deployments and restarts
 """
-from flask import session
+from flask import session, current_app
 from datetime import datetime
 import secrets
 import pickle
 import os
 import gc
 from pathlib import Path
+import sys
 
 # Storage directory (persistent volume on Fly.io, falls back to /tmp for local dev)
 STORAGE_DIR = Path('/data/session_storage') if Path('/data').exists() else Path('/tmp/session_storage')
@@ -18,6 +19,14 @@ STORAGE_DIR.mkdir(exist_ok=True, parents=True)
 # Key: session_id, Value: project data
 _storage = {}
 _loaded = False
+
+def _log(msg):
+    """Log message using Flask logger if available, otherwise print with flush"""
+    try:
+        current_app.logger.info(msg)
+    except:
+        print(msg, flush=True)
+        sys.stdout.flush()
 
 def _load_storage(force_reload=False):
     """Load storage from disk on first access"""
@@ -189,11 +198,12 @@ def get_uploaded_images():
     """Get list of uploaded images for active project"""
     project = _get_active_project()
     images = project.get('images', [])
-    print(f"📥 get_uploaded_images() called:")
-    print(f"   Project ID: {project['id']}")
-    print(f"   Found {len(images)} images")
+    _log(f"📥 get_uploaded_images() called:")
+    _log(f"   Project ID: {project['id']}")
+    _log(f"   Found {len(images)} images")
     if images:
-        print(f"   Image IDs: {[img['id'] for img in images]}")
+        _log(f"   Image IDs: {[img['id'] for img in images]}")
+        _log(f"   Filenames: {[img['filename'] for img in images]}")
     return images
 
 def get_uploaded_images_by_session_id(session_id, project_id=None):
@@ -227,16 +237,16 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
     project = _get_active_project()
     session_id = _get_session_id()
 
-    print(f"💾 add_uploaded_image() called:")
-    print(f"   Session ID: {session_id}")
-    print(f"   Project ID: {project['id']}")
-    print(f"   Filename: {filename}")
-    print(f"   Current images in project: {len(project.get('images', []))}")
+    _log(f"💾 add_uploaded_image() called:")
+    _log(f"   Session ID: {session_id}")
+    _log(f"   Project ID: {project['id']}")
+    _log(f"   Filename: {filename}")
+    _log(f"   Current images in project: {len(project.get('images', []))}")
 
     # Check for duplicate filename to prevent double uploads
     for existing_image in project.get('images', []):
         if existing_image['filename'] == filename:
-            print(f"⚠️ Duplicate image detected: {filename} - skipping")
+            _log(f"⚠️  Duplicate image detected: {filename} - skipping, returning existing ID {existing_image['id']}")
             return existing_image['id']  # Return existing ID
 
     # Store binary data directly in server memory (no base64 needed!)
@@ -249,9 +259,9 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
         'uploaded_at': datetime.utcnow().isoformat()
     })
 
-    print(f"   ✅ Added image ID {image_id}, total images now: {len(project['images'])}")
+    _log(f"   ✅ Added image ID {image_id}, total images now: {len(project['images'])}")
     _save_session(session_id)  # Persist to disk
-    print(f"   💾 Session saved to disk\n")
+    _log(f"   💾 Session saved to disk")
     return image_id
 
 def get_image_by_id(image_id):
@@ -288,15 +298,15 @@ def clear_all_images():
     session_id = _get_session_id()
     old_count = len(project.get('images', []))
 
-    print(f"\n🗑️ clear_all_images() called:")
-    print(f"   Session ID: {session_id}")
-    print(f"   Project ID: {project['id']}")
-    print(f"   Deleting {old_count} images")
+    _log(f"🗑️  clear_all_images() called:")
+    _log(f"   Session ID: {session_id}")
+    _log(f"   Project ID: {project['id']}")
+    _log(f"   Deleting {old_count} images")
 
     project['images'] = []
     _save_session(session_id)  # Persist to disk - single save instead of multiple
 
-    print(f"   ✅ All images cleared, session saved\n")
+    _log(f"   ✅ All images cleared, session saved")
 
 def get_all_months():
     """Get all calendar months for active project"""
