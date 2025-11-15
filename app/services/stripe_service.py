@@ -55,7 +55,7 @@ def create_checkout_session(product_type, success_url, cancel_url, metadata=None
 
     # Create checkout session
     session = stripe.checkout.Session.create(
-        payment_method_types=['card', 'link'],
+        payment_method_types=['card', 'link', 'apple_pay', 'google_pay'],  # Enable Apple Pay & Google Pay
         line_items=[{
             'price_data': {
                 'currency': 'usd',
