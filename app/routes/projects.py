@@ -79,11 +79,12 @@ def upload():
                         thumb_data = thumb_io.getvalue()
 
                         # Save to session storage
-                        session_storage.add_uploaded_image(
+                        image_id = session_storage.add_uploaded_image(
                             secure_filename(file.filename),
                             img_data,
                             thumb_data
                         )
+                        print(f"✅ Uploaded image saved with ID: {image_id}")
                         processed_count += 1
 
                     except Exception as e:
@@ -98,6 +99,7 @@ def upload():
 
     # Get uploaded images
     images = session_storage.get_uploaded_images()
+    print(f"📸 Rendering upload page with {len(images)} images: {[img['id'] for img in images]}")
 
     return render_template('upload.html', project=project, images=images)
 
