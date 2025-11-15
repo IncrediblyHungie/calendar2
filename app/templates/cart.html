@@ -122,16 +122,16 @@
                             <!-- Price and Actions -->
                             <div class="col-md-3 text-end">
                                 <!-- Quantity Selector -->
-                                <div class="mb-3">
-                                    <label for="quantity-{{ item.id }}" class="form-label small text-muted">Quantity</label>
+                                <div class="mb-3 d-flex flex-column align-items-center align-items-md-end">
+                                    <label for="quantity-{{ item.id }}" class="form-label small text-muted mb-1">Quantity</label>
                                     <input type="number"
-                                           class="form-control quantity-input"
+                                           class="form-control quantity-input text-center"
                                            id="quantity-{{ item.id }}"
                                            data-item-id="{{ item.id }}"
                                            value="{{ item.quantity }}"
                                            min="1"
                                            max="99"
-                                           style="width: 80px; margin: 0 auto;">
+                                           style="width: 80px;">
                                 </div>
 
                                 <!-- Price Display -->
