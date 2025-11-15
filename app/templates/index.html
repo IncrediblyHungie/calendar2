@@ -473,25 +473,34 @@
     padding: 0 !important;
 }
 
-/* Hide the white card wrapper that TikTok adds */
-#tiktok-embed-wrapper [data-testid="card-component"],
-#tiktok-embed-wrapper .css-1hcx8jb {
+/* FORCE HIDE the white card wrapper that TikTok adds */
+#tiktok-embed-wrapper [data-testid="card-component"] {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
-/* Remove background from embed container */
-#tiktok-embed-wrapper [id*="embed-video-container"] {
-    background: transparent !important;
-    padding: 0 !important;
+/* Target all possible card selectors */
+#tiktok-embed-wrapper .css-1hcx8jb,
+#tiktok-embed-wrapper .evf3f5612,
+#tiktok-embed-wrapper [data-e2e="video-v2-Card-CardContainer"] {
+    display: none !important;
+    visibility: hidden !important;
 }
 
-/* Clean up any white backgrounds in the embed */
-#tiktok-embed-wrapper * {
+/* Remove all white/colored backgrounds from embed */
+#tiktok-embed-wrapper *:not(video):not(img):not(svg):not(path) {
     background-color: transparent !important;
+    background: transparent !important;
 }
 
-/* Keep only the video player visible */
-#tiktok-embed-wrapper [data-e2e="video-v2-home-ContainerWrapper"] > div:first-child {
+/* Ensure video container has no background */
+#tiktok-embed-wrapper [id*="embed-video-container"],
+#tiktok-embed-wrapper [data-e2e="video-v2-home-ContainerWrapper"],
+#tiktok-embed-wrapper [data-e2e="video-v2-EmbedVideo-EmbedVideoWrapper"] {
+    background: transparent !important;
     background-color: transparent !important;
 }
 </style>
