@@ -226,11 +226,8 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
             print(f"⚠️ Duplicate image detected: {filename} - skipping")
             return existing_image['id']  # Return existing ID
 
-    # Generate unique ID - use max existing ID + 1 (handles deletions correctly)
-    existing_ids = [img['id'] for img in project.get('images', [])]
-    image_id = max(existing_ids) + 1 if existing_ids else 1
-
     # Store binary data directly in server memory (no base64 needed!)
+    image_id = len(project['images']) + 1
     project['images'].append({
         'id': image_id,
         'filename': filename,
