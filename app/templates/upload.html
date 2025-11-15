@@ -323,7 +323,7 @@
         <div class="images-gallery-container" id="imagesGallery">
             {% for image in images %}
             <div class="image-thumbnail-wrapper">
-                <img src="{{ url_for('api.get_thumbnail', image_id=image.id) }}"
+                <img src="{{ url_for('api.get_thumbnail', image_id=image.id, project_id=project.id) }}"
                      alt="Photo {{ loop.index }}"
                      class="image-thumbnail"
                      loading="lazy">

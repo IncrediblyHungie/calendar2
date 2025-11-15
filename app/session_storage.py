@@ -246,6 +246,20 @@ def get_image_by_id(image_id):
             return img
     return None
 
+def get_image_by_id_from_project(image_id, project_id):
+    """Get image by ID from a SPECIFIC project (not active project)"""
+    storage = _get_storage()
+
+    # Find the specific project by ID
+    for project in storage.get('projects', []):
+        if project['id'] == project_id:
+            # Search for image in this specific project
+            for img in project.get('images', []):
+                if img['id'] == image_id:
+                    return img
+
+    return None
+
 def delete_image(image_id):
     """Delete an image from active project"""
     project = _get_active_project()

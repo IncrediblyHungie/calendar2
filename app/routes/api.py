@@ -70,13 +70,17 @@ def _pregenerate_delivery_image_async(internal_session_id, cart_items):
 @bp.route('/image/thumbnail/<int:image_id>')
 def get_thumbnail(image_id):
     """Serve thumbnail image"""
-    # Get image directly from session storage (no project check needed for thumbnails)
-    image = session_storage.get_image_by_id(image_id)
+    # Get project_id from query parameter (optional)
+    project_id = request.args.get('project_id')
+
+    if project_id:
+        # Get image from SPECIFIC project (guaranteed correct)
+        image = session_storage.get_image_by_id_from_project(image_id, project_id)
+    else:
+        # Fallback: Get image from active project (backwards compatibility)
+        image = session_storage.get_image_by_id(image_id)
 
     if not image or not image.get('thumbnail_data'):
-        print(f"❌ Thumbnail not found for image_id={image_id}")
-        if image:
-            print(f"   Image exists but has no thumbnail_data. Keys: {list(image.keys())}")
         return jsonify({'error': 'Image not found'}), 404
 
     return send_file(
