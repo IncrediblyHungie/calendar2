@@ -4,94 +4,158 @@
 
 {% block extra_head %}
 <style>
-/* Seamless infinite carousel animation - LARGER CALENDARS (Figma Hero Section style) */
-@keyframes carouselScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-380px * 5 - 32px * 5)); }
+/* Static Hero Image - Responsive */
+.hero-image-container {
+    background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%);
+    padding: 60px 0 0 0;
+    overflow: hidden;
+    position: relative;
 }
 
-.carousel-animate {
-    animation: carouselScroll 35s linear infinite;
+.hero-image-wrapper {
+    width: 100%;
+    padding-bottom: 150px; /* Space for overlap effect */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-/* Mobile-specific carousel animation (smaller images) */
+.hero-image {
+    width: 100%;
+    max-width: 1400px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Show desktop hero by default */
+.hero-desktop {
+    display: block;
+}
+
+.hero-mobile {
+    display: none;
+}
+
+/* Mobile: Show mobile hero */
 @media (max-width: 768px) {
-    @keyframes carouselScrollMobile {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(calc(-260px * 5 - 20px * 5)); }
+    .hero-desktop {
+        display: none;
     }
 
-    .carousel-animate {
-        animation: carouselScrollMobile 35s linear infinite;
-        gap: 20px !important;
+    .hero-mobile {
+        display: block;
     }
 
-    .carousel-container {
-        padding: 40px 0 0 0 !important;
+    .hero-image-container {
+        background: white; /* White background for mobile */
+        padding: 40px 0 0 0;
     }
 
-    .carousel-animate {
-        padding-bottom: 100px !important;
+    .hero-image-wrapper {
+        padding-bottom: 100px;
     }
 
-    .carousel-item-wrapper {
-        width: 260px !important;
-        height: 310px !important;
+    .hero-image {
+        width: 100%;
+        height: auto;
+        object-fit: cover; /* Fill entire container */
     }
 
-    .carousel-item-wrapper img {
-        width: 260px !important;
-        height: 310px !important;
-    }
-
-    /* Adjust hero section overlap for smaller carousel */
+    /* Adjust hero section overlap for mobile */
     .hero-figma {
         margin-top: -200px !important;
         padding-top: 250px !important;
     }
 }
+
+/* Step Cards Styling */
+.step-card {
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    border-radius: 14px;
+    border: 1px solid #EEE;
+    background: #FFF;
+    text-align: center;
+}
+
+/* FAQ Accordion Styles */
+.faq-item {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.faq-summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.faq-summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-arrow {
+    display: flex;
+    padding: 7px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: #F1F2F9;
+    box-shadow: 0 0.5px 1px 0 rgba(25, 33, 61, 0.07);
+    transition: all 0.3s ease;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.faq-arrow::after {
+    content: '↓';
+    font-size: 16px;
+    transition: transform 0.3s ease;
+    color: #192636;
+}
+
+/* Open state */
+.faq-item[open] .faq-arrow {
+    background: linear-gradient(114deg, #FF4DA6 0%, #FF8C42 100%);
+    box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.12) inset, 0 1px 1.5px 0 rgba(255, 255, 255, 0.25) inset, 0 2px 6px 0 rgba(74, 58, 255, 0.10);
+}
+
+.faq-item[open] .faq-arrow::after {
+    transform: rotate(180deg);
+    color: white;
+}
+
+.faq-content {
+    overflow: hidden;
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- PERFECTED CAROUSEL: Seamless infinite loop with overlap effect (Figma Hero Section style) -->
-<!-- Outer wrapper allows overlap, inner wrapper clips animation -->
+<!-- STATIC HERO IMAGE: Responsive hero with overlap effect -->
 <div style="position: relative; z-index: 10;">
-    <div class="carousel-container" style="background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%); padding: 60px 0 0 0; overflow: hidden;">
-        <div class="carousel-animate" style="display: flex; gap: 32px; width: max-content; padding-bottom: 150px;">
-            <!-- First group -->
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/january.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/february.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/march.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/april.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/may.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
+    <div class="hero-image-container">
+        <div class="hero-image-wrapper">
+            <!-- Desktop Hero -->
+            <img src="{{ url_for('static', filename='assets/images/hero/DesktopHero.png') }}"
+                 alt="Hunk of the Month Calendar"
+                 class="hero-image hero-desktop">
 
-            <!-- Duplicate group for seamless loop -->
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/january.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/february.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/march.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/april.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
-            <div class="carousel-item-wrapper" style="flex-shrink: 0; width: 380px; height: 450px;">
-                <img src="/static/assets/images/carousel/may.jpeg" style="width: 380px; height: 450px; object-fit: cover; display: block; border-radius: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);">
-            </div>
+            <!-- Mobile Hero -->
+            <img src="{{ url_for('static', filename='assets/images/hero/MobileHero.png') }}"
+                 alt="Hunk of the Month Calendar"
+                 class="hero-image hero-mobile">
         </div>
     </div>
 </div>
@@ -156,6 +220,63 @@
 
         <div style="margin-top: var(--spacing-md); font-size: 14px; color: #9CA3AF;">
             No login required. Instant preview.
+        </div>
+    </div>
+</section>
+
+<!-- Make a Hunk Section - WHITE BACKGROUND -->
+<section class="section-figma" style="background-color: white; padding: var(--spacing-2xl) 0;">
+    <div style="max-width: 976px; margin: 0 auto; padding: 0 var(--spacing-md);">
+        <!-- Heading -->
+        <h2 style="color: #192636; text-align: center; font-family: Inter; font-size: 40px; font-style: normal; font-weight: 700; line-height: 110%; margin-bottom: var(--spacing-xs);">
+            Make a hunk in under 5 min ⏱️
+        </h2>
+
+        <!-- Subheading -->
+        <p style="color: #8494A6; text-align: center; font-family: Inter; font-size: 18px; font-style: normal; font-weight: 400; line-height: 140%; margin-bottom: var(--spacing-xl);">
+            (No gym membership required.)
+        </p>
+
+        <!-- Steps Container: 3 cards on desktop, stacked on mobile -->
+        <div style="display: flex; gap: 24px; max-width: 1100px; margin: 0 auto; flex-wrap: wrap;">
+            <!-- Step 1: Upload his pics -->
+            <div class="step-card">
+                <div style="display: flex; width: 48px; height: 48px; justify-content: center; align-items: center; border-radius: 16777200px; background: rgba(255, 51, 102, 0.10); margin: 0 auto var(--spacing-sm);">
+                    <span style="font-size: 24px;">📸</span>
+                </div>
+                <h3 style="color: #192636; font-family: Inter; font-size: 18px; font-style: normal; font-weight: 500; line-height: 27px; letter-spacing: -0.439px; margin-bottom: var(--spacing-xs);">
+                    Upload his pics
+                </h3>
+                <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 24px; letter-spacing: -0.312px; margin: 0;">
+                    Any photo works. Yes, even screenshots from his Instagram.
+                </p>
+            </div>
+
+            <!-- Step 2: Pick the hunk vibe -->
+            <div class="step-card">
+                <div style="display: flex; width: 48px; height: 48px; justify-content: center; align-items: center; border-radius: 16777200px; background: rgba(255, 51, 102, 0.10); margin: 0 auto var(--spacing-sm);">
+                    <span style="font-size: 24px;">🎭</span>
+                </div>
+                <h3 style="color: #192636; font-family: Inter; font-size: 18px; font-style: normal; font-weight: 500; line-height: 27px; letter-spacing: -0.439px; margin-bottom: var(--spacing-xs);">
+                    Pick the hunk vibe
+                </h3>
+                <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 24px; letter-spacing: -0.312px; margin: 0;">
+                    Firefighter? Cowboy? Shirtless chef? Pick a vibe and commit.
+                </p>
+            </div>
+
+            <!-- Step 3: Watch the magic -->
+            <div class="step-card">
+                <div style="display: flex; width: 48px; height: 48px; justify-content: center; align-items: center; border-radius: 16777200px; background: rgba(255, 51, 102, 0.10); margin: 0 auto var(--spacing-sm);">
+                    <span style="font-size: 24px;">✨</span>
+                </div>
+                <h3 style="color: #192636; font-family: Inter; font-size: 18px; font-style: normal; font-weight: 500; line-height: 27px; letter-spacing: -0.439px; margin-bottom: var(--spacing-xs);">
+                    Watch the magic
+                </h3>
+                <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 24px; letter-spacing: -0.312px; margin: 0;">
+                    See the transformation happen. We know, it's unhinged.
+                </p>
+            </div>
         </div>
     </div>
 </section>
@@ -363,50 +484,90 @@
     </div>
 </section>
 
-<!-- Frame 3: How It Works Section - CREAM BACKGROUND -->
+<!-- FAQ Section - CREAM BACKGROUND -->
 <section class="section-figma" style="background-color: #FAF8F5; padding: var(--spacing-2xl) 0;">
-    <div class="container-figma">
-        <h2 class="text-center mb-xl" style="color: #172439; font-weight: 600;">How It Works</h2>
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 var(--spacing-md);">
+        <!-- Heading -->
+        <h2 style="color: #192636; text-align: center; font-family: Inter; font-size: 40px; font-style: normal; font-weight: 700; line-height: 110%; margin-bottom: var(--spacing-xl);">
+            Frequently asked questions 🤔
+        </h2>
 
-        <div class="steps-container">
-            <!-- Step 1 -->
-            <div class="step-card" style="background: white; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                <div class="step-icon">
-                    <i class="fas fa-upload"></i>
-                </div>
-                <div class="step-content">
-                    <h3 style="color: #172439;">Upload 8-12 selfies</h3>
-                    <p style="color: #6B7280;">
-                        Upload your best shots (and maybe a few your mom shouldn't see).
+        <!-- FAQ Accordion -->
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- FAQ 1: Is this weird? -->
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span style="color: #192636; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 600; line-height: 135%;">
+                        Is this weird?
+                    </span>
+                    <span class="faq-arrow"></span>
+                </summary>
+                <div class="faq-content">
+                    <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 166%; margin: 0; padding-top: 12px;">
+                        Oh, absolutely. But so is doomscrolling at 2am.
                     </p>
                 </div>
-            </div>
+            </details>
 
-            <!-- Step 2 -->
-            <div class="step-card" style="background: white; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                <div class="step-icon" style="background: var(--accent-purple);">
-                    <i class="fas fa-wand-magic-sparkles"></i>
-                </div>
-                <div class="step-content">
-                    <h3 style="color: #172439;">AI designs your calendar</h3>
-                    <p style="color: #6B7280;">
-                        We're not judging — just lighting you perfectly.
+            <!-- FAQ 2: Will he be mad? -->
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span style="color: #192636; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 600; line-height: 135%;">
+                        Will he be mad?
+                    </span>
+                    <span class="faq-arrow"></span>
+                </summary>
+                <div class="faq-content">
+                    <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 166%; margin: 0; padding-top: 12px;">
+                        Probably flattered. Possibly confused. Definitely memorable.
                     </p>
                 </div>
-            </div>
+            </details>
 
-            <!-- Step 3 -->
-            <div class="step-card" style="background: white; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                <div class="step-icon" style="background: var(--accent-success);">
-                    <i class="fas fa-gift"></i>
-                </div>
-                <div class="step-content">
-                    <h3 style="color: #172439;">Order it or gift it instantly</h3>
-                    <p style="color: #6B7280;">
-                        Hunks deserve calendars too.
+            <!-- FAQ 3: When would this make a good gift? -->
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span style="color: #192636; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 600; line-height: 135%;">
+                        When would this make a good gift?
+                    </span>
+                    <span class="faq-arrow"></span>
+                </summary>
+                <div class="faq-content">
+                    <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 166%; margin: 0; padding-top: 12px;">
+                        Bachelorette parties, anniversaries, holidays, or that random Tuesday. Basically any time you want to give a gift people will actually remember.
                     </p>
                 </div>
-            </div>
+            </details>
+
+            <!-- FAQ 4: How long does it take to ship? -->
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span style="color: #192636; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 600; line-height: 135%;">
+                        How long does it take to ship?
+                    </span>
+                    <span class="faq-arrow"></span>
+                </summary>
+                <div class="faq-content">
+                    <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 166%; margin: 0; padding-top: 12px;">
+                        5-7 days
+                    </p>
+                </div>
+            </details>
+
+            <!-- FAQ 5: Can I return the calendar? -->
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span style="color: #192636; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 600; line-height: 135%;">
+                        Can I return the calendar?
+                    </span>
+                    <span class="faq-arrow"></span>
+                </summary>
+                <div class="faq-content">
+                    <p style="color: #8494A6; font-family: Inter; font-size: 16px; font-style: normal; font-weight: 400; line-height: 166%; margin: 0; padding-top: 12px;">
+                        No, sorry, all sales final.
+                    </p>
+                </div>
+            </details>
         </div>
     </div>
 </section>

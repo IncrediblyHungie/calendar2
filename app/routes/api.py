@@ -6,8 +6,66 @@ from app import session_storage
 from app.routes.main import get_current_project
 from app.services import stripe_service
 import io
+import threading
 
 bp = Blueprint('api', __name__, url_prefix='/api')
+
+def _pregenerate_delivery_image_async(internal_session_id, cart_items):
+    """
+    Pre-generate delivery worker image in background thread.
+    Runs while user is entering payment info, so image is ready when they complete checkout.
+    """
+    def generate_in_background():
+        try:
+            print(f"📸 [Background] Generating delivery worker image for session {internal_session_id}...")
+
+            from app.services.gemini_service import generate_delivery_worker_image
+            from PIL import Image as PILImage
+
+            # Get first project from cart to get reference images
+            # All projects in cart share the same reference images
+            first_item = cart_items[0] if cart_items else None
+            if not first_item:
+                print("⚠️  [Background] No cart items, skipping delivery image generation")
+                return
+
+            project_id = first_item.get('project_id')
+            if not project_id:
+                print("⚠️  [Background] No project_id in cart item, skipping delivery image generation")
+                return
+
+            # Get user's reference images
+            uploaded_images = session_storage.get_uploaded_images_by_session_id(
+                internal_session_id,
+                project_id=project_id
+            )
+            reference_image_data = [img['file_data'] for img in uploaded_images] if uploaded_images else None
+
+            if not reference_image_data:
+                print("⚠️  [Background] No reference images found, skipping delivery image generation")
+                return
+
+            # Generate delivery worker image
+            delivery_image_data = generate_delivery_worker_image(reference_image_data)
+
+            # Convert PNG to JPEG for smaller file size
+            img = PILImage.open(io.BytesIO(delivery_image_data))
+            img_io = io.BytesIO()
+            img.convert('RGB').save(img_io, format='JPEG', quality=85, optimize=True)
+            jpeg_data = img_io.getvalue()
+
+            # Save to session storage
+            session_storage.save_delivery_image(internal_session_id, jpeg_data)
+            print(f"✅ [Background] Delivery worker image pre-generated and cached ({len(jpeg_data)} bytes)")
+
+        except Exception as e:
+            print(f"⚠️  [Background] Delivery image pre-generation failed (non-critical): {e}")
+            import traceback
+            traceback.print_exc()
+
+    # Start background thread
+    thread = threading.Thread(target=generate_in_background, daemon=True)
+    thread.start()
 
 @bp.route('/image/thumbnail/<int:image_id>')
 def get_thumbnail(image_id):
@@ -347,10 +405,10 @@ def generate_month(month_num):
 
                 print(f"✓ Collected {len(month_image_data)} images for mockups (cover + 12 months)")
 
-                # Create Printify products for all calendar types
+                # Create Printify products for wall calendar only
                 from app.services import printify_service
 
-                product_types = ['wall_calendar', 'desktop']
+                product_types = ['wall_calendar']
                 total_mockups = 0
 
                 for product_type in product_types:
@@ -586,10 +644,10 @@ def generate_mockup():
 
         print(f"✓ Collected {len(month_image_data)} images (cover + 12 months)")
 
-        # Create Printify products for all calendar types
+        # Create Printify products for wall calendar only
         from app.services import printify_service
 
-        product_types = ['wall_calendar', 'desktop']
+        product_types = ['wall_calendar']
         total_mockups = 0
 
         print(f"\n🎨 Generating mockups for {len(product_types)} product types...")
@@ -647,9 +705,9 @@ def create_checkout():
         return jsonify({'error': 'No active project'}), 401
 
     data = request.json
-    product_type = data.get('product_type')
+    product_type = data.get('product_type', 'wall_calendar')  # Default to wall_calendar
 
-    if product_type not in ['wall_calendar', 'desktop']:
+    if product_type != 'wall_calendar':
         return jsonify({'error': 'Invalid product type'}), 400
 
     try:
@@ -683,15 +741,15 @@ def create_checkout():
 
 @bp.route('/cart/add', methods=['POST'])
 def add_to_cart():
-    """Add current project to cart with specified product type"""
+    """Add current project to cart with wall calendar product type"""
     project = get_current_project()
     if not project:
         return jsonify({'error': 'No active project'}), 401
 
     data = request.json
-    product_type = data.get('product_type')
+    product_type = data.get('product_type', 'wall_calendar')  # Default to wall_calendar
 
-    if product_type not in ['wall_calendar', 'desktop']:
+    if product_type != 'wall_calendar':
         return jsonify({'error': 'Invalid product type'}), 400
 
     try:
@@ -820,6 +878,11 @@ def checkout_cart():
             },
             allow_promotion_codes=True  # Enable discount codes
         )
+
+        # 🚀 PRE-GENERATE delivery worker image in background
+        # This runs while user is entering payment info, so image is ready when they land on success page
+        print(f"🚀 Starting background delivery image generation for session {internal_session_id}")
+        _pregenerate_delivery_image_async(internal_session_id, cart_items)
 
         return jsonify({
             'success': True,

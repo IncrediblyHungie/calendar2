@@ -259,49 +259,15 @@
 
             <!-- Extract mockup data for use in product cards -->
             {% if mockup_data %}
-                {% set all_desktop_mockups = mockup_data.get('desktop', {}).get('mockup_images', []) %}
                 {% set all_wall_mockups = mockup_data.get('wall_calendar', {}).get('mockup_images', []) %}
-
-                <!-- Desktop Calendar: Use mockups #4, #5, #6, #7 (indices 3, 4, 5, 6) -->
-                {% set desktop_mockups = [all_desktop_mockups[3], all_desktop_mockups[4], all_desktop_mockups[5], all_desktop_mockups[6]] if all_desktop_mockups|length > 6 else all_desktop_mockups %}
 
                 <!-- Wall Calendar: Use mockups #3, #4, #5, #6 (indices 2, 3, 4, 5) -->
                 {% set wall_mockups = [all_wall_mockups[2], all_wall_mockups[3], all_wall_mockups[4], all_wall_mockups[5]] if all_wall_mockups|length > 5 else all_wall_mockups %}
             {% endif %}
 
-            <!-- Product Selection -->
+            <!-- Product Selection - Wall Calendar Only -->
             <div class="row mb-4 justify-content-center g-4">
-                <div class="col-md-6 col-lg-5">
-                    <div class="card h-100 product-option" data-product="desktop" data-price="22.50">
-                        <div class="card-body text-center p-4">
-                            <!-- Desktop Mockup Carousel -->
-                            {% if desktop_mockups and desktop_mockups|length > 0 %}
-                            <div class="mb-3 position-relative">
-                                <div class="mockup-carousel-container" id="desktop-carousel" style="max-width: 600px; margin: 0 auto;">
-                                    {% for mockup in desktop_mockups %}
-                                    <img src="{{ mockup.src }}"
-                                         alt="Desktop Calendar Mockup View {{ loop.index }}"
-                                         class="mockup-carousel-image img-fluid rounded {% if loop.first %}active{% endif %}"
-                                         style="width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: {% if loop.first %}block{% else %}none{% endif %};">
-                                    {% endfor %}
-                                </div>
-                                <!-- Carousel Dots -->
-                                <div class="mockup-carousel-dots mt-3">
-                                    {% for mockup in desktop_mockups %}
-                                    <span class="mockup-dot {% if loop.first %}active{% endif %}" data-carousel="desktop-carousel" data-index="{{ loop.index0 }}"></span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            {% endif %}
-                            <h5>Desktop Calendar</h5>
-                            <p class="text-muted mb-1">10" × 5"</p>
-                            <small class="text-muted d-block mb-2">250gsm matte paper, spiral binding</small>
-                            <small class="text-success d-block mb-2"><i class="fas fa-flag-usa"></i> Made in USA</small>
-                            <h4 class="text-primary mb-0"><del class="text-muted">$30</del> $22.50 <small class="text-success">(25% off)</small></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-5">
+                <div class="col-md-8 col-lg-6">
                     <div class="card h-100 border-success border-3 product-option selected" data-product="wall_calendar" data-price="26.50">
                         <div class="card-body text-center p-4">
                             <div class="badge bg-success mb-2">MOST POPULAR</div>

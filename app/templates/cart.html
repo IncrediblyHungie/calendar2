@@ -26,8 +26,8 @@
                                 {% if preview_mockups and item.product_type in preview_mockups %}
                                     {% set mockup_data = preview_mockups[item.product_type] %}
                                     {% set mockup_images = mockup_data.mockup_images %}
-                                    {# Wall Calendar: mockup #8 (index 7), Desktop: mockup #9 (index 8) #}
-                                    {% set mockup_index = 7 if item.product_type == 'wall_calendar' else 8 %}
+                                    {# Wall Calendar: mockup #8 (index 7) #}
+                                    {% set mockup_index = 7 %}
                                     {% if mockup_images and mockup_index < mockup_images|length %}
                                         {% set mockup_url = mockup_images[mockup_index].src %}
                                     {% elif mockup_images %}
@@ -59,23 +59,11 @@
                             <!-- Product Details -->
                             <div class="col-md-6">
                                 <h5 class="mb-2 text-dark">
-                                    {% if item.product_type == 'wall_calendar' %}
                                     Wall Calendar 2026
-                                    {% elif item.product_type == 'desktop' %}
-                                    Custom Desktop Calendar
-                                    {% else %}
-                                    Unknown Product
-                                    {% endif %}
                                 </h5>
                                 <p class="text-muted mb-1">
                                     <small>
-                                        {% if item.product_type == 'wall_calendar' %}
                                         10.8" × 8.4" • 270gsm semi-glossy paper, wire binding
-                                        {% elif item.product_type == 'desktop' %}
-                                        10" × 5" • 250gsm matte paper, spiral binding
-                                        {% else %}
-                                        Contact support
-                                        {% endif %}
                                     </small>
                                 </p>
                                 <p class="text-muted mb-0">

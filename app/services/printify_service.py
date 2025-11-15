@@ -9,7 +9,7 @@ from flask import current_app
 
 PRINTIFY_API_BASE = "https://api.printify.com/v1"
 
-# Calendar product configurations
+# Calendar product configurations (wall calendar only)
 # All calendars use 3454x2725px images and 13 placeholders (front_cover + 12 months)
 CALENDAR_PRODUCTS = {
     'wall_calendar': {
@@ -21,16 +21,6 @@ CALENDAR_PRODUCTS = {
         'size': '10.8" × 8.4"',  # Today's Graphics size
         'description': '270gsm semi-glossy paper, wire binding, date grids',
         'price': 2650  # $26.50 (updated pricing)
-    },
-    'desktop': {
-        'blueprint_id': 1353,  # Desktop Calendar (2026 grid) - FIXED
-        'print_provider_id': 'auto',  # Auto-detect on first use
-        'variant_id': 'auto',
-        'name': 'Desktop Calendar (2026)',
-        'title': 'Custom Desktop Hunk Calendar',
-        'size': '10" × 5"',
-        'description': '250gsm matte paper, spiral binding',
-        'price': 2250  # $22.50
     }
 }
 
@@ -170,28 +160,15 @@ def get_optimal_scale(product_type, position):
     if product_type == 'wall_calendar':
         return 0.98  # Balanced - shows environment/context, minimal white space (~2%)
 
-    # Desktop Calendar (blueprint 1353): Different ratios for cover vs monthly
-    elif product_type == 'desktop':
-        if position == 'front_cover':
-            # Desktop cover: 1.96:1 aspect ratio (much wider than 4:3)
-            # - Min scale for zero white space: 1.47 (crops head off - TOO MUCH)
-            # - BALANCED: Use 1.10 to show full image with ~10% white space on sides
-            # - Prioritize showing complete person/composition over filling placeholder
-            return 1.10  # Balanced - shows full image, minimal crop, some side white space
-        else:
-            # Desktop monthly: 1.19:1 aspect ratio (narrower than 4:3)
-            # - 4:3 is wider than placeholder - need to zoom in slightly
-            return 0.90  # Zoom in to fill monthly pages
-
-    # Fallback (should never reach here)
-    return 1.05
+    # Fallback (should never reach here with wall calendar only)
+    return 0.98
 
 def create_calendar_product(product_type, month_image_ids, title="Custom Hunk Calendar 2026"):
     """
-    Create a calendar product with user's images
+    Create a calendar product with user's images (wall calendar only)
 
     Args:
-        product_type: 'calendar_2026', 'desktop', or 'standard_wall'
+        product_type: 'wall_calendar'
         month_image_ids: Dict mapping month names to Printify upload IDs
                          {"january": "upload_id_1", "february": "upload_id_2", ...}
         title: Product title
@@ -531,7 +508,7 @@ def get_product_details(product_id):
     response.raise_for_status()
     return response.json()
 
-def create_product_for_preview(month_image_data, product_type='calendar_2026'):
+def create_product_for_preview(month_image_data, product_type='wall_calendar'):
     """
     Create Printify product for preview mockups (BEFORE payment)
 
@@ -541,7 +518,7 @@ def create_product_for_preview(month_image_data, product_type='calendar_2026'):
     Args:
         month_image_data: Dict mapping month numbers (0-12) to binary image data
                          {0: bytes (cover), 1: bytes, 2: bytes, ..., 12: bytes}
-        product_type: 'calendar_2026', 'desktop', or 'standard_wall'
+        product_type: 'wall_calendar'
 
     Returns:
         dict: {
@@ -662,7 +639,7 @@ def process_full_order(product_type, month_image_data, shipping_address, custome
     Complete workflow: Upload images, create product, create order, submit to production
 
     Args:
-        product_type: 'calendar_2026', 'desktop', or 'standard_wall'
+        product_type: 'wall_calendar'
         month_image_data: Dict mapping month numbers (0-12) to binary image data
                          {0: bytes (cover), 1: bytes, 2: bytes, ..., 12: bytes}
         shipping_address: Dict with required address fields

@@ -5,20 +5,17 @@ Handles checkout sessions, webhooks, and payment verification
 import stripe
 from flask import current_app
 
-# Product pricing in cents
+# Product pricing in cents (wall calendar only)
 CALENDAR_PRICES = {
     'wall_calendar': 2650,  # $26.50 (25% off $35.33)
-    'desktop': 2250         # $22.50 (25% off $30)
 }
 
 PRODUCT_NAMES = {
     'wall_calendar': 'Wall Calendar 2026',
-    'desktop': 'Custom Desktop Calendar'
 }
 
 PRODUCT_DESCRIPTIONS = {
     'wall_calendar': 'Personalized wall calendar (10.8"×8.4") with your AI-generated hunk images. 270gsm semi-glossy paper, wire binding, date grids.',
-    'desktop': 'Personalized 10"×5" desktop calendar with your AI-generated images. 250gsm matte paper, spiral bound.'
 }
 
 # Combined product info (for cart checkout)
@@ -27,11 +24,6 @@ PRODUCT_INFO = {
         'name': PRODUCT_NAMES['wall_calendar'],
         'description': PRODUCT_DESCRIPTIONS['wall_calendar'],
         'price': CALENDAR_PRICES['wall_calendar']
-    },
-    'desktop': {
-        'name': PRODUCT_NAMES['desktop'],
-        'description': PRODUCT_DESCRIPTIONS['desktop'],
-        'price': CALENDAR_PRICES['desktop']
     }
 }
 
