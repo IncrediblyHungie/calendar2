@@ -83,6 +83,20 @@
     text-align: center;
 }
 
+/* Mobile: Stack cards vertically */
+@media (max-width: 768px) {
+    .steps-container {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .step-card {
+        flex: 1 0 100%;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
 /* FAQ Accordion Styles */
 .faq-item {
     background: white;
@@ -218,7 +232,7 @@
         </p>
 
         <!-- Steps Container: 3 cards on desktop, stacked on mobile -->
-        <div style="display: flex; gap: 24px; max-width: 1100px; margin: 0 auto; flex-wrap: wrap;">
+        <div class="steps-container" style="display: flex; gap: 24px; max-width: 1100px; margin: 0 auto; flex-wrap: wrap;">
             <!-- Step 1: Upload his pics -->
             <div class="step-card">
                 <div style="display: flex; width: 48px; height: 48px; justify-content: center; align-items: center; border-radius: 16777200px; background: rgba(255, 51, 102, 0.10); margin: 0 auto var(--spacing-sm);">
