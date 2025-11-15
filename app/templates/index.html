@@ -591,21 +591,40 @@
     </div>
 </section>
 
-<!-- Frame 3 Part 3: Final CTA Section - PINK/YELLOW GRADIENT -->
-<section class="section-figma" style="background: linear-gradient(135deg, #F73E97 0%, #FFA574 100%); padding: var(--spacing-2xl) 0;">
-    <div class="container-figma" style="max-width: 800px;">
-        <div style="text-align: center; padding: var(--spacing-xl);">
-            <h2 style="font-size: 40px; font-weight: 700; color: white; margin-bottom: var(--spacing-md);">
-                Ready to Make Him Unreasonably Hot?
-            </h2>
-            <p style="font-size: 18px; color: rgba(255,255,255,0.95); margin-bottom: var(--spacing-xl); line-height: 1.6;">
-                Upload his best selfies and we'll turn them into a 12-month calendar you'll actually want to hang up.
-            </p>
-            <a href="{{ url_for('main.start') }}" class="btn-figma-primary" style="background: white; color: #F73E97; font-size: 18px; font-weight: 600; padding: 18px 40px; border-radius: 24px; text-decoration: none; display: inline-block; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
-                Upload Photos To Get Started →
-            </a>
-            <div style="margin-top: var(--spacing-md); font-size: 14px; color: rgba(255,255,255,0.85);">
-                No login required. Instant preview.
+<!-- Frame 3 Part 3: Final CTA Card Section with March Preview -->
+<section class="section-figma" style="background: white; padding: var(--spacing-2xl) 0;">
+    <div style="display: flex; justify-content: center; padding: 0 var(--spacing-md);">
+        <!-- CTA Card with March Image -->
+        <div style="display: flex; max-width: 932px; width: 100%; padding: 40px; justify-content: center; align-items: center; gap: 40px; border-radius: 16px; border: 8px solid rgba(255, 255, 255, 0.20); background: #FFF; box-shadow: 0 328px 92px 0 rgba(153, 0, 120, 0.00), 0 210px 84px 0 rgba(153, 0, 120, 0.02), 0 118px 71px 0 rgba(153, 0, 120, 0.08), 0 52px 52px 0 rgba(153, 0, 120, 0.13), 0 13px 29px 0 rgba(153, 0, 120, 0.15);">
+
+            <!-- March Calendar Preview Image -->
+            <div style="flex-shrink: 0;">
+                <img src="{{ url_for('static', filename='assets/images/march-preview.jpg') }}"
+                     alt="March Calendar Preview"
+                     style="width: 300px; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+            </div>
+
+            <!-- CTA Content -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px;">
+                <!-- Heading -->
+                <h2 style="color: #192636; font-family: Inter; font-size: 32px; font-style: normal; font-weight: 700; line-height: 110%; margin: 0;">
+                    Ready to make the calendar of your dreams?
+                </h2>
+
+                <!-- Subtext -->
+                <p style="color: #8494A6; text-align: center; font-family: Inter; font-size: 18px; font-style: normal; font-weight: 500; line-height: 140%; margin: 0;">
+                    Upload his pictures to get started.
+                </p>
+
+                <!-- CTA Button -->
+                <a href="{{ url_for('main.start') }}" style="display: flex; width: 216px; height: 45px; padding: 10.611px 52.239px; justify-content: center; align-items: center; gap: 8.162px; border-radius: 24.042px; background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%); box-shadow: 0 0 32px 0 rgba(153, 23, 255, 0.32), 0 0 0.816px 3.265px rgba(255, 255, 255, 0.10), 0 -3.265px 1.632px 0 rgba(0, 0, 0, 0.25) inset, 0 1.632px 0.816px 0 rgba(255, 255, 255, 0.25) inset; text-decoration: none; color: white; font-family: Inter; font-size: 16px; font-weight: 600;">
+                    Upload Photos →
+                </a>
+
+                <!-- Bottom Text -->
+                <p style="color: #8494A6; font-family: Inter; font-size: 14px; font-style: normal; font-weight: 500; line-height: 110%; margin: 0;">
+                    No login required. Preview first. Pay later.
+                </p>
             </div>
         </div>
     </div>
