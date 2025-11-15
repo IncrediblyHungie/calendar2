@@ -321,10 +321,10 @@
 
             <!-- Secondary Actions -->
             <div class="d-grid gap-2 col-md-8 mx-auto">
-                <a href="{{ url_for('projects.create_another') }}" class="btn btn-outline-secondary">
+                <button onclick="handleCreateAnother()" class="btn btn-outline-secondary" type="button">
                     <i class="fas fa-user-plus me-2"></i>
                     Create Calendar for Another Person
-                </a>
+                </button>
             </div>
 
             <p class="text-muted mt-4 mb-0 text-center">
@@ -1443,4 +1443,45 @@ document.addEventListener('DOMContentLoaded', () => {
     box-shadow: 0 6px 16px rgba(0,0,0,0.15) !important;
 }
 </style>
+
+<script>
+// Handle "Create Calendar for Another Person" button
+async function handleCreateAnother() {
+    try {
+        // Check cart count
+        const response = await fetch('/api/cart');
+        const data = await response.json();
+
+        // If cart is empty, add current calendar first
+        if (data.success && data.count === 0) {
+            // Add wall calendar to cart
+            const addResponse = await fetch('/api/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_type: 'wall_calendar'
+                })
+            });
+
+            const addData = await addResponse.json();
+
+            if (addData.success) {
+                console.log('Current calendar added to cart before creating new one');
+            } else {
+                console.error('Failed to add calendar to cart:', addData.error);
+            }
+        }
+
+        // Navigate to create another page
+        window.location.href = "{{ url_for('projects.create_another') }}";
+
+    } catch (error) {
+        console.error('Error handling create another:', error);
+        // Navigate anyway even if there was an error
+        window.location.href = "{{ url_for('projects.create_another') }}";
+    }
+}
+</script>
 {% endblock %}
