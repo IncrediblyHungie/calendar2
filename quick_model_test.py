@@ -6,7 +6,9 @@ from google.genai import types
 from PIL import Image
 import io
 
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY', 'AIzaSyBOU_I2bEYQt47eCNYxeqMBJNu73F7j2Kw')
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+if not GOOGLE_API_KEY:
+    raise ValueError("GOOGLE_API_KEY environment variable is required")
 
 # Models to test
 MODELS = [
