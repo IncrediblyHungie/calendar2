@@ -97,9 +97,16 @@ def upload():
         # This prevents "Are you sure you want to resubmit?" warnings
         return redirect(url_for('projects.upload'))
 
-    # Get uploaded images
+    # Get uploaded images (force reload to get latest from disk)
+    session_storage._load_storage(force_reload=True)
     images = session_storage.get_uploaded_images()
-    print(f"📸 Rendering upload page with {len(images)} images: {[img['id'] for img in images]}")
+
+    print(f"📸 Rendering upload page:")
+    print(f"   Project ID: {project.get('id', 'unknown')}")
+    print(f"   Images count: {len(images)}")
+    print(f"   Image IDs: {[img['id'] for img in images]}")
+    for img in images:
+        print(f"   - ID {img['id']}: {img.get('filename', 'no filename')}, has_thumbnail={bool(img.get('thumbnail_data'))}")
 
     return render_template('upload.html', project=project, images=images)
 
