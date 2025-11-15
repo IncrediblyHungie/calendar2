@@ -178,16 +178,7 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
-                                <!-- Stripe Express Checkout (Apple Pay, Google Pay, Link) -->
-                                <div id="express-checkout-element" class="mb-4"></div>
-
-                                <!-- OR divider -->
-                                <div class="position-relative mb-4" id="or-divider" style="display: none;">
-                                    <hr style="border-top: 1px solid #e0e0e0;">
-                                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 0 15px; color: #6c757d; font-size: 14px;">or pay with card</span>
-                                </div>
-
-                                <!-- Stripe Payment Element (Card fallback) -->
+                                <!-- Stripe Payment Element (includes Apple Pay, Google Pay, Link, Cards) -->
                                 <form id="payment-form">
                                     <div id="payment-element" class="mb-3"></div>
                                     <div id="payment-errors" class="text-danger mb-3" role="alert"></div>
@@ -461,70 +452,19 @@ async function initializePaymentElement() {
 
         console.log('✓ Stripe elements created');
 
-        // Create Express Checkout Element (Apple Pay, Google Pay, Link)
-        const expressCheckoutElement = elements.create('expressCheckout', {
-            buttonType: {
-                applePay: 'plain',
-                googlePay: 'plain'
-            }
-        });
-
-        // Mount and check if any express payment methods are available
-        try {
-            await expressCheckoutElement.mount('#express-checkout-element');
-            console.log('✓ Express checkout element mounted');
-
-            // Show "or pay with card" divider if express checkout is available
-            expressCheckoutElement.on('ready', (event) => {
-                if (event.availablePaymentMethods) {
-                    document.getElementById('or-divider').style.display = 'block';
-                    console.log('✓ Express payment methods available:', event.availablePaymentMethods);
-                }
-            });
-
-            // Handle express checkout confirmation
-            expressCheckoutElement.on('confirm', async (event) => {
-                console.log('🚀 Express checkout initiated');
-                const unlockButton = document.getElementById('unlock-button');
-                unlockButton.disabled = true;
-                unlockButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-
-                try {
-                    const { error } = await stripe.confirmSetup({
-                        elements,
-                        confirmParams: {
-                            return_url: window.location.href,
-                        },
-                    });
-
-                    if (error) {
-                        console.error('❌ Express checkout error:', error);
-                        document.getElementById('payment-errors').textContent = error.message;
-                        unlockButton.disabled = false;
-                        unlockButton.innerHTML = '<img src="{{ url_for('static', filename='assets/icons/unlock-icon.svg') }}" alt="" style="width: 14px; height: 14px; margin-right: 8px;">Unlock all images';
-                    }
-                } catch (err) {
-                    console.error('❌ Express checkout exception:', err);
-                    document.getElementById('payment-errors').textContent = 'Payment failed. Please try again.';
-                    unlockButton.disabled = false;
-                    unlockButton.innerHTML = '<img src="{{ url_for('static', filename='assets/icons/unlock-icon.svg') }}" alt="" style="width: 14px; height: 14px; margin-right: 8px;">Unlock all images';
-                }
-            });
-        } catch (error) {
-            console.log('ℹ️ Express checkout not available:', error);
-            // Express checkout not available, just hide the container
-        }
-
-        // Create Payment Element (card fallback - no wallets since they're in express checkout)
+        // Create Payment Element with Apple Pay, Google Pay, Link, and Cards
         paymentElement = elements.create('payment', {
             layout: {
-                type: 'accordion',
-                defaultCollapsed: false
+                type: 'tabs',
+                defaultCollapsed: false,
+                radios: false,
+                spacedAccordionItems: true
             },
             wallets: {
-                applePay: 'never',  // Hide from payment element (shown in express checkout)
-                googlePay: 'never'   // Hide from payment element (shown in express checkout)
-            }
+                applePay: 'auto',   // Show Apple Pay if available on Safari/iOS
+                googlePay: 'auto'   // Show Google Pay if available on Chrome/Android
+            },
+            paymentMethodOrder: ['apple_pay', 'google_pay', 'link', 'card']  // Wallets first!
         });
 
         console.log('✓ Payment element created, mounting...');
@@ -541,7 +481,7 @@ async function initializePaymentElement() {
             }
         });
 
-        console.log('✅ Payment Element initialized with Express Checkout (Apple Pay, Google Pay, Link)');
+        console.log('✅ Payment Element initialized with Apple Pay, Google Pay, Link, and Cards (wallets prioritized)');
 
     } catch (error) {
         console.error('❌ Failed to initialize Payment Element:', error);
