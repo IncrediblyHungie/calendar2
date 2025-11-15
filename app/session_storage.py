@@ -188,7 +188,13 @@ def get_current_project():
 def get_uploaded_images():
     """Get list of uploaded images for active project"""
     project = _get_active_project()
-    return project.get('images', [])
+    images = project.get('images', [])
+    print(f"📥 get_uploaded_images() called:")
+    print(f"   Project ID: {project['id']}")
+    print(f"   Found {len(images)} images")
+    if images:
+        print(f"   Image IDs: {[img['id'] for img in images]}")
+    return images
 
 def get_uploaded_images_by_session_id(session_id, project_id=None):
     """Get uploaded images for a specific session (used by webhooks)"""
@@ -219,6 +225,13 @@ def get_uploaded_images_by_session_id(session_id, project_id=None):
 def add_uploaded_image(filename, file_data, thumbnail_data):
     """Add an uploaded image to active project"""
     project = _get_active_project()
+    session_id = _get_session_id()
+
+    print(f"💾 add_uploaded_image() called:")
+    print(f"   Session ID: {session_id}")
+    print(f"   Project ID: {project['id']}")
+    print(f"   Filename: {filename}")
+    print(f"   Current images in project: {len(project.get('images', []))}")
 
     # Check for duplicate filename to prevent double uploads
     for existing_image in project.get('images', []):
@@ -235,7 +248,10 @@ def add_uploaded_image(filename, file_data, thumbnail_data):
         'thumbnail_data': thumbnail_data,  # Raw binary data
         'uploaded_at': datetime.utcnow().isoformat()
     })
-    _save_session(_get_session_id())  # Persist to disk
+
+    print(f"   ✅ Added image ID {image_id}, total images now: {len(project['images'])}")
+    _save_session(session_id)  # Persist to disk
+    print(f"   💾 Session saved to disk\n")
     return image_id
 
 def get_image_by_id(image_id):
@@ -269,8 +285,18 @@ def delete_image(image_id):
 def clear_all_images():
     """Clear all images from active project (more efficient than deleting one by one)"""
     project = _get_active_project()
+    session_id = _get_session_id()
+    old_count = len(project.get('images', []))
+
+    print(f"\n🗑️ clear_all_images() called:")
+    print(f"   Session ID: {session_id}")
+    print(f"   Project ID: {project['id']}")
+    print(f"   Deleting {old_count} images")
+
     project['images'] = []
-    _save_session(_get_session_id())  # Persist to disk - single save instead of multiple
+    _save_session(session_id)  # Persist to disk - single save instead of multiple
+
+    print(f"   ✅ All images cleared, session saved\n")
 
 def get_all_months():
     """Get all calendar months for active project"""

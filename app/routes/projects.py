@@ -25,6 +25,11 @@ def upload():
     if not project:
         return redirect(url_for('main.start'))
 
+    print(f"\n{'='*70}")
+    print(f"📤 UPLOAD ROUTE - Method: {request.method}")
+    print(f"   Project ID: {project['id']}")
+    print(f"{'='*70}\n")
+
     if request.method == 'POST':
         # Handle file uploads
         if 'photos' in request.files:
@@ -79,25 +84,31 @@ def upload():
                         thumb_data = thumb_io.getvalue()
 
                         # Save to session storage
-                        session_storage.add_uploaded_image(
+                        image_id = session_storage.add_uploaded_image(
                             secure_filename(file.filename),
                             img_data,
                             thumb_data
                         )
+                        print(f"   ✅ Saved image {image_id}: {secure_filename(file.filename)} to project {project['id']}")
                         processed_count += 1
 
                     except Exception as e:
                         flash(f'Error processing {file.filename}: {str(e)}', 'warning')
                         continue
 
+            print(f"\n✅ Upload complete: {processed_count} images saved to project {project['id']}")
+            print(f"   Redirecting to GET /project/upload...\n")
             flash(f'{len(files)} photos uploaded successfully!', 'success')
 
         # Redirect to GET request (Post/Redirect/Get pattern)
         # This prevents "Are you sure you want to resubmit?" warnings
         return redirect(url_for('projects.upload'))
 
-    # Get uploaded images
+    # GET request - retrieve and display images
     images = session_storage.get_uploaded_images()
+    print(f"   Retrieved {len(images)} images from project {project['id']}")
+    if images:
+        print(f"   Image IDs: {[img['id'] for img in images]}")
 
     return render_template('upload.html', project=project, images=images)
 
