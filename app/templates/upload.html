@@ -2,182 +2,451 @@
 
 {% block title %}Upload Photos{% endblock %}
 
+{% block extra_head %}
+<style>
+/* Steps Progress Bar */
+.steps-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin: 40px auto 60px;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 600;
+    background: #E5E5E5;
+    color: #737373;
+}
+
+.step.active .step-number {
+    background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
+    color: white;
+}
+
+.step-label {
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    color: #737373;
+}
+
+.step.active .step-label {
+    color: #192636;
+    font-weight: 600;
+}
+
+.step-divider {
+    width: 40px;
+    height: 2px;
+    background: #E5E5E5;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .steps-container {
+        gap: 12px;
+    }
+
+    .step-label {
+        display: none;
+    }
+
+    .step-divider {
+        width: 20px;
+    }
+}
+
+/* Upload Section Styles */
+.upload-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.upload-heading {
+    color: #192636;
+    text-align: center;
+    font-family: Inter;
+    font-size: 54px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%;
+    margin-bottom: 16px;
+}
+
+.upload-subheading {
+    color: #5A697B;
+    text-align: center;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+    margin-bottom: 48px;
+}
+
+@media (max-width: 768px) {
+    .upload-heading {
+        font-size: 36px;
+    }
+
+    .upload-subheading {
+        font-size: 16px;
+    }
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    border-radius: 16px;
+    border: 2px dashed #E5E5E5;
+    background: #FAFAFA;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 40px;
+}
+
+.upload-dropzone:hover {
+    border-color: #F827A8;
+    background: #FFF5FA;
+}
+
+.upload-icon-img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 24px;
+}
+
+.upload-click-text {
+    color: #F827A8;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px;
+}
+
+.upload-drag-text {
+    color: #525252;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px;
+}
+
+.upload-format-text {
+    color: #A3A3A3;
+    font-family: Inter;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    margin-top: 8px;
+}
+
+/* Images Gallery */
+.images-gallery-container {
+    display: flex;
+    min-height: 112px;
+    padding: 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+    border-radius: 16px;
+    border: 1px dashed #E5E5E5;
+    background: #FAFAFA;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.images-gallery-empty {
+    color: #A3A3A3;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+}
+
+.image-thumbnail {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #E5E5E5;
+    position: relative;
+}
+
+.image-thumbnail-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.delete-image-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #EF4444;
+    border: 2px solid white;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+}
+
+.delete-image-btn:hover {
+    background: #DC2626;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.btn-delete-all {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid #EF4444;
+    background: transparent;
+    color: #EF4444;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-delete-all:hover {
+    background: #EF4444;
+    color: white;
+}
+
+.btn-add-more {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid #F827A8;
+    background: transparent;
+    color: #F827A8;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-add-more:hover {
+    background: #F827A8;
+    color: white;
+}
+
+.btn-next {
+    padding: 12px 32px;
+    border-radius: 24px;
+    background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
+    border: none;
+    color: white;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 24px;
+}
+
+.btn-next:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+/* Progress Bar */
+.progress-figma {
+    width: 100%;
+    height: 8px;
+    background: #E5E5E5;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+.progress-figma-bar {
+    height: 100%;
+    background: linear-gradient(180deg, #F48D41 0%, #F827A8 100%);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #5A697B;
+    font-family: Inter;
+    font-size: 14px;
+    margin-top: 8px;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container-figma section-figma">
-    <!-- Hero Section -->
-    <div class="text-center mb-xl">
-        <h1 style="font-size: 36px; margin-bottom: var(--spacing-sm); color: #172439; font-weight: 600;">
-            Upload Your Selfies
-        </h1>
-        <p style="color: var(--text-secondary); font-size: 18px; max-width: 600px; margin: 0 auto;">
-            Upload 3-10 photos of yourself. The AI will use YOUR FACE and put it on 12 ridiculously hot, hunky bodies!
-        </p>
+    <!-- Steps Progress Bar -->
+    <div class="steps-container">
+        <div class="step active">
+            <div class="step-number">1</div>
+            <div class="step-label">Upload Photos</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-label">Review Themes</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-label">Generate</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-label">Checkout</div>
+        </div>
     </div>
 
-    <!-- Upload Dropzone -->
-    <div class="upload-dropzone mb-lg" id="dropzone">
-        <form method="POST" enctype="multipart/form-data" id="uploadForm">
-            <div class="upload-icon mb-md">
-                <i class="fas fa-cloud-upload-alt" style="font-size: 48px;"></i>
-            </div>
-            <h3 style="margin-bottom: var(--spacing-sm); color: #172439; font-weight: 600;">Drop your photos here</h3>
-            <p style="color: var(--text-secondary); margin-bottom: var(--spacing-md);">
-                or click to browse
-            </p>
-            <input
-                type="file"
-                class="d-none"
-                id="photos"
-                name="photos"
-                multiple
-                accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif"
-                required
-            >
-            <button type="button" class="btn-figma-secondary" id="browseBtn">
-                <i class="fas fa-folder-open me-2"></i>
-                Browse Files
-            </button>
-            <div class="mt-md" style="color: var(--text-muted); font-size: 14px;">
-                <strong>iPhone/Mobile:</strong> Tap to choose "Take Photo" (one at a time) OR "Photo Library" (select multiple)
-                <br><small>Formats: JPG, PNG, HEIC • Max 8MB/photo, 40MB total • Auto-optimized</small>
-            </div>
+    <div class="upload-container">
+        <!-- Hero Section -->
+        <h1 class="upload-heading">Upload his pics 📷</h1>
+        <p class="upload-subheading">Upload at least 3 pics. Any will work. We'll handle the rest.</p>
 
-            <!-- Upload Progress -->
-            <div id="uploadProgress" class="mt-md" style="display: none;">
-                <div class="progress-figma">
-                    <div id="uploadProgressBar" class="progress-figma-bar" style="width: 0%"></div>
+        <!-- Upload Dropzone -->
+        <div class="upload-dropzone" id="dropzone">
+            <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                <img src="{{ url_for('static', filename='assets/images/upload-icon.png') }}"
+                     alt="Upload"
+                     class="upload-icon-img">
+
+                <div style="margin-bottom: 8px;">
+                    <span class="upload-click-text">Click to upload</span>
+                    <span class="upload-drag-text"> or drag and drop</span>
                 </div>
-                <div id="uploadStatus" class="progress-text text-center"></div>
-            </div>
-        </form>
-    </div>
 
-    <!-- Photo Tips -->
-    <div class="tips-box mb-lg">
-        <h4 style="margin-bottom: var(--spacing-sm); color: var(--text-primary);">
-            📸 Photo Requirements for Best Results
-        </h4>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <strong style="color: var(--accent-success);">✅ DO:</strong>
-                <ul style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
-                    <li>Good lighting - face clearly visible</li>
-                    <li>Face camera directly (not side profile)</li>
-                    <li>Clear, in-focus photos</li>
-                    <li>No sunglasses or face coverings</li>
-                    <li>5-7 photos recommended</li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <strong style="color: var(--accent-danger);">❌ AVOID:</strong>
-                <ul style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
-                    <li>Dark/shadowed faces</li>
-                    <li>Blurry images</li>
-                    <li>Extreme angles</li>
-                    <li>Snapchat filters</li>
-                    <li>Group photos</li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-3 pt-3" style="border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 14px;">
-            <strong>💡 Perfect photo:</strong> Well-lit selfie, face the camera, slight smile, whole face visible.
-        </div>
-    </div>
+                <div class="upload-format-text">
+                    JPG, JPEG, PNG less than 8MB
+                </div>
 
-    <!-- Uploaded Images Gallery -->
-    {% if images %}
-    <div class="card-figma-dark mb-lg">
-        <div class="d-flex justify-content-between align-items-center mb-md">
-            <h3 style="margin: 0; color: var(--text-primary);">
-                <i class="fas fa-images me-2" style="color: var(--accent-primary);"></i>
-                Your Photos ({{ images|length }})
-            </h3>
-            <div class="d-flex gap-2">
-                <button type="button" class="btn-figma-secondary" id="deleteAllBtn" data-image-count="{{ images|length }}" style="background: transparent; border: 2px solid var(--accent-danger); color: var(--accent-danger);">
-                    <i class="fas fa-trash-alt me-2"></i>Delete All
-                </button>
-                <button type="button" class="btn-figma-secondary" id="addMorePhotosBtn">
-                    <i class="fas fa-plus-circle me-2"></i>Add More
-                </button>
-            </div>
-        </div>
+                <input
+                    type="file"
+                    class="d-none"
+                    id="photos"
+                    name="photos"
+                    multiple
+                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif"
+                    required
+                >
 
-        <div class="row g-3 mb-md" style="content-visibility: auto;">
-            {% for image in images %}
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="upload-thumbnail-card position-relative" style="content-visibility: auto; contain: layout style paint; contain-intrinsic-size: 200px 200px;">
-                    <img src="{{ url_for('api.get_thumbnail', image_id=image.id) }}"
-                         alt="Uploaded photo {{ loop.index }}"
-                         class="img-fluid"
-                         loading="lazy"
-                         decoding="async"
-                         style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                    <button type="button"
-                            class="btn btn-danger btn-sm delete-image-btn position-absolute"
-                            data-image-id="{{ image.id }}"
-                            style="top: 8px; right: 8px; opacity: 0.95; background: var(--accent-danger); border: none; border-radius: var(--radius-sm); padding: 6px 10px;"
-                            title="Delete this photo">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                    <div class="position-absolute bottom-0 start-0 w-100 p-2 text-white text-center"
-                         style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); border-radius: 0 0 var(--radius-md) var(--radius-md);">
-                        <small style="font-weight: 600;">Photo {{ loop.index }}</small>
+                <!-- Upload Progress -->
+                <div id="uploadProgress" style="display: none; width: 100%; max-width: 400px;">
+                    <div class="progress-figma">
+                        <div id="uploadProgressBar" class="progress-figma-bar" style="width: 0%"></div>
                     </div>
+                    <div id="uploadStatus" class="progress-text text-center"></div>
                 </div>
+            </form>
+        </div>
+
+        <!-- Uploaded Images Gallery -->
+        {% if images %}
+        <div class="images-gallery-container" id="imagesGallery">
+            {% for image in images %}
+            <div class="image-thumbnail-wrapper">
+                <img src="{{ url_for('api.get_thumbnail', image_id=image.id) }}"
+                     alt="Photo {{ loop.index }}"
+                     class="image-thumbnail"
+                     loading="lazy">
+                <button type="button"
+                        class="delete-image-btn"
+                        data-image-id="{{ image.id }}"
+                        title="Delete this photo">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="images-gallery-container" id="imagesGallery">
+            <div class="images-gallery-empty">
+                Your uploaded images will appear here
+            </div>
+        </div>
+        {% endif %}
 
-        <div class="card-figma-purple mb-md" style="text-align: center;">
-            <i class="fas fa-lightbulb me-2"></i>
-            {% if images|length >= 3 %}
-                <strong>Looking good!</strong> You have {{ images|length }} photos. You can add more for better AI results, or continue to the next step.
-            {% else %}
-                <strong>Almost there!</strong> You need at least 3 photos (currently: {{ images|length }}). More photos = better AI face-swapping results!
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            {% if images %}
+            <button type="button" class="btn-delete-all" id="deleteAllBtn">
+                <i class="fas fa-trash-alt me-2"></i>Delete All
+            </button>
             {% endif %}
+            <button type="button" class="btn-add-more" id="addMorePhotosBtn">
+                <i class="fas fa-plus-circle me-2"></i>Add More
+            </button>
         </div>
 
-        <!-- Action Buttons - Mobile Optimized -->
-        <div class="d-grid gap-3">
-            {% if images|length >= 3 %}
-            <a href="{{ url_for('projects.themes') }}" class="btn-figma-primary" style="text-decoration: none;">
+        <!-- Next Button -->
+        {% if images and images|length >= 3 %}
+        <div class="text-center">
+            <a href="{{ url_for('projects.themes') }}" class="btn-next">
                 Next: Review Monthly Themes
                 <i class="fas fa-arrow-right ms-2"></i>
             </a>
-            {% endif %}
-            <button type="button" class="btn-figma-secondary" id="addMorePhotosBtnBottom" style="width: 100%;">
-                <i class="fas fa-plus-circle me-2"></i>
-                Add More Photos
-            </button>
         </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
 // Mobile-Optimized Upload with Client-Side Compression
-// Targets: 8MB per image, 40MB total, maximum quality for AI generation
-
 const MAX_FILE_SIZE = 8 * 1024 * 1024; // 8MB per image
 const MAX_TOTAL_SIZE = 40 * 1024 * 1024; // 40MB total
-const MAX_DIMENSION = 3072; // Max width/height - higher for better AI quality
-const COMPRESSION_QUALITY = 0.92; // 92% quality - near-lossless for AI reference
-
-// Browse button handler (optimized with RAF to yield main thread)
-document.getElementById('browseBtn').addEventListener('click', function() {
-    requestAnimationFrame(() => {
-        document.getElementById('photos').click();
-    });
-});
+const MAX_DIMENSION = 3072; // Max width/height
+const COMPRESSION_QUALITY = 0.92; // 92% quality
 
 // Drag and drop functionality
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('photos');
 
 dropzone.addEventListener('click', function(e) {
-    if (e.target === dropzone || e.target.closest('.upload-icon') || e.target.closest('h3') || e.target.closest('p')) {
+    if (e.target === dropzone || e.target.closest('.upload-icon-img') || e.target.closest('.upload-click-text') || e.target.closest('.upload-drag-text')) {
         requestAnimationFrame(() => fileInput.click());
     }
 });
@@ -185,27 +454,26 @@ dropzone.addEventListener('click', function(e) {
 dropzone.addEventListener('dragover', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.style.borderColor = 'var(--accent-primary)';
-    this.style.background = 'rgba(255, 90, 121, 0.08)';
+    this.style.borderColor = '#F827A8';
+    this.style.background = '#FFF5FA';
 });
 
 dropzone.addEventListener('dragleave', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.style.borderColor = 'var(--border-subtle)';
-    this.style.background = 'var(--bg-card)';
+    this.style.borderColor = '#E5E5E5';
+    this.style.background = '#FAFAFA';
 });
 
 dropzone.addEventListener('drop', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.style.borderColor = 'var(--border-subtle)';
-    this.style.background = 'var(--bg-card)';
+    this.style.borderColor = '#E5E5E5';
+    this.style.background = '#FAFAFA';
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
         fileInput.files = files;
-        // Trigger change event (which will handle validation and auto-submit)
         const event = new Event('change', { bubbles: true });
         fileInput.dispatchEvent(event);
     }
@@ -219,7 +487,6 @@ fileInput.addEventListener('change', function(e) {
         return;
     }
 
-    // Show file count
     console.log(`✅ Selected ${files.length} photo${files.length > 1 ? 's' : ''}`);
 
     // Validate individual file sizes
@@ -233,11 +500,10 @@ fileInput.addEventListener('change', function(e) {
     if (totalSize > MAX_TOTAL_SIZE) {
         const totalMB = (totalSize / (1024 * 1024)).toFixed(1);
         alert(`⚠️ Total upload size (${totalMB}MB) exceeds 40MB limit. Please select fewer photos or smaller files.`);
-        e.target.value = ''; // Clear selection
+        e.target.value = '';
         return;
     }
 
-    // Show file count and size
     const sizeMB = (totalSize / (1024 * 1024)).toFixed(1);
     console.log(`Total size: ${sizeMB}MB`);
 
@@ -252,9 +518,8 @@ let isUploading = false;
 document.getElementById('uploadForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Prevent double submission
     if (isUploading) {
-        console.log('Upload already in progress, ignoring duplicate submission');
+        console.log('Upload already in progress');
         return;
     }
     isUploading = true;
@@ -270,15 +535,12 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     const progressDiv = document.getElementById('uploadProgress');
     const progressBar = document.getElementById('uploadProgressBar');
     const statusText = document.getElementById('uploadStatus');
-    const browseBtn = document.getElementById('browseBtn');
 
     // Show progress UI
     progressDiv.style.display = 'block';
-    browseBtn.disabled = true;
-    browseBtn.style.opacity = '0.5';
 
     try {
-        // Compress images client-side (mobile-optimized)
+        // Compress images client-side
         statusText.textContent = 'Optimizing images for upload...';
         progressBar.style.width = '10%';
 
@@ -299,7 +561,6 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
 
         const xhr = new XMLHttpRequest();
 
-        // Track upload progress
         xhr.upload.addEventListener('progress', (e) => {
             if (e.lengthComputable) {
                 const uploadPercent = (e.loaded / e.total) * 100;
@@ -310,14 +571,11 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
             }
         });
 
-        // Handle completion
         xhr.addEventListener('load', () => {
             if (xhr.status === 200 || xhr.status === 302) {
                 progressBar.style.width = '100%';
                 statusText.textContent = 'Upload complete! Redirecting...';
-                // Clear file input to prevent resubmission
                 fileInput.value = '';
-                // Navigate directly to avoid duplication issues
                 setTimeout(() => window.location.href = '/project/upload', 500);
             } else {
                 isUploading = false;
@@ -330,7 +588,6 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
             throw new Error('Network error during upload');
         });
 
-        // Send the request
         xhr.open('POST', this.action);
         xhr.send(formData);
 
@@ -338,21 +595,18 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
         console.error('Upload error:', error);
         alert(`Upload failed: ${error.message}`);
         progressDiv.style.display = 'none';
-        browseBtn.disabled = false;
-        browseBtn.style.opacity = '1';
         isUploading = false;
     }
 });
 
-// Image compression function (mobile-optimized)
+// Image compression function
 async function compressImages(files, onProgress) {
     const compressed = [];
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
 
-        // Skip compression for small files (already optimized)
-        if (file.size < 1 * 1024 * 1024) { // Less than 1MB
+        if (file.size < 1 * 1024 * 1024) {
             compressed.push(file);
             onProgress((i + 1) / files.length);
             continue;
@@ -363,7 +617,7 @@ async function compressImages(files, onProgress) {
             compressed.push(compressedFile);
         } catch (error) {
             console.warn(`Compression failed for ${file.name}, using original:`, error);
-            compressed.push(file); // Fallback to original
+            compressed.push(file);
         }
 
         onProgress((i + 1) / files.length);
@@ -372,7 +626,6 @@ async function compressImages(files, onProgress) {
     return compressed;
 }
 
-// Compress individual image
 function compressImage(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -381,7 +634,6 @@ function compressImage(file) {
             const img = new Image();
 
             img.onload = () => {
-                // Calculate new dimensions (maintain aspect ratio)
                 let width = img.width;
                 let height = img.height;
 
@@ -395,7 +647,6 @@ function compressImage(file) {
                     }
                 }
 
-                // Create canvas and compress
                 const canvas = document.createElement('canvas');
                 canvas.width = width;
                 canvas.height = height;
@@ -403,16 +654,13 @@ function compressImage(file) {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // Convert to Blob (JPEG format with 85% quality)
                 canvas.toBlob((blob) => {
                     if (blob) {
-                        // Create new File object with compressed data
                         const compressedFile = new File([blob], file.name, {
                             type: 'image/jpeg',
                             lastModified: Date.now()
                         });
 
-                        // Log compression results
                         const originalMB = (file.size / (1024 * 1024)).toFixed(2);
                         const compressedMB = (compressedFile.size / (1024 * 1024)).toFixed(2);
                         const savings = ((1 - compressedFile.size / file.size) * 100).toFixed(0);
@@ -434,26 +682,17 @@ function compressImage(file) {
     });
 }
 
-// "Add More Photos" button handlers
-const photoInput = document.getElementById('photos');
-const addMoreBtns = [
-    document.getElementById('addMorePhotosBtn'),
-    document.getElementById('addMorePhotosBtnBottom')
-];
+// "Add More Photos" button handler
+const addMoreBtn = document.getElementById('addMorePhotosBtn');
+if (addMoreBtn) {
+    addMoreBtn.addEventListener('click', () => {
+        fileInput.removeAttribute('required');
+        requestAnimationFrame(() => fileInput.click());
+    });
+}
 
-addMoreBtns.forEach(btn => {
-    if (btn) {
-        btn.addEventListener('click', () => {
-            // Remove required attribute temporarily so user can add more without uploading immediately
-            photoInput.removeAttribute('required');
-            requestAnimationFrame(() => photoInput.click());
-        });
-    }
-});
-
-// Delete image handler with event delegation (better performance)
+// Delete image handler
 document.addEventListener('click', async function(e) {
-    // Check if clicked element is a delete button or inside one
     const deleteBtn = e.target.closest('.delete-image-btn');
     if (!deleteBtn) return;
 
@@ -461,11 +700,10 @@ document.addEventListener('click', async function(e) {
     e.stopPropagation();
 
     const imageId = deleteBtn.dataset.imageId;
-    const card = deleteBtn.closest('.upload-thumbnail-card');
+    const wrapper = deleteBtn.closest('.image-thumbnail-wrapper');
 
-    // Show deleting state
-    card.style.opacity = '0.5';
-    card.style.pointerEvents = 'none';
+    wrapper.style.opacity = '0.5';
+    wrapper.style.pointerEvents = 'none';
     deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
     try {
@@ -474,31 +712,31 @@ document.addEventListener('click', async function(e) {
         });
 
         if (response.ok) {
-            // Fade out animation
-            card.style.transition = 'all 0.3s ease';
-            card.style.transform = 'scale(0.8)';
-            card.style.opacity = '0';
-
-            // Reload after animation
+            wrapper.style.transition = 'all 0.3s ease';
+            wrapper.style.transform = 'scale(0.8)';
+            wrapper.style.opacity = '0';
             setTimeout(() => location.reload(), 300);
         } else {
             throw new Error('Delete failed');
         }
     } catch (error) {
         alert('❌ Failed to delete photo. Please try again.');
-        card.style.opacity = '1';
-        card.style.pointerEvents = 'auto';
-        deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        wrapper.style.opacity = '1';
+        wrapper.style.pointerEvents = 'auto';
+        deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
     }
 });
 
-// Delete All button handler (optimized - no DOM query)
+// Delete All button handler
 const deleteAllBtn = document.getElementById('deleteAllBtn');
 if (deleteAllBtn) {
     deleteAllBtn.addEventListener('click', async function(e) {
         e.preventDefault();
 
-        // Show deleting state
+        if (!confirm('Are you sure you want to delete all photos?')) {
+            return;
+        }
+
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Deleting...';
 
@@ -508,7 +746,6 @@ if (deleteAllBtn) {
             });
 
             if (response.ok) {
-                // Reload page
                 location.reload();
             } else {
                 throw new Error('Delete all failed');
