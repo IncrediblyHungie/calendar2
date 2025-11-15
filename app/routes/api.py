@@ -264,12 +264,14 @@ def delete_all_images():
     if not project:
         return jsonify({'error': 'Unauthorized'}), 401
 
-    # Get all images for this project and delete them
+    # Get count before clearing
     images = session_storage.get_uploaded_images()
-    for image in images:
-        session_storage.delete_image(image['id'])
+    deleted_count = len(images)
 
-    return jsonify({'success': True, 'deleted_count': len(images)})
+    # Clear all images at once (avoids race conditions from multiple saves)
+    session_storage.clear_all_images()
+
+    return jsonify({'success': True, 'deleted_count': deleted_count})
 
 @bp.route('/generate/month/<int:month_num>', methods=['POST'])
 def generate_month(month_num):

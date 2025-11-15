@@ -266,6 +266,12 @@ def delete_image(image_id):
     project['images'] = [img for img in project.get('images', []) if img['id'] != image_id]
     _save_session(_get_session_id())  # Persist to disk
 
+def clear_all_images():
+    """Clear all images from active project (more efficient than deleting one by one)"""
+    project = _get_active_project()
+    project['images'] = []
+    _save_session(_get_session_id())  # Persist to disk - single save instead of multiple
+
 def get_all_months():
     """Get all calendar months for active project"""
     project = _get_active_project()
