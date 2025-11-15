@@ -511,6 +511,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
                 progressBar.style.width = '100%';
                 statusText.textContent = 'Upload complete! Redirecting...';
                 fileInput.value = '';
+                isUploading = false;  // ✅ FIX: Reset flag before redirect
                 setTimeout(() => window.location.href = '/project/upload', 500);
             } else {
                 isUploading = false;
