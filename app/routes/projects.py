@@ -32,6 +32,10 @@ def upload():
 
     if request.method == 'POST':
         # Handle file uploads
+        current_app.logger.info(f"   request.files keys: {list(request.files.keys())}")
+        current_app.logger.info(f"   request.form keys: {list(request.form.keys())}")
+        current_app.logger.info(f"   'photos' in request.files: {'photos' in request.files}")
+
         if 'photos' in request.files:
             files = request.files.getlist('photos')
 
@@ -100,6 +104,8 @@ def upload():
             current_app.logger.info(f"✅ Upload complete: {processed_count} images saved to project {project['id']}")
             current_app.logger.info(f"   Redirecting to GET /project/upload...")
             flash(f'{len(files)} photos uploaded successfully!', 'success')
+        else:
+            current_app.logger.warning(f"⚠️  NO 'photos' in request.files - upload skipped!")
 
         # Redirect to GET request (Post/Redirect/Get pattern)
         # This prevents "Are you sure you want to resubmit?" warnings
