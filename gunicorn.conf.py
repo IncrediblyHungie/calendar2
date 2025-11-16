@@ -9,9 +9,9 @@ import os
 bind = f"0.0.0.0:{os.getenv('PORT', '8080')}"
 backlog = 2048
 
-# Worker Processes - Optimized for Fly.io 4 vCPUs
-# Rule: (2 x CPU cores) + 1
-workers = min(multiprocessing.cpu_count() * 2 + 1, 9)  # Max 9 workers on 4 vCPUs
+# Worker Processes - Memory-optimized for 2GB RAM
+# Each worker uses ~320MB RAM. 3 workers = ~960MB, leaves 1GB for OS/buffers/spikes
+workers = 3  # Conservative for 2GB RAM (supports ~12 concurrent requests)
 worker_class = 'sync'  # Use sync workers (better for long-running AI requests)
 worker_connections = 1000
 max_requests = 1000  # Restart workers after 1000 requests (prevent memory leaks)
